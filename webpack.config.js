@@ -10,7 +10,10 @@ module.exports = {
   output: {
     path: path.join(__dirname, 'build'),
     filename: 'index.[contenthash:8].js',
-    assetModuleFilename: path.posix.join('images', '[name].[contenthash:8][ext]'),
+    assetModuleFilename: path.posix.join(
+      'images',
+      '[name].[contenthash:8][ext]'
+    ),
   },
   module: {
     rules: [
@@ -64,4 +67,4 @@ module.exports = {
     watchFiles: path.join(__dirname, 'src'),
     port: 9000,
   },
-  };
+};
