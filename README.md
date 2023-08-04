@@ -21,6 +21,7 @@ An important aspect of our application is that it's responsive 📲, ensuring it
 ## 2. Technology Stack 💻📚:
  - HTML;
  - CSS;
+ - SASS;
  - JavaScript;
  - TypeScript; 
  - Single Page Application (SPA);
@@ -32,7 +33,6 @@ An important aspect of our application is that it's responsive 📲, ensuring it
  - Jest
 
 ## 3. Developers Team:
- - IHAR TARAIKOVICH - Team Leader [github: taraikovich](https://github.com/taraikovich);
+ - Igor Taraikovich - Team Leader [github: taraikovich](https://github.com/taraikovich);
  - Veronika Nemirova [github: veronikanemirova](https://github.com/veronikanemirova);
  - Alexey Petrov  [github: al-pet](https://github.com/al-pet) 
-
