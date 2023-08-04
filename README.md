@@ -36,3 +36,51 @@ An important aspect of our application is that it's responsive 📲, ensuring it
  - Igor Taraikovich - Team Leader [github: taraikovich](https://github.com/taraikovich);
  - Veronika Nemirova [github: veronikanemirova](https://github.com/veronikanemirova);
  - Alexey Petrov  [github: al-pet](https://github.com/al-pet) 
+
+## 4. Usage
+
+ - To install the dependencies:
+`npm install`
+
+ - To start a development server:
+`npm run serve`
+
+ - To build the project for production:
+`npm run build`
+
+ - To run ESLint and check for coding style issues and potential errors:
+`npm run lint`
+
+ - To automatically format code using Prettier:
+`npm run format`
+
+ - To fix linting issues automatically:
+`npm run lint:fix`
+
+ - To check code if it is formatted correctly without modifying:
+`npm run format:check`
+
+ - To run tests:
+`npm test`
+
+ - To install Husky hooks:
+`npm run prepare`
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
