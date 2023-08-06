@@ -66,6 +66,15 @@ An important aspect of our application is that it's responsive 📲, ensuring it
  - To install Husky hooks:
 `npm run prepare`
 
+ - To install Jest:
+`npm install --save-dev jest`
+
+ - To install Jest support for TypeScript:
+`npm install --save-dev ts-jest`
+
+ - To install support for types for Jest globals:
+`npm install --save-dev @types/jest`
+
 
 
 
