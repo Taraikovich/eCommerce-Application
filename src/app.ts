@@ -1,5 +1,4 @@
-import './main.scss'
-import { View } from "./views/view";
+import './main.scss';
+import { View } from './views/view';
 
 new View();
-

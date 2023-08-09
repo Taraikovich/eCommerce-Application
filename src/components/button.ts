@@ -1,11 +1,11 @@
 export class Button {
-    button = document.createElement('button')
+  button = document.createElement('button');
 
-    constructor(node: HTMLElement) {
-        this.addButton(node);
-    }
+  constructor(node: HTMLElement) {
+    this.addButton(node);
+  }
 
-    addButton(node: HTMLElement) {
-        node.append(this.button);
-    }
+  addButton(node: HTMLElement) {
+    node.append(this.button);
+  }
 }
