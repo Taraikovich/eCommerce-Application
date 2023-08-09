@@ -1,6 +1,7 @@
 import { RegisterButton } from '../components/registerButton';
 import { LoginButton } from '../components/loginButton';
 import { Logo } from '../components/logo';
+import { Mainmenu } from '../components/mainMenu';
 
 export class View {
   header = document.createElement('header');
@@ -12,7 +13,12 @@ export class View {
   constructor() {
     document.body.append(this.header, this.main, this.footer);
     this.addLogo();
+    this.addMenu();
     this.addAuthButtons();
+  }
+
+  private addLogo() {
+    new Logo(this.header);
   }
 
   private addAuthButtons() {
@@ -22,7 +28,7 @@ export class View {
     this.header.append(btnWrapper);
   }
 
-  private addLogo() {
-    new Logo(this.header);
+  private addMenu() {
+    new Mainmenu(this.header);
   }
 }
