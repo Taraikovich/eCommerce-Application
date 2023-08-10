@@ -10,8 +10,13 @@ export class View {
 
   footer = document.createElement('footer');
 
-  constructor() {
+  // constructor() {
+  //   this.createView();
+  // }
+
+  createView() {
     document.body.append(this.header, this.main, this.footer);
+    this.header.className = 'header';
     this.addLogo();
     this.addMenu();
     this.addAuthButtons();

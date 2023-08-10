@@ -1,4 +1,9 @@
 import './main.scss';
-import { View } from './views/view';
+import { Router } from './router/router';
 
-new View();
+new Router();
+
+window.addEventListener('popstate', () => {
+  document.body.textContent = '';
+  new Router();
+});
