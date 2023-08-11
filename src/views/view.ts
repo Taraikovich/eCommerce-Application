@@ -1,7 +1,5 @@
-import { RegisterButton } from '../components/registerButton';
-import { LoginButton } from '../components/loginButton';
 import { Logo } from '../components/logo';
-import { Mainmenu } from '../components/mainMenu';
+import { Navigation } from '../components/navigation';
 
 export class View {
   header = document.createElement('header');
@@ -10,30 +8,35 @@ export class View {
 
   footer = document.createElement('footer');
 
-  // constructor() {
-  //   this.createView();
-  // }
+  constructor() {
+    this.burgerMenu();
+  }
 
   createView() {
     document.body.append(this.header, this.main, this.footer);
     this.header.className = 'header';
     this.addLogo();
     this.addMenu();
-    this.addAuthButtons();
   }
 
-  private addLogo() {
+  private addLogo(): void {
     new Logo(this.header);
   }
 
-  private addAuthButtons() {
-    const btnWrapper = document.createElement('div');
-    new LoginButton(btnWrapper);
-    new RegisterButton(btnWrapper);
-    this.header.append(btnWrapper);
+  private addMenu(): void {
+    new Navigation(this.header);
   }
 
-  private addMenu() {
-    new Mainmenu(this.header);
+  private burgerMenu(): void {
+    const burgerMenu = document.createElement('div');
+    burgerMenu.className = 'header__burger-menu';
+
+    burgerMenu.addEventListener('click', () => {
+      burgerMenu.classList.toggle('header__burger-menu_open');
+      const nav = document.querySelector('.header__nav');
+      nav?.classList.toggle('open');
+    });
+
+    this.header.append(burgerMenu);
   }
 }

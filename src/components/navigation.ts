@@ -1,20 +1,30 @@
 import { Router } from '../router/router';
+import { LoginButton } from './loginButton';
+import { RegisterButton } from './registerButton';
 
-export class Mainmenu {
+export class Navigation {
   list = document.createElement('ul');
+
+  nav = document.createElement('nav');
 
   constructor(node: HTMLElement) {
     this.addMenu(node);
   }
 
-  addMenu(node: HTMLElement) {
+  private addMenu(node: HTMLElement): void {
+    this.nav.className = 'header__nav';
     this.list.className = 'header__menu';
     const homeLink = this.addMenuItem('Home', './');
+    const buttons = document.createElement('div');
+    const loginBtn = new LoginButton();
+    const registrBtn = new RegisterButton();
+    buttons.append(loginBtn.createButton(), registrBtn.createButton());
     this.list.append(homeLink);
-    node.append(this.list);
+    this.nav.append(this.list, buttons);
+    node.append(this.nav);
   }
 
-  addMenuItem(name: string, url: string) {
+  private addMenuItem(name: string, url: string): HTMLElement {
     const li = document.createElement('li');
     const a = document.createElement('a');
     a.href = url;

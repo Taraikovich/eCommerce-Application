@@ -2,17 +2,18 @@ import { Router } from '../router/router';
 import { Button } from './button';
 
 export class RegisterButton extends Button {
-  constructor(node: HTMLElement) {
-    super(node);
+  constructor() {
+    super();
     this.chengePage();
   }
 
-  addButton(node: HTMLElement) {
-    super.addButton(node);
+  createButton(): HTMLButtonElement {
+    super.createButton();
     this.button.textContent = 'Register';
+    return this.button;
   }
 
-  chengePage() {
+  private chengePage(): void {
     this.button.addEventListener('click', () => {
       const newURL = '/register';
       window.history.pushState({}, '', newURL);

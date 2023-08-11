@@ -7,7 +7,7 @@ export class Logo {
     this.createLogo(node);
   }
 
-  private createLogo(node: HTMLElement) {
+  private createLogo(node: HTMLElement): void {
     const a = document.createElement('a');
     a.href = './';
     a.textContent = 'RSSHOP';

@@ -16,7 +16,7 @@ export class Router {
     this.createView();
   }
 
-  createView() {
+  private createView(): void {
     const rout = this.getUrl();
     if (rout === '/') {
       this.homePage.createView();
@@ -29,7 +29,7 @@ export class Router {
     }
   }
 
-  getUrl() {
+  private getUrl(): string {
     const url = window.location.pathname;
     return url;
   }

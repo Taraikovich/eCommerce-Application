@@ -6,7 +6,7 @@ export class LoginPageView extends View {
     this.createContent();
   }
 
-  createContent() {
+  private createContent(): void {
     this.main.textContent = 'Login page';
   }
 }

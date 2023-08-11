@@ -7,7 +7,7 @@ export class NotFoundPageView extends View {
     this.createContent();
   }
 
-  createContent() {
+  private createContent(): void {
     const wrapper = document.createElement('div');
     const h1 = document.createElement('h1');
     const button = document.createElement('button');

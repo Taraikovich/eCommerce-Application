@@ -6,7 +6,7 @@ export class RegisterPageView extends View {
     this.createContent();
   }
 
-  createContent() {
+  private createContent(): void {
     this.main.textContent = 'register page';
   }
 }
