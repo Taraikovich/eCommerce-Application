@@ -3,7 +3,6 @@ import { HomePageView } from '../views/homePageView';
 import { LoginPageView } from '../views/loginPageView';
 import { RegisterPageView } from '../views/registerPageView';
 
-
 export class Router {
   homePage = new HomePageView();
 
@@ -34,7 +33,7 @@ export class Router {
     const url = window.location.pathname;
     return url;
   }
-  
+
   public navigateToHome(): void {
     window.location.href = '/';
   }

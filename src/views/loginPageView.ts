@@ -13,15 +13,27 @@ export class LoginPageView extends View {
 
   private registerButton: HTMLButtonElement = document.createElement('button');
 
+  private emailErrorText: HTMLDivElement = document.createElement('div');
+
+  private passwordErrorText: HTMLDivElement = document.createElement('div');
+
   constructor(private router: Router) {
     super();
     this.createContent();
     this.initializeInputs();
     this.initializeRegisterButton();
+    this.initializeErrorTexts();
   }
 
   private createContent(): void {
     this.main.textContent = 'Welcome back';
+  }
+
+  private initializeErrorTexts(): void {
+    this.emailErrorText.className = 'error-text';
+    this.passwordErrorText.className = 'error-text';
+    this.main.insertBefore(this.emailErrorText, this.passwordInput);
+    this.main.insertBefore(this.passwordErrorText, this.passwordInput);
   }
 
   private initializeInputs(): void {
@@ -31,8 +43,9 @@ export class LoginPageView extends View {
     this.emailInput.placeholder = 'Email';
 
     const emailIcon = document.createElement('img');
-    emailIcon.src = '../images/email.png';
+    emailIcon.src = require('../images/lock.png');
     emailIcon.alt = 'Email Icon';
+    
 
     this.emailInput.addEventListener('input', this.validateEmail.bind(this));
     this.emailInput.insertBefore(emailIcon, this.emailInput.firstChild);
@@ -43,18 +56,24 @@ export class LoginPageView extends View {
     this.passwordInput.placeholder = 'Password';
 
     const passwordIcon = document.createElement('img');
-    passwordIcon.src = '../images/lock.png';
+    passwordIcon.src = require('../images/lock.png');
     passwordIcon.alt = 'Password Icon';
     const passwordShowIcon = document.createElement('img');
-    passwordShowIcon.src = '../images/eye.png';
+    passwordShowIcon.src = require('../images/eye.png');
     passwordShowIcon.alt = 'Password Show Icon';
 
     this.passwordInput.addEventListener(
       'input',
       this.validatePassword.bind(this)
     );
-    this.passwordInput.insertBefore(passwordIcon, this.passwordInput.firstChild);
-    this.passwordInput.insertBefore(passwordShowIcon, this.passwordInput.lastChild);
+    this.passwordInput.insertBefore(
+      passwordIcon,
+      this.passwordInput.firstChild
+    );
+    this.passwordInput.insertBefore(
+      passwordShowIcon,
+      this.passwordInput.lastChild
+    );
 
     this.showPasswordCheckbox = document.createElement('input');
     this.showPasswordCheckbox.type = 'checkbox';
@@ -72,7 +91,14 @@ export class LoginPageView extends View {
     this.loginButton.textContent = 'Login';
     this.loginButton.addEventListener('click', this.handleLogin.bind(this));
 
+    this.loginButton.addEventListener('keydown', (event) => {
+      if (event.key === 'Enter') {
+        this.handleLogin();
+      }
+    });
+
     this.main.appendChild(this.emailInput);
+    this.main.appendChild(this.emailErrorText);
     this.main.appendChild(this.passwordInput);
     this.main.appendChild(showPasswordLabel);
     this.main.appendChild(this.loginButton);
@@ -92,10 +118,12 @@ export class LoginPageView extends View {
 
     if (!emailPattern.test(emailValue)) {
       this.emailInput.setCustomValidity('Invalid email address');
+      this.emailErrorText.textContent = 'Invalid email address';
       this.emailInput.classList.add('invalid-input');
       return false;
     } else {
       this.emailInput.setCustomValidity('');
+      this.emailErrorText.textContent = '';
       this.emailInput.classList.remove('invalid-input');
       return true;
     }
@@ -113,41 +141,46 @@ export class LoginPageView extends View {
       this.passwordInput.setCustomValidity(
         'Password must be at least 8 characters long'
       );
+      this.passwordErrorText.textContent = 'Password must be at least 8 characters long';
       this.passwordInput.classList.add('invalid-input');
       return false;
     } else if (!uppercasePattern.test(passwordValue)) {
       this.passwordInput.setCustomValidity(
         'Password must contain at least one uppercase letter'
       );
+      this.passwordErrorText.textContent = 'Password must contain at least one uppercase letter';
       this.passwordInput.classList.add('invalid-input');
       return false;
     } else if (!lowercasePattern.test(passwordValue)) {
       this.passwordInput.setCustomValidity(
         'Password must contain at least one lowercase letter'
       );
+      this.passwordErrorText.textContent = 'Password must contain at least one lowercase letter';
       this.passwordInput.classList.add('invalid-input');
       return false;
     } else if (!digitPattern.test(passwordValue)) {
       this.passwordInput.setCustomValidity(
         'Password must contain at least one digit'
       );
+      this.passwordErrorText.textContent = 'Password must contain at least one digit';
       this.passwordInput.classList.add('invalid-input');
       return false;
     } else if (!specialCharacterPattern.test(passwordValue)) {
       this.passwordInput.setCustomValidity(
         'Password must contain at least one special character'
       );
+      this.passwordErrorText.textContent = 'Password must contain at least one special character';
       this.passwordInput.classList.add('invalid-input');
       return false;
     } else {
       this.passwordInput.setCustomValidity('');
+      this.passwordErrorText.textContent = '';
       this.passwordInput.classList.remove('invalid-input');
       return true;
     }
   }
 
   private handleLogin = (): void => {
-
     const isEmailValid = this.validateEmail();
     const isPasswordValid = this.validatePassword();
 
@@ -158,17 +191,17 @@ export class LoginPageView extends View {
       console.log('Invalid email or password');
     }
   };
-  
-private initializeRegisterButton(): void {
-  this.registerButton.textContent = 'Register'
-  this.registerButton.addEventListener('click', this.handleRegister.bind(this))
-  this.main.appendChild(this.registerButton)
+
+  private initializeRegisterButton(): void {
+    this.registerButton.textContent = 'Register';
+    this.registerButton.addEventListener(
+      'click',
+      this.handleRegister.bind(this)
+    );
+    this.main.appendChild(this.registerButton);
+  }
+
+  private handleRegister(): void {
+    this.router.navigateToRegister();
+  }
 }
-
-private handleRegister(): void {
-  this.router.navigateToRegister(); 
-}
-}
-
-
-
