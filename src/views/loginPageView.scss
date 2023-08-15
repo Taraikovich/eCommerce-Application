@@ -1,7 +1,8 @@
 .input {
   width: 300px;
   height: 30px;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
+  margin-top: 20px;
 }
 main {
   display: flex;
@@ -14,5 +15,14 @@ main {
   border-color: red;
 }
 .error-text {
-    color: burlywood;
+  color: burlywood;
+}
+.login-button {
+  width: 200px;
+  margin-bottom: 20px;
+  margin-top: 20px;
+}
+
+.reg-button {
+  width: 200px;
 }

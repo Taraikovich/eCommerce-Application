@@ -26,7 +26,7 @@ export class LoginPageView extends View {
   }
 
   private createContent(): void {
-    this.main.textContent = 'Welcome back';
+    this.main.textContent = '';
   }
 
   private initializeErrorTexts(): void {
@@ -45,7 +45,6 @@ export class LoginPageView extends View {
     const emailIcon = document.createElement('img');
     emailIcon.src = require('../images/lock.png');
     emailIcon.alt = 'Email Icon';
-    
 
     this.emailInput.addEventListener('input', this.validateEmail.bind(this));
     this.emailInput.insertBefore(emailIcon, this.emailInput.firstChild);
@@ -89,6 +88,7 @@ export class LoginPageView extends View {
 
     this.loginButton = document.createElement('button');
     this.loginButton.textContent = 'Login';
+    this.loginButton.className = 'login-button';
     this.loginButton.addEventListener('click', this.handleLogin.bind(this));
 
     this.loginButton.addEventListener('keydown', (event) => {
@@ -141,35 +141,40 @@ export class LoginPageView extends View {
       this.passwordInput.setCustomValidity(
         'Password must be at least 8 characters long'
       );
-      this.passwordErrorText.textContent = 'Password must be at least 8 characters long';
+      this.passwordErrorText.textContent =
+        'Password must be at least 8 characters long';
       this.passwordInput.classList.add('invalid-input');
       return false;
     } else if (!uppercasePattern.test(passwordValue)) {
       this.passwordInput.setCustomValidity(
         'Password must contain at least one uppercase letter'
       );
-      this.passwordErrorText.textContent = 'Password must contain at least one uppercase letter';
+      this.passwordErrorText.textContent =
+        'Password must contain at least one uppercase letter';
       this.passwordInput.classList.add('invalid-input');
       return false;
     } else if (!lowercasePattern.test(passwordValue)) {
       this.passwordInput.setCustomValidity(
         'Password must contain at least one lowercase letter'
       );
-      this.passwordErrorText.textContent = 'Password must contain at least one lowercase letter';
+      this.passwordErrorText.textContent =
+        'Password must contain at least one lowercase letter';
       this.passwordInput.classList.add('invalid-input');
       return false;
     } else if (!digitPattern.test(passwordValue)) {
       this.passwordInput.setCustomValidity(
         'Password must contain at least one digit'
       );
-      this.passwordErrorText.textContent = 'Password must contain at least one digit';
+      this.passwordErrorText.textContent =
+        'Password must contain at least one digit';
       this.passwordInput.classList.add('invalid-input');
       return false;
     } else if (!specialCharacterPattern.test(passwordValue)) {
       this.passwordInput.setCustomValidity(
         'Password must contain at least one special character'
       );
-      this.passwordErrorText.textContent = 'Password must contain at least one special character';
+      this.passwordErrorText.textContent =
+        'Password must contain at least one special character';
       this.passwordInput.classList.add('invalid-input');
       return false;
     } else {
@@ -194,6 +199,7 @@ export class LoginPageView extends View {
 
   private initializeRegisterButton(): void {
     this.registerButton.textContent = 'Register';
+    this.registerButton.className = 'reg-button';
     this.registerButton.addEventListener(
       'click',
       this.handleRegister.bind(this)
