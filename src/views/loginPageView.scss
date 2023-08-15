@@ -1,4 +1,11 @@
-.input {
+.input-email {
+  width: 300px;
+  height: 30px;
+  margin-bottom: 10px;
+  margin-top: 20px;
+}
+
+.input-password {
   width: 300px;
   height: 30px;
   margin-bottom: 10px;
@@ -14,8 +21,13 @@ main {
 .invalid-input {
   border-color: red;
 }
-.error-text {
+.error-text-email {
   color: burlywood;
+}
+.error-text-password {
+  color: burlywood;
+  position: absolute;
+  margin-top: 10px;
 }
 .login-button {
   width: 200px;
@@ -25,4 +37,8 @@ main {
 
 .reg-button {
   width: 200px;
+}
+
+.show-pass-text {
+  margin-top: 30px;
 }

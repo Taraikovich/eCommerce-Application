@@ -30,15 +30,15 @@ export class LoginPageView extends View {
   }
 
   private initializeErrorTexts(): void {
-    this.emailErrorText.className = 'error-text';
-    this.passwordErrorText.className = 'error-text';
+    this.emailErrorText.className = 'error-text-email';
+    this.passwordErrorText.className = 'error-text-password';
     this.main.insertBefore(this.emailErrorText, this.passwordInput);
     this.main.insertBefore(this.passwordErrorText, this.passwordInput);
   }
 
   private initializeInputs(): void {
     this.emailInput = document.createElement('input');
-    this.emailInput.className = 'input';
+    this.emailInput.className = 'input-email';
     this.emailInput.type = 'email';
     this.emailInput.placeholder = 'Email';
 
@@ -50,7 +50,7 @@ export class LoginPageView extends View {
     this.emailInput.insertBefore(emailIcon, this.emailInput.firstChild);
 
     this.passwordInput = document.createElement('input');
-    this.passwordInput.className = 'input';
+    this.passwordInput.className = 'input-password';
     this.passwordInput.type = 'password';
     this.passwordInput.placeholder = 'Password';
 
@@ -83,6 +83,7 @@ export class LoginPageView extends View {
 
     const showPasswordLabel = document.createElement('label');
     showPasswordLabel.textContent = 'Show Password';
+    showPasswordLabel.className = 'show-pass-text';
     showPasswordLabel.appendChild(this.showPasswordCheckbox);
     // Append inputs to the main content
 
