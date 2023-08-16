@@ -2,7 +2,11 @@ import { View } from './view';
 import { Router } from '../router/router';
 
 export class LoginPageView extends View {
+  private emailInputWarpper : HTMLDivElement = document.createElement('div');
+
   private emailInput: HTMLInputElement = document.createElement('input');
+
+  private passwordlInputWarpper : HTMLDivElement = document.createElement('div');
 
   private passwordInput: HTMLInputElement = document.createElement('input');
 
@@ -19,6 +23,10 @@ export class LoginPageView extends View {
 
   constructor(private router: Router) {
     super();
+    // if (this.isUserAuthenticated()) {
+    //   this.router.navigateToHome(); 
+    //   return; 
+    // }
     this.createContent();
     this.initializeInputs();
     this.initializeRegisterButton();
@@ -32,47 +40,46 @@ export class LoginPageView extends View {
   private initializeErrorTexts(): void {
     this.emailErrorText.className = 'error-text-email';
     this.passwordErrorText.className = 'error-text-password';
-    this.main.insertBefore(this.emailErrorText, this.passwordInput);
-    this.main.insertBefore(this.passwordErrorText, this.passwordInput);
+    this.main.insertBefore(this.emailErrorText, this.passwordlInputWarpper);
+    this.main.insertBefore(this.passwordErrorText, this.passwordlInputWarpper);
   }
 
   private initializeInputs(): void {
+    this.emailInputWarpper.className = 'input-email-wrapper';
     this.emailInput = document.createElement('input');
     this.emailInput.className = 'input-email';
     this.emailInput.type = 'email';
     this.emailInput.placeholder = 'Email';
 
-    const emailIcon = document.createElement('img');
-    emailIcon.src = require('../images/lock.png');
+    const emailIcon = new Image();
+    emailIcon.src = require('../images/email.png');
     emailIcon.alt = 'Email Icon';
+    emailIcon.className = 'input-email-icon';
 
     this.emailInput.addEventListener('input', this.validateEmail.bind(this));
-    this.emailInput.insertBefore(emailIcon, this.emailInput.firstChild);
+    this.emailInputWarpper.appendChild(this.emailInput)
+    this.emailInputWarpper.appendChild(emailIcon)
 
     this.passwordInput = document.createElement('input');
+    this.passwordlInputWarpper.className = 'input-password-wrapper';
     this.passwordInput.className = 'input-password';
     this.passwordInput.type = 'password';
     this.passwordInput.placeholder = 'Password';
 
-    const passwordIcon = document.createElement('img');
+    const passwordIcon = new Image();
     passwordIcon.src = require('../images/lock.png');
     passwordIcon.alt = 'Password Icon';
+    passwordIcon.className = 'input-password-icon';
     const passwordShowIcon = document.createElement('img');
     passwordShowIcon.src = require('../images/eye.png');
     passwordShowIcon.alt = 'Password Show Icon';
-
-    this.passwordInput.addEventListener(
+       this.passwordInput.addEventListener(
       'input',
       this.validatePassword.bind(this)
     );
-    this.passwordInput.insertBefore(
-      passwordIcon,
-      this.passwordInput.firstChild
-    );
-    this.passwordInput.insertBefore(
-      passwordShowIcon,
-      this.passwordInput.lastChild
-    );
+    this.passwordlInputWarpper.appendChild(this.passwordInput)
+    this.passwordlInputWarpper.appendChild(passwordIcon)
+
 
     this.showPasswordCheckbox = document.createElement('input');
     this.showPasswordCheckbox.type = 'checkbox';
@@ -85,7 +92,7 @@ export class LoginPageView extends View {
     showPasswordLabel.textContent = 'Show Password';
     showPasswordLabel.className = 'show-pass-text';
     showPasswordLabel.appendChild(this.showPasswordCheckbox);
-    // Append inputs to the main content
+    
 
     this.loginButton = document.createElement('button');
     this.loginButton.textContent = 'Login';
@@ -98,9 +105,9 @@ export class LoginPageView extends View {
       }
     });
 
-    this.main.appendChild(this.emailInput);
+    this.main.appendChild(this.emailInputWarpper);
     this.main.appendChild(this.emailErrorText);
-    this.main.appendChild(this.passwordInput);
+    this.main.appendChild(this.passwordlInputWarpper);
     this.main.appendChild(showPasswordLabel);
     this.main.appendChild(this.loginButton);
   }
@@ -119,7 +126,7 @@ export class LoginPageView extends View {
 
     if (!emailPattern.test(emailValue)) {
       this.emailInput.setCustomValidity('Invalid email address');
-      this.emailErrorText.textContent = 'Invalid email address';
+      this.emailErrorText.textContent = 'Please enter a valid email address (for example: user@example.com)';
       this.emailInput.classList.add('invalid-input');
       return false;
     } else {
