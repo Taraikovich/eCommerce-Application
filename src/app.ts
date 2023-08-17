@@ -1,5 +1,6 @@
 import './main.scss';
 import { Router } from './router/router';
+import { login } from './api/login';
 
 new Router();
 
@@ -8,17 +9,21 @@ window.addEventListener('popstate', () => {
   new Router();
 });
 
-// import { ctpClient } from './api/BuildClient';
-// import {
-//   ApiRoot,
-//   createApiBuilderFromCtpClient,
-// } from '@commercetools/platform-sdk';
+const btn = document.createElement('button');
+btn.textContent = 'login';
+document.body.append(btn);
 
-// // Create apiRoot from the imported ClientBuilder and include your Project key
-// const apiRoot = createApiBuilderFromCtpClient(ctpClient).withProjectKey({
-//   projectKey: 'ecomerce-app',
-// });
+btn.addEventListener('click', async () => {
+  const result: boolean = await login('1033837@gmail.com', '141183');
+  if (result) {
+    console.log('ok');
+  } else {
+    console.log('Incorrect login or password');
+  }
+});
 
-// console.log(ctpClient);
+const btn2 = document.createElement('button');
+btn.textContent = 'test';
+document.body.append(btn);
 
-// const client = ctpClient;
+btn2.addEventListener('click', () => {});

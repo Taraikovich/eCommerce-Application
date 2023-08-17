@@ -1,6 +1,8 @@
+import { getUserId } from '../state/getUserId';
 import { Router } from '../router/router';
 import { LoginButton } from './loginButton';
 import { RegisterButton } from './registerButton';
+import { LogoutButton } from './logoutButton';
 
 export class Navigation {
   list = document.createElement('ul');
@@ -15,12 +17,12 @@ export class Navigation {
     this.nav.className = 'header__nav';
     this.list.className = 'header__menu';
     const homeLink = this.addMenuItem('Home', './');
-    const buttons = document.createElement('div');
-    const loginBtn = new LoginButton();
-    const registrBtn = new RegisterButton();
-    buttons.append(loginBtn.createButton(), registrBtn.createButton());
+    // const buttons = document.createElement('div');
+    // const loginBtn = new LoginButton();
+    // const registrBtn = new RegisterButton();
+    // buttons.append(loginBtn.createButton(), registrBtn.createButton());
     this.list.append(homeLink);
-    this.nav.append(this.list, buttons);
+    this.nav.append(this.list, this.addButtons());
     node.append(this.nav);
   }
 
@@ -41,5 +43,18 @@ export class Navigation {
     });
 
     return li;
+  }
+
+  addButtons() {
+    const buttons = document.createElement('div');
+    if (getUserId()) {
+      const logoutBtn = new LogoutButton();
+      buttons.append(logoutBtn.createButton());
+    } else {
+      const loginBtn = new LoginButton();
+      const registrBtn = new RegisterButton();
+      buttons.append(loginBtn.createButton(), registrBtn.createButton());
+    }
+    return buttons;
   }
 }
