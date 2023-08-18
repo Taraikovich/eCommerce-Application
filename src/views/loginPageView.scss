@@ -36,6 +36,26 @@
     top: 28px;
     width: 20px;
   }
+
+  &-showicon {
+    position: absolute;
+    right: 10px;
+    top: 30px;
+    width: 25px;
+    cursor: pointer;
+    display: inline;
+  }
+
+  &-hideicon {
+    position: absolute;
+    right: 10px;
+    top: 30px;
+    width: 25px;
+    cursor: pointer;
+    display: none;
+
+  }
+
 }
 
 main {
@@ -50,19 +70,22 @@ main {
   border-color: red;
 }
 
-.error-text-email {
-  color: red;
-  font-size: 12px;
-  font-family: Helvetica;
-}
-
-.error-text-password {
+.error-text {
+  &-email {
+    color: red;
+    font-size: 12px;
+    font-family: Helvetica;
+  }
+  &-password {
   color: red;
   position: absolute;
-  margin-top: 10px;
+  margin-top: 45px;
   font-size: 12px;
   font-family: Helvetica;
 }
+}
+
+
 
 .login-button {
   width: 200px;
