@@ -66,3 +66,12 @@ An important aspect of our application is that it's responsive 📲, ensuring it
 - To install Jest support for TypeScript: `npm install --save-dev ts-jest`
 
 - To install support for types for Jest globals: `npm install --save-dev @types/jest`
+
+- To install Jest environment for JSDOM: `npm: npm i jest-environment-jsdom --save-dev`
+
+- To install .babel based plugin for transform modules to commonjs : `npm install --save-dev @babel/plugin-transform-modules-commonjs`
+
+- To install .babel core general preset for Jest: `npm install --save-dev babel-jest @babel/core @babel/preset-env`
+
+- To install .babel TS support preset for Jest: `npm install --save-dev @babel/preset-typescript`
+
