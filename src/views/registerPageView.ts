@@ -2,40 +2,39 @@ import { View } from './view';
 import { Router } from '../router/router';
 
 export class RegisterPageView extends View {
+  countriesList = ['Choose your country', 'Belarus', 'Georgia', 'Russia'];
 
-  private countriesList = ['Choose your country', 'Belarus', 'Georgia', 'Russia'];
+  registrationForm: HTMLFormElement = document.createElement('form');
 
-  private registrationForm: HTMLFormElement = document.createElement('form');
+  regFormData = new FormData();
 
-  private regFormData = new FormData();
+  regDataToPost = new Object();
 
-  private regDataToPost = new Object();
+  emailInput: HTMLInputElement = document.createElement('input');
 
-  private emailInput: HTMLInputElement = document.createElement('input');
+  passwordInput: HTMLInputElement = document.createElement('input');
 
-  private passwordInput: HTMLInputElement = document.createElement('input');
+  showPasswordCheckbox: HTMLInputElement = document.createElement('input');
 
-  private showPasswordCheckbox: HTMLInputElement = document.createElement('input');
+  firstNameInput: HTMLInputElement = document.createElement('input');
 
-  private firstNameInput: HTMLInputElement = document.createElement('input');
+  lastNameInput: HTMLInputElement = document.createElement('input');
 
-  private lastNameInput: HTMLInputElement = document.createElement('input');
+  dateOfBirthInput: HTMLInputElement = document.createElement('input');
 
-  private dateOfBirthInput: HTMLInputElement = document.createElement('input');
+  regAddressFieldset: HTMLFieldSetElement = document.createElement('fieldset');
 
-  private regAddressFieldset: HTMLFieldSetElement = document.createElement('fieldset');
+  addressFieldLegend: HTMLLegendElement = document.createElement('legend');
 
-  private addressFieldLegend: HTMLLegendElement = document.createElement('legend');
+  streetInput: HTMLInputElement = document.createElement('input');
 
-  private streetInput: HTMLInputElement = document.createElement('input');
+  cityInput: HTMLInputElement = document.createElement('input');
 
-  private cityInput: HTMLInputElement = document.createElement('input');
+  postalCodeInput: HTMLInputElement = document.createElement('input');
 
-  private postalCodeInput: HTMLInputElement = document.createElement('input');
+  countryInput: HTMLSelectElement = document.createElement('select');
 
-  private countryInput: HTMLSelectElement = document.createElement('select');
-
-  private registrationButton: HTMLInputElement = document.createElement('input');
+  registrationButton: HTMLInputElement = document.createElement('input');
 
   //============================================================================
 
@@ -48,7 +47,7 @@ export class RegisterPageView extends View {
 
   //============================================================================
 
-  private createContent(): void {
+  createContent(): void {
     this.main.textContent = 'Registration:';
 
     this.registrationForm.className = 'registrationForm';
@@ -59,7 +58,6 @@ export class RegisterPageView extends View {
     this.emailInput.name = 'email';
     this.emailInput.type = 'email';
     this.emailInput.placeholder = 'Email';
-
 
     this.passwordInput.className = 'input-short';
     this.passwordInput.type = 'password';
@@ -75,7 +73,10 @@ export class RegisterPageView extends View {
 
     const showPasswordLabel = document.createElement('label');
     showPasswordLabel.textContent = 'Show Password';
-    showPasswordLabel.insertBefore(this.showPasswordCheckbox, showPasswordLabel.firstChild);
+    showPasswordLabel.insertBefore(
+      this.showPasswordCheckbox,
+      showPasswordLabel.firstChild
+    );
     // showPasswordLabel.appendChild(this.showPasswordCheckbox);
 
     this.firstNameInput.className = 'input';
@@ -127,7 +128,7 @@ export class RegisterPageView extends View {
     this.countryInput.className = 'label';
     this.countryInput.name = 'country';
 
-    this.countriesList.forEach(element => {
+    this.countriesList.forEach((element) => {
       const newOption = new Option(element);
       this.countryInput.append(newOption);
     });
@@ -156,9 +157,7 @@ export class RegisterPageView extends View {
 
   //============================================================================
 
-
-  private handleRegistrationFieldsInput = (): void => {
-
+  handleRegistrationFieldsInput = (): void => {
     this.registrationForm.addEventListener('change', (e: Event) => {
       e.preventDefault();
       const target = e.target as HTMLElement;
@@ -196,12 +195,11 @@ export class RegisterPageView extends View {
         // break;
       }
     });
-  }
+  };
 
   //============================================================================
 
-  private handleRegistration = (): void => {
-
+  handleRegistration = (): void => {
     this.registrationForm.addEventListener('submit', (e) => {
       e.preventDefault();
       //const target = e.target as HTMLElement;
@@ -214,7 +212,8 @@ export class RegisterPageView extends View {
       const isCityValid = this.validateCity();
       const isPostalCodeValid = this.validatePostalCode();
       // const isCountryValid = this.validateCountry();
-      if (isEmailValid &&
+      if (
+        isEmailValid &&
         isPasswordValid &&
         isFirstNameValid &&
         isLastNameValid &&
@@ -232,11 +231,11 @@ export class RegisterPageView extends View {
         alert('Registration failed, check your inputs, please');
       }
     });
-  }
+  };
 
   // =========================================================================
 
-  private togglePasswordVisibility = (): void => {
+  togglePasswordVisibility = (): void => {
     if (this.showPasswordCheckbox.checked) {
       this.passwordInput.type = 'text';
     } else {
@@ -246,14 +245,16 @@ export class RegisterPageView extends View {
 
   //============================================================================
 
-  private validateEmail(): boolean {
+  validateEmail(): boolean {
     const emailValue = this.emailInput.value.trim();
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const warning =
+      'Invalid email address, correct example: somename@somedomain.com';
 
     if (!emailPattern.test(emailValue)) {
-      this.emailInput.setCustomValidity('Invalid email address, correct example: somename@somedomain.com');
+      this.emailInput.setCustomValidity(warning);
       this.emailInput.classList.add('invalid-input');
-      alert('Invalid email address, correct example: somename@somedomain.com');
+      alert(warning);
       return false;
     } else {
       this.emailInput.setCustomValidity('');
@@ -264,14 +265,15 @@ export class RegisterPageView extends View {
 
   //============================================================================
 
-  private validatePassword(): boolean {
+  validatePassword(): boolean {
     const passwordValue = this.passwordInput.value;
     const minLength = 8;
     const uppercasePattern = /[A-Z]/;
     const lowercasePattern = /[a-z]/;
     const digitPattern = /\d/;
     const specialCharacterPattern = /[!@#$%^&*]/;
-    const warning = 'Password must be at least 8 characters long, including upper-/lowercase char/digit/special symbol';
+    const warning =
+      'Password must be at least 8 characters long, including upper-/lowercase char/digit/special symbol';
 
     if (passwordValue.trim().length < minLength) {
       this.passwordInput.setCustomValidity(warning);
@@ -307,12 +309,13 @@ export class RegisterPageView extends View {
 
   //============================================================================
 
-  private validateFirstName(): boolean {
+  validateFirstName(): boolean {
     const firstNameValue = this.firstNameInput.value;
     const minLength = 1;
     const digitPattern = /\d/;
     const specialCharacterPattern = /[!@#$%^&*]/;
-    const warning = 'First Name must be at least 1 character long, and not containing digits/special symbols';
+    const warning =
+      'First Name must be at least 1 character long, and not containing digits/special symbols';
 
     if (firstNameValue.trim().length < minLength) {
       this.firstNameInput.setCustomValidity(warning);
@@ -329,8 +332,7 @@ export class RegisterPageView extends View {
       this.firstNameInput.classList.add('invalid-input');
       alert(warning);
       return false;
-    }
-    else {
+    } else {
       this.firstNameInput.setCustomValidity('');
       this.firstNameInput.classList.remove('invalid-input');
       return true;
@@ -339,12 +341,13 @@ export class RegisterPageView extends View {
 
   //============================================================================
 
-  private validateLastName(): boolean {
+  validateLastName(): boolean {
     const lastNameValue = this.lastNameInput.value;
     const minLength = 1;
     const specialCharacterPattern = /[!@#$%^&*]/;
     const digitPattern = /\d/;
-    const warning = 'Last Name must be at least 1 character long, and not containing digits/special symbols';
+    const warning =
+      'Last Name must be at least 1 character long, and not containing digits/special symbols';
 
     if (lastNameValue.trim().length < minLength) {
       this.lastNameInput.setCustomValidity(warning);
@@ -361,8 +364,7 @@ export class RegisterPageView extends View {
       this.lastNameInput.classList.add('invalid-input');
       alert(warning);
       return false;
-    }
-    else {
+    } else {
       this.lastNameInput.setCustomValidity('');
       this.lastNameInput.classList.remove('invalid-input');
       return true;
@@ -371,7 +373,7 @@ export class RegisterPageView extends View {
 
   //============================================================================
 
-  private validateBirthday(): boolean {
+  validateBirthday(): boolean {
     const dateOfBirthValue = this.dateOfBirthInput.value;
     const minAge = 13;
     const warning = 'Age must be more than 13 years';
@@ -380,7 +382,11 @@ export class RegisterPageView extends View {
     const yearOfBirth = Number(dateOfBirthValue.substring(0, 4));
     const monthOfBirth = Number(dateOfBirthValue.substring(5, 7));
     const dayOfBirth = Number(dateOfBirthValue.substring(8));
-    const maxBirthDate = new Date(yearOfBirth + minAge, monthOfBirth, dayOfBirth);
+    const maxBirthDate = new Date(
+      yearOfBirth + minAge,
+      monthOfBirth,
+      dayOfBirth
+    );
 
     if (maxBirthDate > today) {
       this.dateOfBirthInput.setCustomValidity(warning);
@@ -391,8 +397,7 @@ export class RegisterPageView extends View {
       alert('Date of birth is not correct, check it, please.');
       this.dateOfBirthInput.classList.add('invalid-input');
       return false;
-    }
-    else {
+    } else {
       this.dateOfBirthInput.setCustomValidity('');
       this.dateOfBirthInput.classList.remove('invalid-input');
       return true;
@@ -401,7 +406,7 @@ export class RegisterPageView extends View {
 
   //============================================================================
 
-  private validateStreet(): boolean {
+  validateStreet(): boolean {
     const streetInputValue = this.streetInput.value;
     const minLength = 1;
     const warning = 'Street name must be at least 1 character long';
@@ -411,8 +416,7 @@ export class RegisterPageView extends View {
       this.streetInput.classList.add('invalid-input');
       alert(warning);
       return false;
-    }
-    else {
+    } else {
       this.streetInput.setCustomValidity('');
       this.streetInput.classList.remove('invalid-input');
       return true;
@@ -420,10 +424,11 @@ export class RegisterPageView extends View {
   }
   //============================================================================
 
-  private validateCity(): boolean {
+  validateCity(): boolean {
     const cityInputValue = this.cityInput.value;
     const minLength = 1;
-    const warning = 'City name must be at least 1 character long, and not containing digits/special symbols';
+    const warning =
+      'City name must be at least 1 character long, and not containing digits/special symbols';
     const digitPattern = /\d/;
     const specialCharacterPattern = /[!@#$%^&*]/;
     if (cityInputValue.trim().length < minLength) {
@@ -441,8 +446,7 @@ export class RegisterPageView extends View {
       this.cityInput.classList.add('invalid-input');
       alert(warning);
       return false;
-    }
-    else {
+    } else {
       this.cityInput.setCustomValidity('');
       this.cityInput.classList.remove('invalid-input');
       return true;
@@ -450,7 +454,7 @@ export class RegisterPageView extends View {
   }
   //============================================================================
 
-  private validateCountry(): boolean {
+  validateCountry(): boolean {
     const countryInputValue = this.countryInput.value;
     const warning = 'Please, choose your country from the list below';
     if (countryInputValue === 'Choose your country') {
@@ -458,8 +462,7 @@ export class RegisterPageView extends View {
       this.countryInput.classList.add('invalid-input');
       alert(warning);
       return false;
-    }
-    else {
+    } else {
       this.countryInput.setCustomValidity('');
       this.countryInput.classList.remove('invalid-input');
       return true;
@@ -467,7 +470,7 @@ export class RegisterPageView extends View {
   }
   //============================================================================
 
-  private validatePostalCode(): boolean {
+  validatePostalCode(): boolean {
     const postalCodeInputValue = this.postalCodeInput.value;
     let PostalCodeLength = 6;
     const uppercasePattern = /[A-Z]/;
@@ -482,7 +485,7 @@ export class RegisterPageView extends View {
     } else {
       PostalCodeLength = 6;
     }
-    const warning = `Postal code must consist of ${PostalCodeLength} digits`
+    const warning = `Postal code must consist of ${PostalCodeLength} digits`;
     if (postalCodeInputValue.length !== PostalCodeLength) {
       this.postalCodeInput.setCustomValidity(warning);
       this.postalCodeInput.classList.add('invalid-input');
@@ -503,12 +506,11 @@ export class RegisterPageView extends View {
       this.postalCodeInput.classList.add('invalid-input');
       alert(warning);
       return false;
-    }
-    else {
+    } else {
       this.postalCodeInput.setCustomValidity('');
       this.postalCodeInput.classList.remove('invalid-input');
       return true;
     }
   }
 }
-  //============================================================================
+//============================================================================
