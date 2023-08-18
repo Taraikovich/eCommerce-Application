@@ -298,7 +298,6 @@ export class RegisterPageView extends View {
     const warning =
       'Invalid email address, correct example: somename@somedomain.com';
 
-
     if (!emailPattern.test(emailValue)) {
       this.emailInput.setCustomValidity(warning);
       this.emailInput.classList.add('invalid-input');
@@ -537,7 +536,6 @@ export class RegisterPageView extends View {
       // alert(warning);
       this.countryValidationWarning.textContent = warning;
       return false;
-
     } else {
       this.countryInput.setCustomValidity('');
       this.countryInput.classList.remove('invalid-input');
@@ -599,7 +597,7 @@ export class RegisterPageView extends View {
     }
   }
 
-  //============================================================================  
+  //============================================================================
 
   isCountryChosen() {
     this.postalCodeInput.addEventListener('focus', () => {
