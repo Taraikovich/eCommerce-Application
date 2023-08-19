@@ -1,3 +1,4 @@
+import { LoginForm } from './components/loginForm';
 import { RegistratinForm } from './components/registrtionForm';
 import './main.scss';
 import { Router } from './router/router';
@@ -9,4 +10,5 @@ window.addEventListener('popstate', () => {
   new Router();
 });
 
+new LoginForm();
 new RegistratinForm();

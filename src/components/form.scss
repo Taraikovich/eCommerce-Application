@@ -1,0 +1,215 @@
+// .form {
+//     background-color: rgb(169, 238, 157);
+//     display: flex;
+//     flex-direction: column;
+//     align-items: center;
+//     max-width: 500px;
+//     margin: 20px;
+//     padding: 10px;
+//     border-radius: 5px;
+//     div {
+//         display: flex;
+//         flex-direction: column;
+//         align-items: stretch;
+//         width: 70%;
+//         margin: 5px;
+//     }
+//     fieldset {
+//         display: flex;
+//         flex-direction: column;
+//         align-items: stretch;
+//         div {
+//             display: flex;
+//             flex-direction: column;
+//             align-items: stretch;
+//             width: 70%;
+//             margin: 5px;
+//         }
+//     }
+// }
+
+// Стили для основной формы
+.form {
+  font-family: 'Tektur', cursive;
+  color: #072326;
+  display: flex;
+  flex-direction: column;
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  fieldset {
+    border-radius: 5px;
+    &:first-of-type {
+      margin-top: 20px;
+    }
+  }
+  // Стили для полей формы
+  &__firstName,
+  &__lastName,
+  &__email,
+  &__password,
+  &__birth,
+  &__billing-city,
+  &__billing-srteet,
+  &__billing-building,
+  &__billing-post-code,
+  &__shipping-city,
+  &__shipping-srteet,
+  &__shipping-building,
+  &__shipping-post-code,
+  &__addressesMatch,
+  fieldset,
+  select {
+    margin-bottom: 15px;
+    position: relative;
+
+    input[type='text'],
+    input[type='email'],
+    input[type='password'],
+    input[type='date'],
+    select {
+      width: 94%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 14px;
+    }
+    .form__error {
+      color: red;
+      font-size: 12px;
+      margin-top: 5px;
+    }
+    select {
+      width: 100%;
+    }
+  }
+
+  &__password {
+    div {
+      cursor: pointer;
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+  }
+
+  &__password &__error {
+    margin-top: 36px;
+  }
+
+  // Стили для чекбокса
+  input[type='checkbox'] {
+    margin-right: 5px;
+  }
+
+  // Стили для кнопки отправки
+  input[type='submit'] {
+    font-family: 'Tektur', cursive;
+    padding: 10px 20px;
+    margin-top: 20px;
+    background-color: #072326;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+
+    &:hover {
+      background-color: #0056b3;
+    }
+  }
+
+  // Стили для легенды
+  legend {
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+}
+.error-message {
+  color: red;
+  background-color: rgb(255, 199, 199);
+  padding: 5px;
+  border-radius: 5px;
+}
+
+// .form {
+//     font-family: Arial, sans-serif;
+//     max-width: 400px;
+//     margin: 0 auto;
+//     border: 1px solid #ccc;
+//     padding: 20px;
+//     border-radius: 5px;
+
+//     &__error {
+//       color: red;
+//       font-size: 14px;
+//       margin-top: 5px;
+//     }
+
+//     &__password {
+//       position: relative;
+
+//       div {
+//         position: absolute;
+//         top: 50%;
+//         right: 10px;
+//         transform: translateY(-50%);
+//         cursor: pointer;
+//       }
+//     }
+
+//     fieldset {
+//       border: 1px solid #ccc;
+//       padding: 10px;
+//       margin-top: 10px;
+//       border-radius: 5px;
+
+//       legend {
+//         font-weight: bold;
+//       }
+
+//       div {
+//         margin-top: 10px;
+//       }
+//     }
+
+//     input[type="text"],
+//     input[type="email"],
+//     input[type="password"],
+//     input[type="date"],
+//     select,
+//     textarea {
+//       width: 100%;
+//       padding: 8px;
+//       margin-top: 5px;
+//       border: 1px solid #ccc;
+//       border-radius: 3px;
+//       font-size: 14px;
+//     }
+
+//     input[type="password"] {
+//       margin-bottom: 10px; /* Добавлен отступ снизу */
+//     }
+
+//     input[type="checkbox"] {
+//       margin-right: 5px;
+//     }
+
+//     input[type="submit"] {
+//       background-color: #007bff;
+//       color: white;
+//       border: none;
+//       padding: 10px 20px;
+//       border-radius: 5px;
+//       cursor: pointer;
+//       font-size: 16px;
+//       margin-top: 10px;
+
+//       &:hover {
+//         background-color: #0056b3;
+//       }
+//     }
+//   }
