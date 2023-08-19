@@ -53,9 +53,7 @@
     width: 25px;
     cursor: pointer;
     display: none;
-
   }
-
 }
 
 main {
@@ -77,15 +75,13 @@ main {
     font-family: Helvetica;
   }
   &-password {
-  color: red;
-  position: absolute;
-  margin-top: 45px;
-  font-size: 12px;
-  font-family: Helvetica;
+    color: red;
+    position: absolute;
+    margin-top: 45px;
+    font-size: 12px;
+    font-family: Helvetica;
+  }
 }
-}
-
-
 
 .login-button {
   width: 200px;
