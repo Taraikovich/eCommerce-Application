@@ -12,15 +12,25 @@ export class RegisterPageView extends View {
 
   emailInput: HTMLInputElement = document.createElement('input');
 
+  emailValidationWarning: HTMLElement = document.createElement('label');
+
   passwordInput: HTMLInputElement = document.createElement('input');
+
+  passwordValidationWarning: HTMLElement = document.createElement('label');
 
   showPasswordCheckbox: HTMLInputElement = document.createElement('input');
 
   firstNameInput: HTMLInputElement = document.createElement('input');
 
+  firstNameValidationWarning: HTMLElement = document.createElement('label');
+
   lastNameInput: HTMLInputElement = document.createElement('input');
 
+  lastNameValidationWarning: HTMLElement = document.createElement('label');
+
   dateOfBirthInput: HTMLInputElement = document.createElement('input');
+
+  dateOfBirthValidationWarning: HTMLElement = document.createElement('label');
 
   regAddressFieldset: HTMLFieldSetElement = document.createElement('fieldset');
 
@@ -28,11 +38,19 @@ export class RegisterPageView extends View {
 
   streetInput: HTMLInputElement = document.createElement('input');
 
+  streetValidationWarning: HTMLElement = document.createElement('label');
+
   cityInput: HTMLInputElement = document.createElement('input');
+
+  cityValidationWarning: HTMLElement = document.createElement('label');
 
   postalCodeInput: HTMLInputElement = document.createElement('input');
 
+  postalCodeValidationWarning: HTMLElement = document.createElement('label');
+
   countryInput: HTMLSelectElement = document.createElement('select');
+
+  countryValidationWarning: HTMLElement = document.createElement('label');
 
   registrationButton: HTMLInputElement = document.createElement('input');
 
@@ -43,6 +61,7 @@ export class RegisterPageView extends View {
     this.createContent();
     this.handleRegistrationFieldsInput();
     this.handleRegistration();
+    this.isCountryChosen();
   }
 
   //============================================================================
@@ -58,6 +77,8 @@ export class RegisterPageView extends View {
     this.emailInput.name = 'email';
     this.emailInput.type = 'email';
     this.emailInput.placeholder = 'Email';
+
+    this.emailValidationWarning.className = 'warning';
 
     this.passwordInput.className = 'input-short';
     this.passwordInput.type = 'password';
@@ -79,17 +100,23 @@ export class RegisterPageView extends View {
     );
     // showPasswordLabel.appendChild(this.showPasswordCheckbox);
 
+    this.passwordValidationWarning.className = 'warning';
+
     this.firstNameInput.className = 'input';
     this.firstNameInput.type = 'text';
     this.firstNameInput.name = 'firstName';
     this.firstNameInput.id = 'firstName';
     this.firstNameInput.placeholder = 'First Name';
 
+    this.firstNameValidationWarning.className = 'warning';
+
     this.lastNameInput.className = 'input';
     this.lastNameInput.type = 'text';
     this.lastNameInput.name = 'lastName';
     this.lastNameInput.id = 'lastName';
     this.lastNameInput.placeholder = 'Last Name';
+
+    this.lastNameValidationWarning.className = 'warning';
 
     const birthdayLabel = document.createElement('label');
     birthdayLabel.className = 'label';
@@ -100,6 +127,8 @@ export class RegisterPageView extends View {
     // this.dateOfBirthInput.min = '1937-01-01';
     this.dateOfBirthInput.name = 'dateOfBirth';
     this.dateOfBirthInput.id = 'dateOfBirth';
+
+    this.dateOfBirthValidationWarning.className = 'warning';
 
     this.regAddressFieldset.className = 'regAddressFieldset';
     this.regAddressFieldset.name = 'address';
@@ -113,11 +142,15 @@ export class RegisterPageView extends View {
     this.streetInput.id = 'street';
     this.streetInput.placeholder = 'Street';
 
+    this.streetValidationWarning.className = 'warning';
+
     this.cityInput.className = 'input';
     this.cityInput.type = 'text';
     this.cityInput.name = 'city';
     this.cityInput.id = 'city';
     this.cityInput.placeholder = 'City';
+
+    this.cityValidationWarning.className = 'warning';
 
     this.postalCodeInput.className = 'input';
     this.postalCodeInput.type = 'text';
@@ -125,13 +158,18 @@ export class RegisterPageView extends View {
     this.postalCodeInput.id = 'postalCode';
     this.postalCodeInput.placeholder = 'Postal code';
 
+    this.postalCodeValidationWarning.className = 'warning';
+
     this.countryInput.className = 'label';
     this.countryInput.name = 'country';
+    this.countryInput.id = 'country';
 
     this.countriesList.forEach((element) => {
       const newOption = new Option(element);
       this.countryInput.append(newOption);
     });
+
+    this.countryValidationWarning.className = 'warning';
 
     this.registrationButton.className = 'input';
     this.registrationButton.type = 'submit';
@@ -139,26 +177,35 @@ export class RegisterPageView extends View {
 
     this.main.appendChild(this.registrationForm);
     this.registrationForm.appendChild(this.emailInput);
+    this.registrationForm.appendChild(this.emailValidationWarning);
     this.registrationForm.appendChild(passwordLabel);
     passwordLabel.appendChild(this.passwordInput);
     passwordLabel.appendChild(showPasswordLabel);
+    this.registrationForm.appendChild(this.passwordValidationWarning);
     this.registrationForm.appendChild(this.firstNameInput);
+    this.registrationForm.appendChild(this.firstNameValidationWarning);
     this.registrationForm.appendChild(this.lastNameInput);
+    this.registrationForm.appendChild(this.lastNameValidationWarning);
     this.registrationForm.appendChild(birthdayLabel);
     birthdayLabel.appendChild(this.dateOfBirthInput);
+    this.registrationForm.appendChild(this.dateOfBirthValidationWarning);
     this.registrationForm.appendChild(this.regAddressFieldset);
     this.regAddressFieldset.appendChild(this.addressFieldLegend);
     this.regAddressFieldset.appendChild(this.streetInput);
+    this.regAddressFieldset.appendChild(this.streetValidationWarning);
     this.regAddressFieldset.appendChild(this.cityInput);
+    this.regAddressFieldset.appendChild(this.cityValidationWarning);
     this.regAddressFieldset.appendChild(this.postalCodeInput);
+    this.regAddressFieldset.appendChild(this.postalCodeValidationWarning);
     this.regAddressFieldset.appendChild(this.countryInput);
+    this.regAddressFieldset.appendChild(this.countryValidationWarning);
     this.registrationForm.appendChild(this.registrationButton);
   }
 
   //============================================================================
 
   handleRegistrationFieldsInput = (): void => {
-    this.registrationForm.addEventListener('change', (e: Event) => {
+    this.registrationForm.addEventListener('input', (e: Event) => {
       e.preventDefault();
       const target = e.target as HTMLElement;
       if (!target) return;
@@ -190,9 +237,9 @@ export class RegisterPageView extends View {
         case 'postalCode':
           this.validatePostalCode();
           break;
-        // case 'country':
-        // this.validateCountry();
-        // break;
+        case 'country':
+          this.validateCountry();
+          break;
       }
     });
   };
@@ -211,7 +258,7 @@ export class RegisterPageView extends View {
       const isStreetValid = this.validateStreet();
       const isCityValid = this.validateCity();
       const isPostalCodeValid = this.validatePostalCode();
-      // const isCountryValid = this.validateCountry();
+      const isCountryValid = this.validateCountry();
       if (
         isEmailValid &&
         isPasswordValid &&
@@ -220,8 +267,8 @@ export class RegisterPageView extends View {
         isDateOfBirthValid &&
         isStreetValid &&
         isCityValid &&
-        isPostalCodeValid
-        // &&isCountryValid
+        isPostalCodeValid &&
+        isCountryValid
       ) {
         this.regFormData = new FormData(this.registrationForm);
         this.regDataToPost = Object.fromEntries(this.regFormData);
@@ -254,10 +301,12 @@ export class RegisterPageView extends View {
     if (!emailPattern.test(emailValue)) {
       this.emailInput.setCustomValidity(warning);
       this.emailInput.classList.add('invalid-input');
-      alert(warning);
+      this.emailValidationWarning.textContent = warning;
+      // alert(warning);
       return false;
     } else {
       this.emailInput.setCustomValidity('');
+      this.emailValidationWarning.textContent = '';
       this.emailInput.classList.remove('invalid-input');
       return true;
     }
@@ -278,31 +327,37 @@ export class RegisterPageView extends View {
     if (passwordValue.trim().length < minLength) {
       this.passwordInput.setCustomValidity(warning);
       this.passwordInput.classList.add('invalid-input');
-      alert(warning);
+      // alert(warning);
+      this.passwordValidationWarning.textContent = warning;
       return false;
     } else if (!uppercasePattern.test(passwordValue)) {
       this.passwordInput.setCustomValidity(warning);
       this.passwordInput.classList.add('invalid-input');
-      alert(warning);
+      // alert(warning);
+      this.passwordValidationWarning.textContent = warning;
       return false;
     } else if (!lowercasePattern.test(passwordValue)) {
       this.passwordInput.setCustomValidity(warning);
       this.passwordInput.classList.add('invalid-input');
-      alert(warning);
+      // alert(warning);
+      this.passwordValidationWarning.textContent = warning;
       return false;
     } else if (!digitPattern.test(passwordValue)) {
       this.passwordInput.setCustomValidity(warning);
       this.passwordInput.classList.add('invalid-input');
-      alert(warning);
+      // alert(warning);
+      this.passwordValidationWarning.textContent = warning;
       return false;
     } else if (!specialCharacterPattern.test(passwordValue)) {
       this.passwordInput.setCustomValidity(warning);
       this.passwordInput.classList.add('invalid-input');
-      alert(warning);
+      // alert(warning);
+      this.passwordValidationWarning.textContent = warning;
       return false;
     } else {
       this.passwordInput.setCustomValidity('');
       this.passwordInput.classList.remove('invalid-input');
+      this.passwordValidationWarning.textContent = '';
       return true;
     }
   }
@@ -315,26 +370,30 @@ export class RegisterPageView extends View {
     const digitPattern = /\d/;
     const specialCharacterPattern = /[!@#$%^&*]/;
     const warning =
-      'First Name must be at least 1 character long, and not containing digits/special symbols';
+      'First Name must be at least 1 character long, without digits/special symbols';
 
     if (firstNameValue.trim().length < minLength) {
       this.firstNameInput.setCustomValidity(warning);
       this.firstNameInput.classList.add('invalid-input');
-      alert(warning);
+      // alert(warning);
+      this.firstNameValidationWarning.textContent = warning;
       return false;
     } else if (digitPattern.test(firstNameValue)) {
       this.firstNameInput.setCustomValidity(warning);
       this.firstNameInput.classList.add('invalid-input');
-      alert(warning);
+      // alert(warning);
+      this.firstNameValidationWarning.textContent = warning;
       return false;
     } else if (specialCharacterPattern.test(firstNameValue)) {
       this.firstNameInput.setCustomValidity(warning);
       this.firstNameInput.classList.add('invalid-input');
-      alert(warning);
+      // alert(warning);
+      this.firstNameValidationWarning.textContent = warning;
       return false;
     } else {
       this.firstNameInput.setCustomValidity('');
       this.firstNameInput.classList.remove('invalid-input');
+      this.firstNameValidationWarning.textContent = '';
       return true;
     }
   }
@@ -347,26 +406,30 @@ export class RegisterPageView extends View {
     const specialCharacterPattern = /[!@#$%^&*]/;
     const digitPattern = /\d/;
     const warning =
-      'Last Name must be at least 1 character long, and not containing digits/special symbols';
+      'Last Name must be at least 1 character long, without digits/special symbols';
 
     if (lastNameValue.trim().length < minLength) {
       this.lastNameInput.setCustomValidity(warning);
       this.lastNameInput.classList.add('invalid-input');
-      alert(warning);
+      // alert(warning);
+      this.lastNameValidationWarning.textContent = warning;
       return false;
     } else if (digitPattern.test(lastNameValue)) {
       this.lastNameInput.setCustomValidity(warning);
       this.lastNameInput.classList.add('invalid-input');
-      alert(warning);
+      // alert(warning);
+      this.lastNameValidationWarning.textContent = warning;
       return false;
     } else if (specialCharacterPattern.test(lastNameValue)) {
       this.lastNameInput.setCustomValidity(warning);
       this.lastNameInput.classList.add('invalid-input');
-      alert(warning);
+      // alert(warning);
+      this.lastNameValidationWarning.textContent = warning;
       return false;
     } else {
       this.lastNameInput.setCustomValidity('');
       this.lastNameInput.classList.remove('invalid-input');
+      this.lastNameValidationWarning.textContent = '';
       return true;
     }
   }
@@ -377,6 +440,7 @@ export class RegisterPageView extends View {
     const dateOfBirthValue = this.dateOfBirthInput.value;
     const minAge = 13;
     const warning = 'Age must be more than 13 years';
+    const warningIncorrect = 'Date of birth is not correct, check it, please';
     const today = new Date();
 
     const yearOfBirth = Number(dateOfBirthValue.substring(0, 4));
@@ -391,15 +455,18 @@ export class RegisterPageView extends View {
     if (maxBirthDate > today) {
       this.dateOfBirthInput.setCustomValidity(warning);
       this.dateOfBirthInput.classList.add('invalid-input');
-      alert(warning);
+      // alert(warning);
+      this.dateOfBirthValidationWarning.textContent = warning;
       return false;
     } else if (yearOfBirth < 1937) {
-      alert('Date of birth is not correct, check it, please.');
+      // alert('Date of birth is not correct, check it, please.');
+      this.dateOfBirthValidationWarning.textContent = warningIncorrect;
       this.dateOfBirthInput.classList.add('invalid-input');
       return false;
     } else {
       this.dateOfBirthInput.setCustomValidity('');
       this.dateOfBirthInput.classList.remove('invalid-input');
+      this.lastNameValidationWarning.textContent = '';
       return true;
     }
   }
@@ -414,11 +481,13 @@ export class RegisterPageView extends View {
     if (streetInputValue.trim().length < minLength) {
       this.streetInput.setCustomValidity(warning);
       this.streetInput.classList.add('invalid-input');
-      alert(warning);
+      // alert(warning);
+      this.streetValidationWarning.textContent = warning;
       return false;
     } else {
       this.streetInput.setCustomValidity('');
       this.streetInput.classList.remove('invalid-input');
+      this.streetValidationWarning.textContent = '';
       return true;
     }
   }
@@ -428,27 +497,31 @@ export class RegisterPageView extends View {
     const cityInputValue = this.cityInput.value;
     const minLength = 1;
     const warning =
-      'City name must be at least 1 character long, and not containing digits/special symbols';
+      'City name must be at least 1 character long, without digits/special symbols';
     const digitPattern = /\d/;
     const specialCharacterPattern = /[!@#$%^&*]/;
     if (cityInputValue.trim().length < minLength) {
       this.cityInput.setCustomValidity(warning);
       this.cityInput.classList.add('invalid-input');
-      alert(warning);
+      // alert(warning);
+      this.cityValidationWarning.textContent = warning;
       return false;
     } else if (digitPattern.test(cityInputValue)) {
       this.cityInput.setCustomValidity(warning);
       this.cityInput.classList.add('invalid-input');
-      alert(warning);
+      // alert(warning);
+      this.cityValidationWarning.textContent = warning;
       return false;
     } else if (specialCharacterPattern.test(cityInputValue)) {
       this.cityInput.setCustomValidity(warning);
       this.cityInput.classList.add('invalid-input');
-      alert(warning);
+      // alert(warning);
+      this.cityValidationWarning.textContent = warning;
       return false;
     } else {
       this.cityInput.setCustomValidity('');
       this.cityInput.classList.remove('invalid-input');
+      this.cityValidationWarning.textContent = '';
       return true;
     }
   }
@@ -456,15 +529,23 @@ export class RegisterPageView extends View {
 
   validateCountry(): boolean {
     const countryInputValue = this.countryInput.value;
-    const warning = 'Please, choose your country from the list below';
+    const warning = 'Please, choose your country from the list';
     if (countryInputValue === 'Choose your country') {
       this.countryInput.setCustomValidity(warning);
       this.countryInput.classList.add('invalid-input');
-      alert(warning);
+      // alert(warning);
+      this.countryValidationWarning.textContent = warning;
       return false;
     } else {
       this.countryInput.setCustomValidity('');
       this.countryInput.classList.remove('invalid-input');
+      this.countryValidationWarning.textContent = '';
+      if (this.postalCodeInput.disabled) {
+        this.postalCodeInput.placeholder = 'Postal code';
+        this.postalCodeValidationWarning.textContent = '';
+      }
+      this.postalCodeInput.disabled = false;
+      this.countryInput.size = 1;
       return true;
     }
   }
@@ -476,41 +557,61 @@ export class RegisterPageView extends View {
     const uppercasePattern = /[A-Z]/;
     const lowercasePattern = /[a-z]/;
     const specialCharacterPattern = /[!@#$%^&*]/;
-    const countryChosen = this.validateCountry();
-    if (!countryChosen) {
-      this.postalCodeInput.classList.add('invalid-input');
-      return false;
-    } else if (this.countryInput.value === 'Georgia') {
+    if (this.countryInput.value === 'Georgia') {
       PostalCodeLength = 4;
+      this.postalCodeValidationWarning.textContent = '';
     } else {
       PostalCodeLength = 6;
+      this.postalCodeValidationWarning.textContent = '';
     }
     const warning = `Postal code must consist of ${PostalCodeLength} digits`;
     if (postalCodeInputValue.length !== PostalCodeLength) {
       this.postalCodeInput.setCustomValidity(warning);
       this.postalCodeInput.classList.add('invalid-input');
-      alert(warning);
+      // alert(warning);
+      this.postalCodeValidationWarning.textContent = warning;
       return false;
     } else if (uppercasePattern.test(postalCodeInputValue)) {
       this.postalCodeInput.setCustomValidity(warning);
       this.postalCodeInput.classList.add('invalid-input');
-      alert(warning);
+      // alert(warning);
+      this.postalCodeValidationWarning.textContent = warning;
       return false;
     } else if (lowercasePattern.test(postalCodeInputValue)) {
       this.postalCodeInput.setCustomValidity(warning);
       this.postalCodeInput.classList.add('invalid-input');
-      alert(warning);
+      // alert(warning);
+      this.postalCodeValidationWarning.textContent = warning;
       return false;
     } else if (specialCharacterPattern.test(postalCodeInputValue)) {
       this.postalCodeInput.setCustomValidity(warning);
       this.postalCodeInput.classList.add('invalid-input');
-      alert(warning);
+      // alert(warning);
+      this.postalCodeValidationWarning.textContent = warning;
       return false;
     } else {
       this.postalCodeInput.setCustomValidity('');
       this.postalCodeInput.classList.remove('invalid-input');
+      this.postalCodeValidationWarning.textContent = '';
       return true;
     }
+  }
+
+  //============================================================================
+
+  isCountryChosen() {
+    this.postalCodeInput.addEventListener('focus', () => {
+      const warning = 'Please, choose your country from the list below, first';
+      if (this.validateCountry()) {
+        this.countryValidationWarning.textContent = '';
+        this.postalCodeValidationWarning.textContent = '';
+      } else {
+        this.countryInput.size = this.countryInput.length;
+        this.postalCodeValidationWarning.textContent = warning;
+        this.postalCodeInput.placeholder = warning;
+        this.postalCodeInput.disabled = true;
+      }
+    });
   }
 }
 //============================================================================
