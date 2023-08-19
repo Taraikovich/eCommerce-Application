@@ -6,7 +6,7 @@ import { RegisterPageView } from '../views/registerPageView';
 export class Router {
   homePage = new HomePageView();
 
-  loginPage = new LoginPageView();
+  loginPage = new LoginPageView(this);
 
   registerPage = new RegisterPageView(this);
 

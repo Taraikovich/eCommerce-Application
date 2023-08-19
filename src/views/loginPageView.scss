@@ -1,0 +1,98 @@
+.input-email {
+  width: 300px;
+  height: 30px;
+  margin-bottom: 10px;
+  margin-top: 20px;
+  padding-left: 40px;
+
+  &-wrapper {
+    display: flex;
+    position: relative;
+  }
+
+  &-icon {
+    position: absolute;
+    left: 10px;
+    top: 28px;
+    width: 20px;
+  }
+}
+
+.input-password {
+  width: 300px;
+  height: 30px;
+  margin-bottom: 10px;
+  margin-top: 20px;
+  padding-left: 40px;
+
+  &-wrapper {
+    display: flex;
+    position: relative;
+  }
+
+  &-icon {
+    position: absolute;
+    left: 10px;
+    top: 28px;
+    width: 20px;
+  }
+
+  &-showicon {
+    position: absolute;
+    right: 10px;
+    top: 30px;
+    width: 25px;
+    cursor: pointer;
+    display: inline;
+  }
+
+  &-hideicon {
+    position: absolute;
+    right: 10px;
+    top: 30px;
+    width: 25px;
+    cursor: pointer;
+    display: none;
+  }
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Tektur', cursive;
+}
+
+.invalid-input {
+  border-color: red;
+}
+
+.error-text {
+  &-email {
+    color: red;
+    font-size: 12px;
+    font-family: Helvetica;
+  }
+  &-password {
+    color: red;
+    position: absolute;
+    margin-top: 45px;
+    font-size: 12px;
+    font-family: Helvetica;
+  }
+}
+
+.login-button {
+  width: 200px;
+  margin-bottom: 20px;
+  margin-top: 20px;
+}
+
+.reg-button {
+  width: 200px;
+}
+
+.show-pass-text {
+  margin-top: 30px;
+}

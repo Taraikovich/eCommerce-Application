@@ -74,4 +74,3 @@ An important aspect of our application is that it's responsive 📲, ensuring it
 - To install .babel core general preset for Jest: `npm install --save-dev babel-jest @babel/core @babel/preset-env`
 
 - To install .babel TS support preset for Jest: `npm install --save-dev @babel/preset-typescript`
-
