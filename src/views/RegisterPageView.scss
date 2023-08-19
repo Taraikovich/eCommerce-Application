@@ -1,0 +1,47 @@
+main,
+.registrationForm,
+.regAddressFieldset,
+.input {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Tektur', cursive;
+}
+
+.input,
+.label {
+  width: 30rem;
+  height: 3rem;
+  margin: 1rem 0 0 0;
+}
+
+.label {
+  // margin: 1rem 0 1rem 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  white-space: nowrap;
+  font-family: 'Tektur', cursive;
+}
+
+.input-short {
+  width: 18rem;
+  height: 3rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.invalid-input {
+  border-color: red;
+}
+
+.warning {
+  width: 30rem;
+  height: 1rem;
+  font-size: 0.8rem;
+  color: red;
+}

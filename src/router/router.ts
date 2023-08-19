@@ -8,7 +8,7 @@ export class Router {
 
   loginPage = new LoginPageView(this);
 
-  registerPage = new RegisterPageView();
+  registerPage = new RegisterPageView(this);
 
   notFoundPage = new NotFoundPageView();
 
