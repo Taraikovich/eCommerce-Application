@@ -67,7 +67,7 @@ An important aspect of our application is that it's responsive 📲, ensuring it
 
 - To install support for types for Jest globals: `npm install --save-dev @types/jest`
 
-- To install Jest environment for JSDOM: `npm: npm i jest-environment-jsdom --save-dev`
+- To install Jest environment for JSDOM: `npm i jest-environment-jsdom --save-dev`
 
 - To install .babel based plugin for transform modules to commonjs : `npm install --save-dev @babel/plugin-transform-modules-commonjs`
 

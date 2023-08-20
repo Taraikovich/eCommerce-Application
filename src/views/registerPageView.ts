@@ -1,5 +1,6 @@
 import { View } from './view';
 import { Router } from '../router/router';
+import { LoginButton } from '../components/loginButton';
 
 export class RegisterPageView extends View {
   countriesList = ['Choose your country', 'Belarus', 'Georgia', 'Russia'];
@@ -9,6 +10,12 @@ export class RegisterPageView extends View {
   regFormData = new FormData();
 
   regDataToPost = new Object();
+
+  bookmarks: HTMLElement = document.createElement('label');
+
+  reg_bookmark: HTMLElement = document.createElement('label');
+
+  login_bookmark: HTMLElement = document.createElement('label');
 
   emailInput: HTMLInputElement = document.createElement('input');
 
@@ -67,8 +74,15 @@ export class RegisterPageView extends View {
   //============================================================================
 
   createContent(): void {
-    this.main.textContent = 'Registration:';
 
+    const loginBtn = new LoginButton();
+
+    this.bookmarks.className = 'bookmarks';
+    this.reg_bookmark.className = 'bookmark';
+    this.login_bookmark.className = 'bookmark';
+    this.login_bookmark.classList.add('login-bookmark');
+    this.reg_bookmark.textContent = 'Registration:';
+    this.login_bookmark.textContent = 'Switch to login page:';
     this.registrationForm.className = 'registrationForm';
     this.registrationForm.name = 'regForm';
 
@@ -172,9 +186,14 @@ export class RegisterPageView extends View {
     this.countryValidationWarning.className = 'warning';
 
     this.registrationButton.className = 'input';
+    this.registrationButton.classList.add('form-submit');
     this.registrationButton.type = 'submit';
     this.registrationButton.value = 'Register me / help me';
 
+    this.main.appendChild(this.bookmarks);
+    this.bookmarks.appendChild(this.reg_bookmark);
+    this.bookmarks.appendChild(this.login_bookmark);
+    this.login_bookmark.append(loginBtn.createButton());
     this.main.appendChild(this.registrationForm);
     this.registrationForm.appendChild(this.emailInput);
     this.registrationForm.appendChild(this.emailValidationWarning);
@@ -280,7 +299,7 @@ export class RegisterPageView extends View {
     });
   };
 
-  // =========================================================================
+  //============================================================================
 
   togglePasswordVisibility = (): void => {
     if (this.showPasswordCheckbox.checked) {

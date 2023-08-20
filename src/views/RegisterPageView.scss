@@ -16,14 +16,34 @@ main,
   margin: 1rem 0 0 0;
 }
 
-.label {
-  // margin: 1rem 0 1rem 0;
+.label,
+.bookmarks {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
   white-space: nowrap;
   font-family: 'Tektur', cursive;
+}
+
+.bookmarks {
+  margin: 1rem 0 0 0;
+  width: 32.4rem;
+  height: 3rem;
+}
+
+.bookmark {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 16rem;
+  height: 3rem;
+  background-color: #f2f2f2;
+}
+
+.login-bookmark {
+  background-color: white;
+  cursor: pointer;
 }
 
 .input-short {
@@ -44,4 +64,25 @@ main,
   height: 1rem;
   font-size: 0.8rem;
   color: red;
+}
+
+.registrationForm {
+  background-color: #f2f2f2;
+  padding: 0 0 1rem 0;
+}
+
+.form-submit {
+  font-size: 1rem;
+  background-color: #072326;
+  border-radius: 5px;
+  color: #f2f2f2;
+  cursor: pointer;
+  transition: all 0.4s ease;
+  width: 20rem;
+  height: 2rem;
+}
+
+.form-submit:hover {
+  background-color: #f2f2f2;
+  color: #072326;
 }
