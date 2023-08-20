@@ -157,6 +157,7 @@ const config = {
 
   // The test environment that will be used for testing
   // testEnvironment: "jest-environment-node",
+  testEnvironment: 'jsdom',
 
   // Options that will be passed to the testEnvironment
   // testEnvironmentOptions: {},
@@ -211,5 +212,7 @@ const config = {
 module.exports = config;
 
 // module.exports = {
-//   "testEnvironment": "jsdom"
+
+// "testEnvironment": "jsdom"
+
 // }

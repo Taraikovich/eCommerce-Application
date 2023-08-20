@@ -1,41 +1,10 @@
-// .form {
-//     background-color: rgb(169, 238, 157);
-//     display: flex;
-//     flex-direction: column;
-//     align-items: center;
-//     max-width: 500px;
-//     margin: 20px;
-//     padding: 10px;
-//     border-radius: 5px;
-//     div {
-//         display: flex;
-//         flex-direction: column;
-//         align-items: stretch;
-//         width: 70%;
-//         margin: 5px;
-//     }
-//     fieldset {
-//         display: flex;
-//         flex-direction: column;
-//         align-items: stretch;
-//         div {
-//             display: flex;
-//             flex-direction: column;
-//             align-items: stretch;
-//             width: 70%;
-//             margin: 5px;
-//         }
-//     }
-// }
-
-// Стили для основной формы
 .form {
   font-family: 'Tektur', cursive;
   color: #072326;
   display: flex;
   flex-direction: column;
   max-width: 400px;
-  margin: 0 auto;
+  margin: 20px auto;
   padding: 20px;
   border: 1px solid #ccc;
   border-radius: 5px;
@@ -100,12 +69,10 @@
     margin-top: 36px;
   }
 
-  // Стили для чекбокса
   input[type='checkbox'] {
     margin-right: 5px;
   }
 
-  // Стили для кнопки отправки
   input[type='submit'] {
     font-family: 'Tektur', cursive;
     padding: 10px 20px;
@@ -116,13 +83,15 @@
     border-radius: 5px;
     font-size: 16px;
     cursor: pointer;
+    transition: all 0.4s ease;
+    border: 1px solid #072326;
 
     &:hover {
-      background-color: #0056b3;
+      background-color: #f2f2f2;
+      color: #072326;
     }
   }
 
-  // Стили для легенды
   legend {
     font-weight: bold;
     margin-bottom: 10px;
@@ -135,81 +104,24 @@
   border-radius: 5px;
 }
 
-// .form {
-//     font-family: Arial, sans-serif;
-//     max-width: 400px;
-//     margin: 0 auto;
-//     border: 1px solid #ccc;
-//     padding: 20px;
-//     border-radius: 5px;
+.form__email_input input[type='email'] {
+  background: url(./images/email.png) 2% center / 6% no-repeat;
+  width: 86%;
+  padding-left: 10%;
+}
 
-//     &__error {
-//       color: red;
-//       font-size: 14px;
-//       margin-top: 5px;
-//     }
+.form__password_input input[type='text'],
+.form__password_input input[type='password'] {
+  background: url(./images/lock.png) 2% center / 6% no-repeat;
+  width: 86%;
+  padding-left: 10%;
+}
 
-//     &__password {
-//       position: relative;
-
-//       div {
-//         position: absolute;
-//         top: 50%;
-//         right: 10px;
-//         transform: translateY(-50%);
-//         cursor: pointer;
-//       }
-//     }
-
-//     fieldset {
-//       border: 1px solid #ccc;
-//       padding: 10px;
-//       margin-top: 10px;
-//       border-radius: 5px;
-
-//       legend {
-//         font-weight: bold;
-//       }
-
-//       div {
-//         margin-top: 10px;
-//       }
-//     }
-
-//     input[type="text"],
-//     input[type="email"],
-//     input[type="password"],
-//     input[type="date"],
-//     select,
-//     textarea {
-//       width: 100%;
-//       padding: 8px;
-//       margin-top: 5px;
-//       border: 1px solid #ccc;
-//       border-radius: 3px;
-//       font-size: 14px;
-//     }
-
-//     input[type="password"] {
-//       margin-bottom: 10px; /* Добавлен отступ снизу */
-//     }
-
-//     input[type="checkbox"] {
-//       margin-right: 5px;
-//     }
-
-//     input[type="submit"] {
-//       background-color: #007bff;
-//       color: white;
-//       border: none;
-//       padding: 10px 20px;
-//       border-radius: 5px;
-//       cursor: pointer;
-//       font-size: 16px;
-//       margin-top: 10px;
-
-//       &:hover {
-//         background-color: #0056b3;
-//       }
-//     }
-//   }
+.show-pass {
+  background: url(./images/eye-open.png);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  width: 40px;
+  height: 20px;
+}

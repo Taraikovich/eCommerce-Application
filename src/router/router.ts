@@ -8,7 +8,7 @@ export class Router {
 
   loginPage = new LoginPageView();
 
-  registerPage = new RegisterPageView(this);
+  registerPage = new RegisterPageView();
 
   notFoundPage = new NotFoundPageView();
 
@@ -32,13 +32,5 @@ export class Router {
   private getUrl(): string {
     const url = window.location.pathname;
     return url;
-  }
-
-  public navigateToHome(): void {
-    window.location.href = '/';
-  }
-
-  public navigateToRegister(): void {
-    window.location.href = '/register';
   }
 }

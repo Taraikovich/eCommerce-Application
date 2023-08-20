@@ -17,10 +17,6 @@ export class Navigation {
     this.nav.className = 'header__nav';
     this.list.className = 'header__menu';
     const homeLink = this.addMenuItem('Home', './');
-    // const buttons = document.createElement('div');
-    // const loginBtn = new LoginButton();
-    // const registrBtn = new RegisterButton();
-    // buttons.append(loginBtn.createButton(), registrBtn.createButton());
     this.list.append(homeLink);
     this.nav.append(this.list, this.addButtons());
     node.append(this.nav);
@@ -45,7 +41,7 @@ export class Navigation {
     return li;
   }
 
-  addButtons() {
+  private addButtons() {
     const buttons = document.createElement('div');
     if (getUserId()) {
       const logoutBtn = new LogoutButton();

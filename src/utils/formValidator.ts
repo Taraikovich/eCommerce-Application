@@ -35,7 +35,7 @@ const validationRules: ValidationRules = {
   'shipping-srteet': [/.+/, '✖ Must contain at least one character'],
 };
 
-function isValidDateOfBirth(dateOfBirth: string, minAge = 13) {
+function isValidDateOfBirth(dateOfBirth: string, minAge = 13): boolean {
   const currentDate = new Date();
   const inputDate = new Date(dateOfBirth);
   const minAgeDate = new Date();
@@ -45,7 +45,7 @@ function isValidDateOfBirth(dateOfBirth: string, minAge = 13) {
   return inputDate <= minAgeDate;
 }
 
-function isValidPostalCode(countryCode: string, postalCode: string) {
+function isValidPostalCode(countryCode: string, postalCode: string): boolean {
   const postalCodePatterns: PostalCodePatterns = {
     US: /^\d{5}$/,
     CA: /^[A-Za-z]\d[A-Za-z] \d[A-Za-z]\d$/,

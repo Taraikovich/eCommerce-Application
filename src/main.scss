@@ -1,10 +1,13 @@
 @import './views/view.scss', './components/button.scss',
   './components/form.scss';
-@import '../src/views/registerPageView.scss';
 
 body {
+  font-family: 'Tektur', cursive;
   margin: 0;
   padding: 0;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
 
 h1 {

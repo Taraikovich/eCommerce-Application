@@ -11,16 +11,18 @@ export class LoginForm {
       this.addInput('password', 'password', 'Password'),
       this.addSubmitBtn()
     );
-
-    document.body.append(this.form);
   }
 
-  addInput(
+  createForm(): HTMLFormElement {
+    return this.form;
+  }
+
+  private addInput(
     inputType: string,
     name: string,
     placeholder?: string,
     labelText?: string
-  ) {
+  ): HTMLElement {
     const wrapper = document.createElement('div');
     wrapper.className = `form__${name}`;
     const input = document.createElement('input');
@@ -34,9 +36,14 @@ export class LoginForm {
       input.style.border = '1px solid #ccc';
     });
 
+    if (inputType === 'email') {
+      wrapper.className = `form__${name} form__${name}_input`;
+    }
+
     if (inputType === 'password') {
+      wrapper.className = `form__${name} form__${name}_input`;
       const showPass = document.createElement('div');
-      showPass.textContent = 'show';
+      showPass.className = 'show-pass';
       showPass.addEventListener('mousedown', () => {
         input.type = 'text';
       });
@@ -57,7 +64,7 @@ export class LoginForm {
     return wrapper;
   }
 
-  addSubmitBtn() {
+  private addSubmitBtn(): HTMLInputElement {
     const input = document.createElement('input');
     input.type = 'submit';
 

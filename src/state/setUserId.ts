@@ -1,3 +1,3 @@
-export function setUserId(userId: string) {
+export function setUserId(userId: string): void {
   localStorage.setItem('userId', userId);
 }

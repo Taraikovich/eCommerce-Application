@@ -4,9 +4,9 @@ import { createCustomer } from '../api/createCustomer';
 export class RegistratinForm {
   private form = document.createElement('form');
 
-  shippingAddress = this.addFieldset('Shipping adress');
+  private shippingAddress = this.addFieldset('Shipping adress');
 
-  billingAddress = this.addFieldset('Billing adress');
+  private billingAddress = this.addFieldset('Billing adress');
 
   constructor() {
     this.form.className = 'form';
@@ -40,16 +40,18 @@ export class RegistratinForm {
       this.addInput('text', 'shipping-building', 'Building'),
       this.addInput('text', 'shipping-post-code', 'Post code')
     );
-
-    document.body.append(this.form);
   }
 
-  addInput(
+  createForm(): HTMLFormElement {
+    return this.form;
+  }
+
+  private addInput(
     inputType: string,
     name: string,
     placeholder?: string,
     labelText?: string
-  ) {
+  ): HTMLElement {
     const wrapper = document.createElement('div');
     wrapper.className = `form__${name}`;
     const input = document.createElement('input');
@@ -86,7 +88,7 @@ export class RegistratinForm {
     return wrapper;
   }
 
-  addFieldset(legendText: string): HTMLFieldSetElement {
+  private addFieldset(legendText: string): HTMLFieldSetElement {
     const fieldset = document.createElement('fieldset');
     const legend = document.createElement('legend');
     legend.textContent = legendText;
@@ -118,7 +120,7 @@ export class RegistratinForm {
     return option;
   }
 
-  addCheckbox(name: string, labelText: string) {
+  private addCheckbox(name: string, labelText: string): HTMLElement {
     const wrapper = document.createElement('div');
     wrapper.className = `form__${name}`;
     const checkbox = document.createElement('input');
@@ -149,7 +151,7 @@ export class RegistratinForm {
     return wrapper;
   }
 
-  addSubmitBtn() {
+  private addSubmitBtn(): HTMLInputElement {
     const input = document.createElement('input');
     input.type = 'submit';
 
