@@ -6,7 +6,7 @@ interface PostalCodePatterns {
   [countryCode: string]: RegExp;
 }
 
-const validationRules: ValidationRules = {
+export const validationRules: ValidationRules = {
   firstName: [
     /^[A-Za-z]+$/,
     '✖ Must contain at least one character and no special characters or numbers',
@@ -35,7 +35,7 @@ const validationRules: ValidationRules = {
   'shipping-srteet': [/.+/, '✖ Must contain at least one character'],
 };
 
-function isValidDateOfBirth(dateOfBirth: string, minAge = 13): boolean {
+export function isValidDateOfBirth(dateOfBirth: string, minAge = 13): boolean {
   const currentDate = new Date();
   const inputDate = new Date(dateOfBirth);
   const minAgeDate = new Date();
@@ -45,7 +45,10 @@ function isValidDateOfBirth(dateOfBirth: string, minAge = 13): boolean {
   return inputDate <= minAgeDate;
 }
 
-function isValidPostalCode(countryCode: string, postalCode: string): boolean {
+export function isValidPostalCode(
+  countryCode: string,
+  postalCode: string
+): boolean {
   const postalCodePatterns: PostalCodePatterns = {
     US: /^\d{5}$/,
     CA: /^[A-Za-z]\d[A-Za-z] \d[A-Za-z]\d$/,
@@ -54,7 +57,9 @@ function isValidPostalCode(countryCode: string, postalCode: string): boolean {
     BY: /^\d{6}$/,
   };
 
-  return postalCodePatterns[countryCode].test(postalCode) || false;
+  const pattern = postalCodePatterns[countryCode];
+
+  return pattern ? pattern.test(postalCode) : false;
 }
 
 export function formValidation(event: SubmitEvent) {
@@ -134,5 +139,19 @@ export function formValidation(event: SubmitEvent) {
       }
     }
     return isValid;
+  }
+}
+
+export function realTimeValidation(event: Event) {
+  event.preventDefault();
+  const inputElement = event.target;
+  if (inputElement instanceof HTMLInputElement) {
+    if (!validationRules[inputElement.type][0].test(inputElement.value)) {
+      const errorMessage = document.querySelector(
+        `.form__${inputElement.type} .form__error`
+      ) as HTMLElement;
+      errorMessage.textContent = '';
+      errorMessage.textContent = validationRules[inputElement.type][1];
+    }
   }
 }
