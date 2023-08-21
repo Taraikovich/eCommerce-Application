@@ -2,6 +2,7 @@ import { NotFoundPageView } from '../views/notFoundPageView';
 import { HomePageView } from '../views/homePageView';
 import { LoginPageView } from '../views/loginPageView';
 import { RegisterPageView } from '../views/registerPageView';
+import { getUserId } from '../state/getUserId';
 
 export class Router {
   homePage = new HomePageView();
@@ -21,9 +22,19 @@ export class Router {
     if (rout === '/') {
       this.homePage.createView();
     } else if (rout === '/login') {
-      this.loginPage.createView();
+      if (getUserId()) {
+        window.history.pushState({}, '', '/');
+        this.homePage.createView();
+      } else {
+        this.loginPage.createView();
+      }
     } else if (rout === '/register') {
-      this.registerPage.createView();
+      if (getUserId()) {
+        window.history.pushState({}, '', '/');
+        this.homePage.createView();
+      } else {
+        this.registerPage.createView();
+      }
     } else {
       this.notFoundPage.createView();
     }

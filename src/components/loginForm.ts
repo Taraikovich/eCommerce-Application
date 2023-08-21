@@ -1,4 +1,4 @@
-import { formValidation } from '../utils/formValidator';
+import { formValidation, realTimeValidation } from '../utils/formValidator';
 import { login } from '../api/login';
 
 export class LoginForm {
@@ -11,6 +11,10 @@ export class LoginForm {
       this.addInput('password', 'password', 'Password'),
       this.addSubmitBtn()
     );
+
+    this.form.addEventListener('input', (e) => {
+      realTimeValidation(e);
+    });
   }
 
   createForm(): HTMLFormElement {
