@@ -1,5 +1,5 @@
 import { createApiBuilderFromCtpClient } from '@commercetools/platform-sdk';
-import { ctpClient } from './BuildClient';
+import { client } from './BuildClient';
 import { projectKey } from '../constants/constants';
 import { login } from './login';
 
@@ -9,7 +9,7 @@ export async function createCustomer(event: SubmitEvent) {
     const formData = new FormData(event.target);
 
     try {
-      const apiRoot = createApiBuilderFromCtpClient(ctpClient).withProjectKey({
+      const apiRoot = createApiBuilderFromCtpClient(client).withProjectKey({
         projectKey,
       });
 

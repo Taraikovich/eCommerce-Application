@@ -12,6 +12,7 @@ import {
 import { createApiBuilderFromCtpClient } from '@commercetools/platform-sdk';
 import { setUserId } from '../state/setUserId';
 import { Router } from '../router/router';
+import { tokenCache } from './tokenCache';
 
 export async function login(event: SubmitEvent) {
   if (event.target instanceof HTMLFormElement) {
@@ -29,24 +30,7 @@ export async function login(event: SubmitEvent) {
         },
       },
       scopes,
-      // tokenCache: {
-      //   get: () => {
-      //     try {
-      //       const token = localStorage.getItem('authToken'); // Пример, используйте свою логику
-      //       return token ? JSON.parse(token) : null;
-      //     } catch (error) {
-      //       console.error('Error while getting token from cache:', error);
-      //       return null;
-      //     }
-      //   },
-      //   set: async (token) => {
-      //     try {
-      //       localStorage.setItem('authToken', JSON.stringify(token)); // Пример, используйте свою логику
-      //     } catch (error) {
-      //       console.error('Error while setting token in cache:', error);
-      //     }
-      //   },
-      // },
+      tokenCache,
       fetch,
     };
 
