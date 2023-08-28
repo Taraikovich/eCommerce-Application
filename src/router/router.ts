@@ -2,6 +2,7 @@ import { NotFoundPageView } from '../views/notFoundPageView';
 import { HomePageView } from '../views/homePageView';
 import { LoginPageView } from '../views/loginPageView';
 import { RegisterPageView } from '../views/registerPageView';
+import { ProfilePageView } from '../views/profilePageView';
 import { getUserId } from '../state/getUserId';
 
 export class Router {
@@ -12,6 +13,8 @@ export class Router {
   registerPage = new RegisterPageView();
 
   notFoundPage = new NotFoundPageView();
+
+  profilePage = new ProfilePageView();
 
   constructor() {
     this.createView();
@@ -35,6 +38,8 @@ export class Router {
       } else {
         this.registerPage.createView();
       }
+    } else if (rout === '/profile') {
+      this.profilePage.createView();
     } else {
       this.notFoundPage.createView();
     }
