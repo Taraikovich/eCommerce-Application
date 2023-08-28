@@ -15,7 +15,7 @@ export class PronuctCart {
   private addImage(imgUrl: string) {
     const image = new Image();
     image.src = imgUrl;
-    image.width = 100;
+    image.width = 150;
     return image;
   }
 

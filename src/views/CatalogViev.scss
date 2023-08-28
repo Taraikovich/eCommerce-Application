@@ -1,13 +1,24 @@
 .products {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-evenly;
-
+  justify-content: center;
+  max-width: 95vw;
+  margin: 0 auto;
   &__card {
     display: flex;
     flex-direction: column;
+    justify-content: center;
     align-items: center;
-    border: 1px solid black;
+    text-align: center;
+    border: 1px solid #072326;
+    border-radius: 5px;
     min-width: 200px;
+    max-width: 300px;
+    margin: 10px;
+    padding: 10px;
+    transition: all 0.4s ease;
+    &:hover {
+      box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.23);
+    }
   }
 }
