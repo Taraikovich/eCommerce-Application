@@ -31,31 +31,35 @@ const httpMiddlewareOptions: HttpMiddlewareOptions = {
 
 export let client: Client;
 
-const refreshToken = tokenCache.get().refreshToken;
-
-if (refreshToken) {
-  const options: RefreshAuthMiddlewareOptions = {
-    host: 'https://auth.europe-west1.gcp.commercetools.com',
-    projectKey,
-    credentials: {
-      clientId,
-      clientSecret,
-    },
-    refreshToken,
-    tokenCache,
-    fetch,
-  };
-  client = new ClientBuilder()
-    .withProjectKey(projectKey)
-    .withRefreshTokenFlow(options)
-    .withHttpMiddleware(httpMiddlewareOptions)
-    .withLoggerMiddleware()
-    .build();
-} else {
-  client = new ClientBuilder()
-    .withProjectKey(projectKey)
-    .withClientCredentialsFlow(authMiddlewareOptions)
-    .withHttpMiddleware(httpMiddlewareOptions)
-    .withLoggerMiddleware()
-    .build();
+export function buildClient() {
+  const cachedToken = tokenCache.get();
+  const refreshToken = cachedToken?.refreshToken;
+  if (refreshToken !== undefined) {
+    const options: RefreshAuthMiddlewareOptions = {
+      host: 'https://auth.europe-west1.gcp.commercetools.com',
+      projectKey,
+      credentials: {
+        clientId,
+        clientSecret,
+      },
+      refreshToken,
+      tokenCache,
+      fetch,
+    };
+    client = new ClientBuilder()
+      .withProjectKey(projectKey)
+      .withRefreshTokenFlow(options)
+      .withHttpMiddleware(httpMiddlewareOptions)
+      .withLoggerMiddleware()
+      .build();
+  } else {
+    client = new ClientBuilder()
+      .withProjectKey(projectKey)
+      .withClientCredentialsFlow(authMiddlewareOptions)
+      .withHttpMiddleware(httpMiddlewareOptions)
+      .withLoggerMiddleware()
+      .build();
+  }
 }
+
+buildClient();

@@ -23,4 +23,13 @@
       transform: scale(1.05);
     }
   }
+  &__price {
+    font-size: 1.2em;
+    font-weight: bold;
+    span {
+      font-weight: normal;
+      font-size: 15px;
+      text-decoration: line-through;
+    }
+  }
 }

@@ -13,6 +13,7 @@ import { createApiBuilderFromCtpClient } from '@commercetools/platform-sdk';
 import { setUserId } from '../state/setUserId';
 import { Router } from '../router/router';
 import { tokenCache } from './tokenCache';
+import { buildClient } from './BuildClient';
 
 export async function login(event: SubmitEvent) {
   if (event.target instanceof HTMLFormElement) {
@@ -66,6 +67,7 @@ export async function login(event: SubmitEvent) {
       window.history.pushState({}, '', newURL);
       document.body.textContent = '';
       new Router();
+      buildClient();
     } catch (error) {
       const errorMessage = document.createElement('p');
       errorMessage.className = 'error-message';
