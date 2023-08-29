@@ -24,7 +24,7 @@ export class ProfilePageView extends View {
             projectKey,
           }
         );
-        const auth = JSON.parse(localStorage.getItem('auth') as string); // Пример, используйте свою логику
+        const auth = JSON.parse(localStorage.getItem('auth') as string);
 
         const { body } = await apiRoot
           .me()
@@ -53,6 +53,6 @@ export class ProfilePageView extends View {
       userProfileSection.appendChild(notLoggedInMessage);
     }
 
-    this.main.append(userProfileSection, this.profileForm.createForm());
+    this.main.append(userProfileSection, this.profileForm.createForm(), this.profileForm.createAdressesForm());
   }
 }

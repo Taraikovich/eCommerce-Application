@@ -49,10 +49,9 @@ export class Navigation {
       const profileBtn = new ProfileButton();
       buttons.append(profileBtn.createButton(), logoutBtn.createButton());
     } else {
-      
       const loginBtn = new LoginButton();
       const registrBtn = new RegisterButton();
-      buttons.append( loginBtn.createButton(), registrBtn.createButton());
+      buttons.append(loginBtn.createButton(), registrBtn.createButton());
     }
     return buttons;
   }
