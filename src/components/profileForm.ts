@@ -1,5 +1,5 @@
 import { realTimeValidation } from '../utils/formValidator';
-import { getUserId } from '../state/getUserId'; 
+import { getUserId } from '../state/getUserId';
 
 interface UserData {
   firstName: string;
@@ -33,7 +33,7 @@ export class ProfileForm {
   public populateUserData(): void {
     const userId = getUserId();
     if (userId) {
-      const userData = getUserDataFromLocalStorage(userId); 
+      const userData = getUserDataFromLocalStorage(userId);
       if (userData) {
         this.fillFormWithUserData(userData);
       }

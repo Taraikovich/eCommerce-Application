@@ -18,7 +18,8 @@ export class Navigation {
     this.nav.className = 'header__nav';
     this.list.className = 'header__menu';
     const homeLink = this.addMenuItem('Home', './');
-    this.list.append(homeLink);
+    const catalogLink = this.addMenuItem('Catalog', './catalog');
+    this.list.append(homeLink, catalogLink);
     this.nav.append(this.list, this.addButtons());
     node.append(this.nav);
   }
@@ -49,10 +50,9 @@ export class Navigation {
       const profileBtn = new ProfileButton();
       buttons.append(profileBtn.createButton(), logoutBtn.createButton());
     } else {
-      
       const loginBtn = new LoginButton();
       const registrBtn = new RegisterButton();
-      buttons.append( loginBtn.createButton(), registrBtn.createButton());
+      buttons.append(loginBtn.createButton(), registrBtn.createButton());
     }
     return buttons;
   }
