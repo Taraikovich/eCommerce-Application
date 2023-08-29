@@ -4,9 +4,12 @@ import { LoginPageView } from '../views/loginPageView';
 import { RegisterPageView } from '../views/registerPageView';
 import { ProfilePageView } from '../views/profilePageView';
 import { getUserId } from '../state/getUserId';
+import { CatalogView } from '../views/CatalogViev';
 
 export class Router {
   homePage = new HomePageView();
+
+  catalogPage = new CatalogView();
 
   loginPage = new LoginPageView();
 
@@ -38,6 +41,8 @@ export class Router {
       } else {
         this.registerPage.createView();
       }
+    } else if (rout === '/catalog') {
+      this.catalogPage.createView();
     } else if (rout === '/profile') {
       this.profilePage.createView();
     } else {
