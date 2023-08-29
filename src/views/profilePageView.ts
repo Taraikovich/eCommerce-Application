@@ -53,6 +53,6 @@ export class ProfilePageView extends View {
       userProfileSection.appendChild(notLoggedInMessage);
     }
 
-    this.main.append(userProfileSection, this.profileForm.createForm(), this.profileForm.createAdressesForm());
+    this.main.append(userProfileSection, this.profileForm.createForm());
   }
 }
