@@ -7,7 +7,6 @@ interface UserData {
   lastName: string;
   dateOfBirth: string;
   addresses: object;
-
 }
 
 function getUserDataFromLocalStorage(userId: string): UserData | null {
@@ -37,7 +36,7 @@ export class ProfileForm {
     const userId = getUserId();
     if (userId) {
       const userData = getUserDataFromLocalStorage(userId);
-      
+
       if (userData) {
         this.fillFormWithUserData(userData);
       }
@@ -45,16 +44,12 @@ export class ProfileForm {
   }
 
   private fillFormWithUserData(userData: UserData): void {
-    const {
-      firstName,
-      lastName,
-      dateOfBirth,
-    } = userData;
+    const { firstName, lastName, dateOfBirth } = userData;
     console.log(userData);
 
     const userInformationFrame = document.createElement('div');
     userInformationFrame.className = 'form-frame';
-    
+
     const userTitle = document.createElement('div');
     userTitle.textContent = 'User information';
     userInformationFrame.appendChild(userTitle);

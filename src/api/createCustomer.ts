@@ -47,8 +47,6 @@ export async function createCustomer(event: SubmitEvent) {
         })
         .execute();
       login(event);
-
-      
     } catch (error) {
       const errorMessage = document.createElement('p');
       errorMessage.className = 'error-message';
