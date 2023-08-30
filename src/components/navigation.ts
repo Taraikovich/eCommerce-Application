@@ -17,7 +17,8 @@ export class Navigation {
     this.nav.className = 'header__nav';
     this.list.className = 'header__menu';
     const homeLink = this.addMenuItem('Home', './');
-    this.list.append(homeLink);
+    const catalogLink = this.addMenuItem('Catalog', './catalog');
+    this.list.append(homeLink, catalogLink);
     this.nav.append(this.list, this.addButtons());
     node.append(this.nav);
   }
