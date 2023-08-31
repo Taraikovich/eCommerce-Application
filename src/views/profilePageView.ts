@@ -1,10 +1,12 @@
 import { View } from './view';
-import { ProfileForm } from '../components/profileForm';
+import { ProfileForm, UserData } from '../components/profileForm';
 import { getUserId } from '../state/getUserId';
 import { getProfileData } from '../api/getProfileData';
 
 export class ProfilePageView extends View {
   private profileForm = new ProfileForm();
+  
+  private userData?: UserData;
 
   constructor() {
     super();
@@ -17,12 +19,11 @@ export class ProfilePageView extends View {
     const userId = getUserId();
     if (userId) {
       try {
-        const userData =  await getProfileData();
-        localStorage.setItem('userData', JSON.stringify(userData));
+        await this.getProfile();
 
-        if (userData) {
+        if (this.userData) {
           const greeting = document.createElement('p');
-          greeting.textContent = `Welcome, ${userData.firstName}!`;
+          greeting.textContent = `Welcome, ${this.userData.firstName}!`;
           userProfileSection.appendChild(greeting);
           this.profileForm.populateUserData();
         }
@@ -37,5 +38,14 @@ export class ProfilePageView extends View {
     }
 
     this.main.append(userProfileSection, this.profileForm.createForm());
+  }
+
+  private async getProfile(): Promise<void> {
+    try {
+      this.userData = (await getProfileData()) as UserData;
+      localStorage.setItem('userData', JSON.stringify(this.userData));
+    } catch (error) {
+      console.error('Error while fetching user data:', error);
+    }
   }
 }

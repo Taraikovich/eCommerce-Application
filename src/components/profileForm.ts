@@ -1,10 +1,14 @@
+import { updateProfileData } from '../api/updateProfileData';
 import { getUserId } from '../state/getUserId';
 
-interface UserData {
+export interface UserData {
+  version: number;
   firstName: string;
   lastName: string;
   dateOfBirth: string;
   addresses: Address[];
+  defaultBillingAddressId: string;
+  defaultShippingAddressId: string;
 }
 
 interface Address {
@@ -12,11 +16,12 @@ interface Address {
   city: string;
   postalCode: string;
   streetName: string;
+  id: string;
 }
 
 function getUserDataFromLocalStorage(userId: string): UserData | null {
   const userDataStr = localStorage.getItem('userData');
-  
+
   if (userDataStr) {
     return JSON.parse(userDataStr);
   }
@@ -40,11 +45,23 @@ export class ProfileForm {
 
   private dateOfBirthDisplay: HTMLDivElement;
 
+  private countryDisplay: HTMLDivElement;
+
   private firstNameInput: HTMLInputElement;
 
-  private lastNameInput: HTMLInputElement; 
-  
+  private lastNameInput: HTMLInputElement;
+
   private dateOfBirthInput: HTMLInputElement;
+
+  private countryInput: HTMLInputElement;
+
+  private shippingForm: HTMLDivElement;
+
+  private shippingAdressLabel: HTMLDivElement;
+
+  private billingForm: HTMLDivElement;
+
+  private billingAdressLabel: HTMLDivElement;
 
   constructor() {
     this.form.className = 'form';
@@ -69,21 +86,26 @@ export class ProfileForm {
     this.editForm = document.createElement('form');
     this.editForm.id = 'edit-form';
     this.editForm.addEventListener('submit', (e) => this.saveUserData(e));
-  
+
     this.firstNameInput = document.createElement('input');
     this.firstNameInput.id = 'first-name-input';
-    this.firstNameInput.type = 'text'; 
+    this.firstNameInput.type = 'text';
     this.editForm.appendChild(this.firstNameInput);
 
     this.lastNameInput = document.createElement('input');
     this.lastNameInput.id = 'last-name-input';
-    this.lastNameInput.type = 'text'; 
+    this.lastNameInput.type = 'text';
     this.editForm.appendChild(this.lastNameInput);
 
     this.dateOfBirthInput = document.createElement('input');
     this.dateOfBirthInput.id = 'date-of-birth-input';
-    this.dateOfBirthInput.type = 'text'; 
+    this.dateOfBirthInput.type = 'text';
     this.editForm.appendChild(this.dateOfBirthInput);
+
+    this.countryInput = document.createElement('input');
+    this.countryInput.id = 'country-input';
+    this.countryInput.type = 'text';
+    this.editForm.appendChild(this.countryInput);
 
     const saveButton = document.createElement('button');
     saveButton.textContent = 'Save';
@@ -101,10 +123,33 @@ export class ProfileForm {
     this.dateOfBirthDisplay.id = 'date-of-birth-display';
     this.dateOfBirthDisplay.className = 'form-frame';
 
+    this.shippingForm = document.createElement('div');
+    this.shippingForm.id = 'shipping-form';
+
+    this.shippingAdressLabel = document.createElement('div');
+    this.shippingAdressLabel.id = 'shipping-adress-label';
+    this.shippingAdressLabel.textContent = 'Shipping adress';
+
+    this.countryDisplay = document.createElement('div');
+    this.countryDisplay.id = 'country-display';
+
+    this.billingForm = document.createElement('div');
+    this.billingForm.id = 'billing-form';
+
+    this.billingAdressLabel = document.createElement('div');
+    this.billingAdressLabel.id = 'billing-adress-label';
+    this.billingAdressLabel.textContent = 'Billing adress';
+
     this.form.appendChild(this.editButton);
     this.form.appendChild(this.firstNameDisplay);
     this.form.appendChild(this.lastNameDisplay);
     this.form.appendChild(this.dateOfBirthDisplay);
+
+    this.form.appendChild(this.shippingForm);
+    this.shippingForm.appendChild(this.shippingAdressLabel);
+    this.shippingForm.appendChild(this.countryDisplay);
+    this.form.appendChild(this.billingForm);
+    this.billingForm.appendChild(this.billingAdressLabel);
 
     this.modal.appendChild(this.closeModalButton);
     this.modal.appendChild(this.editForm);
@@ -123,9 +168,10 @@ export class ProfileForm {
       const userData = getUserDataFromLocalStorage(userId);
       console.log(userData);
       if (userData) {
-        this.firstNameInput.value = userData.firstName; 
-        this.lastNameInput.value = userData.lastName; 
-        this.dateOfBirthInput.value = userData.dateOfBirth; 
+        this.firstNameInput.value = userData.firstName;
+        this.lastNameInput.value = userData.lastName;
+        this.dateOfBirthInput.value = userData.dateOfBirth;
+        this.countryInput.value = userData.addresses[0].country;
       }
     }
   }
@@ -134,20 +180,17 @@ export class ProfileForm {
     this.modal.style.display = 'none';
   }
 
-  private saveUserData(e: Event): void {
+  private async saveUserData(e: Event): Promise<void> {
     e.preventDefault();
     const userId = getUserId();
     if (userId) {
       const userData = getUserDataFromLocalStorage(userId);
       if (userData) {
-        userData.firstName = this.firstNameInput.value; 
-        userData.lastName = this.lastNameInput.value; 
-        userData.dateOfBirth = this.dateOfBirthInput.value; 
-        this.updateFirstNameDisplay(userData.firstName); 
-        this.updateLastNameDisplay(userData.lastName);
-        this.updateDateOfBirthDisplay(userData.dateOfBirth);
-
-        localStorage.setItem('userData', JSON.stringify(userData));
+        userData.firstName = this.firstNameInput.value;
+        userData.lastName = this.lastNameInput.value;
+        userData.dateOfBirth = this.dateOfBirthInput.value;
+        await updateProfileData(userData);
+        this.populateUserData();
       }
     }
     this.closeModal();
@@ -165,64 +208,23 @@ export class ProfileForm {
     this.dateOfBirthDisplay.textContent = `Date of Birth: ${dateOfBirth}`;
   }
 
+  private updateCountryDisplay(country: string): void {
+    this.countryDisplay.textContent = `Country: ${country}`;
+  }
+
   public populateUserData(): void {
     const userId = getUserId();
     if (userId) {
       const userData = getUserDataFromLocalStorage(userId);
+      const shippingAddress = userData?.addresses.find(
+        (adress) => adress.id === userData.defaultShippingAddressId
+      );
       if (userData) {
         this.updateFirstNameDisplay(userData.firstName);
         this.updateLastNameDisplay(userData.lastName);
         this.updateDateOfBirthDisplay(userData.dateOfBirth);
+        this.updateCountryDisplay(shippingAddress?.country as string);
       }
     }
   }
 }
-
-//   private fillFormWithUserData(userData: UserData): void {
-//     const { firstName, lastName, dateOfBirth, addresses } = userData;
-
-//     const userInformationFrame = document.createElement('div');
-//     userInformationFrame.className = 'form-frame';
-
-//     const userTitle = document.createElement('div');
-//     userTitle.textContent = 'User information';
-//     userInformationFrame.appendChild(userTitle);
-
-
-
-//     const dateOfBirthInput = document.createElement('div');
-//     dateOfBirthInput.textContent = `Date of Birth: ${dateOfBirth}`;
-//     userInformationFrame.appendChild(dateOfBirthInput);
-
-//     this.form.appendChild(userInformationFrame);
-
-//     const userAddressesFrame = document.createElement('div');
-//     userAddressesFrame.className = 'form-frame';
-
-//     const addressTitle = document.createElement('div');
-//     addressTitle.textContent = 'User addresses';
-//     userAddressesFrame.appendChild(addressTitle);
-
-//     Object.keys(addresses).forEach((addressKey) => {
-//       const address = addresses[addressKey];
-
-//       const countryInput = document.createElement('div');
-//       countryInput.textContent = `Country: ${address.country}`;
-//       userAddressesFrame.appendChild(countryInput);
-
-//       const cityInput = document.createElement('div');
-//       cityInput.textContent = `City: ${address.city}`;
-//       userAddressesFrame.appendChild(cityInput);
-
-//       const postalInput = document.createElement('div');
-//       postalInput.textContent = `Postal code: ${address.postalCode}`;
-//       userAddressesFrame.appendChild(postalInput);
-
-//       const streetInput = document.createElement('div');
-//       streetInput.textContent = `City: ${address.streetName}`;
-//       userAddressesFrame.appendChild(streetInput);
-
-//       this.form.appendChild(userAddressesFrame);
-//     });
-//   }
-// }
