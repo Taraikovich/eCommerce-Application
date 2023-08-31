@@ -1,9 +1,7 @@
 import { View } from './view';
 import { ProfileForm } from '../components/profileForm';
 import { getUserId } from '../state/getUserId';
-import { createApiBuilderFromCtpClient } from '@commercetools/platform-sdk';
-import { client } from '../api/BuildClient';
-import { projectKey } from '../constants/constants';
+import { getProfileData } from '../api/getProfileData';
 
 export class ProfilePageView extends View {
   private profileForm = new ProfileForm();
@@ -19,20 +17,7 @@ export class ProfilePageView extends View {
     const userId = getUserId();
     if (userId) {
       try {
-        const apiRoot = createApiBuilderFromCtpClient(client).withProjectKey({
-          projectKey,
-        });
-
-        const auth = JSON.parse(localStorage.getItem('auth') as string);
-
-        const { body } = await apiRoot.me().get({
-          headers: {
-            Authorization: `Bearer ${auth?.token}`,
-          }
-        }
-          
-        ).execute();
-        const userData = body;
+        const userData =  await getProfileData();
         localStorage.setItem('userData', JSON.stringify(userData));
 
         if (userData) {
