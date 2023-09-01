@@ -22,7 +22,8 @@ export class ProfilePageView extends View {
         await this.getProfile();
 
         if (this.userData) {
-          const greeting = document.createElement('p');
+          const greeting = document.createElement('div');
+          greeting.className = 'greeting';
           greeting.textContent = `Welcome, ${this.userData.firstName}!`;
           userProfileSection.appendChild(greeting);
           this.profileForm.populateUserData();

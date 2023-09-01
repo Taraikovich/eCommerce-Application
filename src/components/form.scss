@@ -127,6 +127,40 @@
 }
 
 .form-frame {
-  border: solid 1px black;
-  margin-bottom: 20px;
+  
+  margin-bottom: 10px;
+}
+
+#shipping-form {
+  border: 1px solid black;
+  background-color: antiquewhite;
+}
+
+#billing-form {
+  border: 1px solid black;
+  margin-top: 20px;
+  background-color: lightblue;
+}
+
+.address-label {
+font-size: 20px;
+font-weight: 600;
+}
+
+.edit-button {
+  margin-top: 20px;
+  width: 60px;
+}
+
+.title-info {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 600;
+  font-size: 18px;
+}
+.modal {
+  position: absolute;
+  width: 400px;
+  background-color: darkgrey;
 }
