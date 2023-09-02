@@ -15,7 +15,8 @@ export class FilterForm {
       this.type,
       this.color,
       this.addFormBtn(),
-      this.addSelector('sort', 'sort: ')
+      this.addSelector('sort', 'sort: '),
+      this.addResetBtn()
     );
 
     this.gender.append(
@@ -114,5 +115,25 @@ export class FilterForm {
     });
 
     return btn;
+  }
+
+  addResetBtn() {
+    const button = document.createElement('button');
+    button.textContent = 'reset';
+
+    button.addEventListener('click', (e) => {
+      e.preventDefault();
+      const checkboxes = this.form.querySelectorAll('input[type=checkbox]');
+
+      checkboxes.forEach((checkbox) => {
+        if (checkbox instanceof HTMLInputElement) {
+          if (checkbox.checked) {
+            checkbox.click();
+          }
+        }
+      });
+    });
+
+    return button;
   }
 }
