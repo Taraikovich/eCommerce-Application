@@ -80,7 +80,7 @@ export class ProfileForm {
   private streetInputB: HTMLInputElement;
 
   private postalInput: HTMLInputElement;
-  
+
   private postalInputB: HTMLInputElement;
 
   private shippingForm: HTMLDivElement;
@@ -94,6 +94,24 @@ export class ProfileForm {
   private userTitle: HTMLDivElement;
 
   private addressTitle: HTMLDivElement;
+
+  private firstNameInputTitle: HTMLDivElement;
+
+  private lastNameInputTitle: HTMLDivElement;
+
+  private dateOfBirthInputTitle: HTMLDivElement;
+
+  private shippingInputTitle: HTMLDivElement;
+
+  private billingInputTitle: HTMLDivElement;
+
+  private countryInputTitle: HTMLDivElement;
+
+  private cityInputTitle: HTMLDivElement;
+
+  private streetInputTitle: HTMLDivElement;
+
+  private postalInputTitle: HTMLDivElement;
 
   constructor() {
     this.form.className = 'form';
@@ -128,59 +146,111 @@ export class ProfileForm {
     this.editForm.id = 'edit-form';
     this.editForm.addEventListener('submit', (e) => this.saveUserData(e));
 
+    this.firstNameInputTitle = document.createElement('div');
+    this.firstNameInputTitle.textContent = 'First Name'
+    this.firstNameInputTitle.className = 'info-input-title';
     this.firstNameInput = document.createElement('input');
-    this.firstNameInput.id = 'first-name-input';
+    this.firstNameInput.className = 'info-input';
     this.firstNameInput.type = 'text';
+    this.editForm.appendChild(this.firstNameInputTitle);
     this.editForm.appendChild(this.firstNameInput);
 
+    this.lastNameInputTitle = document.createElement('div');
+    this.lastNameInputTitle.textContent = 'Last Name'
+    this.lastNameInputTitle.className = 'info-input-title';
     this.lastNameInput = document.createElement('input');
-    this.lastNameInput.id = 'last-name-input';
+    this.lastNameInput.className = 'info-input';
     this.lastNameInput.type = 'text';
+    this.editForm.appendChild(this.lastNameInputTitle);
     this.editForm.appendChild(this.lastNameInput);
 
+    this.dateOfBirthInputTitle = document.createElement('div');
+    this.dateOfBirthInputTitle.textContent = 'Date of birth'
+    this.dateOfBirthInputTitle.className = 'info-input-title';
     this.dateOfBirthInput = document.createElement('input');
-    this.dateOfBirthInput.id = 'date-of-birth-input';
+    this.dateOfBirthInput.className = 'info-input';
     this.dateOfBirthInput.type = 'text';
+    this.editForm.appendChild(this.dateOfBirthInputTitle);
     this.editForm.appendChild(this.dateOfBirthInput);
 
+    this.shippingInputTitle = document.createElement('div');
+    this.shippingInputTitle.textContent = 'Shipping address'
+    this.shippingInputTitle.className = 'title-address'
+    this.countryInputTitle = document.createElement('div');
+    this.countryInputTitle.textContent = 'Country'
+    this.countryInputTitle.className = 'info-input-title';
     this.countryInput = document.createElement('input');
-    this.countryInput.id = 'country-input';
+    this.countryInput.className = 'info-input';
     this.countryInput.type = 'text';
+    this.editForm.appendChild(this.shippingInputTitle);
+    this.editForm.appendChild(this.countryInputTitle);
     this.editForm.appendChild(this.countryInput);
 
-    this.countryInputB = document.createElement('input');
-    this.countryInputB.id = 'country-input-b';
-    this.countryInputB.type = 'text';
-    this.editForm.appendChild(this.countryInputB);
-
+     this.cityInputTitle = document.createElement('div');
+    this.cityInputTitle.textContent = 'City';
+    this.cityInputTitle.className = 'info-input-title';
     this.cityInput = document.createElement('input');
-    this.cityInput.id = 'city-input';
+    this.cityInput.className = 'info-input';
     this.countryInput.type = 'text';
+    this.editForm.appendChild(this.cityInputTitle);
     this.editForm.appendChild(this.cityInput);
 
-    this.cityInputB = document.createElement('input');
-    this.cityInputB.id = 'city-input';
-    this.countryInputB.type = 'text';
-    this.editForm.appendChild(this.cityInputB);
-
+     this.streetInputTitle = document.createElement('div');
+    this.streetInputTitle.textContent = 'Street'
+    this.streetInputTitle.className = 'info-input-title';
     this.streetInput = document.createElement('input');
-    this.streetInput.id = 'street-input';
+    this.streetInput.className = 'info-input';
     this.streetInput.type = 'text';
+    this.editForm.appendChild(this.streetInputTitle);
     this.editForm.appendChild(this.streetInput);
 
-    this.streetInputB = document.createElement('input');
-    this.streetInputB.id = 'street-input-b';
-    this.streetInputB.type = 'text';
-    this.editForm.appendChild(this.streetInputB);
-
+    this.postalInputTitle = document.createElement('div');
+    this.postalInputTitle.textContent = 'Postal code'
+    this.postalInputTitle.className = 'info-input-title';
     this.postalInput = document.createElement('input');
-    this.postalInput.id = 'postal-input';
+    this.postalInput.className = 'info-input';
     this.postalInput.type = 'text';
+    this.editForm.appendChild(this.postalInputTitle);
     this.editForm.appendChild(this.postalInput);
 
+    this.billingInputTitle = document.createElement('div');
+    this.billingInputTitle.textContent = 'Billing address'
+    this.billingInputTitle.className = 'title-address'
+    this.countryInputTitle = document.createElement('div');
+    this.countryInputTitle.textContent = 'Country'
+    this.countryInputTitle.className = 'info-input-title';
+    this.countryInputB = document.createElement('input');
+    this.countryInputB.className = 'info-input';
+    this.countryInputB.type = 'text';
+    this.editForm.appendChild(this.billingInputTitle);
+    this.editForm.appendChild(this.countryInputTitle);
+    this.editForm.appendChild(this.countryInputB);
+
+    this.cityInputTitle = document.createElement('div');
+    this.cityInputTitle.textContent = 'City'
+    this.cityInputTitle.className = 'info-input-title';
+    this.cityInputB = document.createElement('input');
+    this.cityInputB.className = 'info-input';
+    this.countryInputB.type = 'text';
+    this.editForm.appendChild(this.cityInputTitle);
+    this.editForm.appendChild(this.cityInputB);
+
+    this.streetInputTitle = document.createElement('div');
+    this.streetInputTitle.textContent = 'Street'
+    this.streetInputTitle.className = 'info-input-title';
+    this.streetInputB = document.createElement('input');
+    this.streetInputB.className = 'info-input';
+    this.streetInputB.type = 'text';
+    this.editForm.appendChild(this.streetInputTitle);
+    this.editForm.appendChild(this.streetInputB);
+
+    this.postalInputTitle = document.createElement('div');
+    this.postalInputTitle.textContent = 'Postal code'
+    this.postalInputTitle.className = 'info-input-title';
     this.postalInputB = document.createElement('input');
-    this.postalInputB.id = 'postal-input-b';
+    this.postalInputB.className = 'info-input';
     this.postalInputB.type = 'text';
+    this.editForm.appendChild(this.postalInputTitle);
     this.editForm.appendChild(this.postalInputB);
 
     const saveButton = document.createElement('button');
@@ -223,7 +293,7 @@ export class ProfileForm {
 
     this.streetDisplayB = document.createElement('div');
     this.streetDisplayB.id = 'street-display-b';
-    
+
     this.postalDisplay = document.createElement('div');
     this.postalDisplay.id = 'postal-display';
 

@@ -5,7 +5,7 @@ import { getProfileData } from '../api/getProfileData';
 
 export class ProfilePageView extends View {
   private profileForm = new ProfileForm();
-  
+
   private userData?: UserData;
 
   constructor() {

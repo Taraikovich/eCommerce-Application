@@ -127,7 +127,6 @@
 }
 
 .form-frame {
-  
   margin-bottom: 10px;
 }
 
@@ -143,8 +142,8 @@
 }
 
 .address-label {
-font-size: 20px;
-font-weight: 600;
+  font-size: 20px;
+  font-weight: 600;
 }
 
 .edit-button {
@@ -163,4 +162,28 @@ font-weight: 600;
   position: absolute;
   width: 400px;
   background-color: darkgrey;
+}
+
+.info-input {
+  width: 300px;
+  border: solid 0.5px gray;
+  height: 25px;
+  margin-left: 20px;
+  margin-bottom: 10px;
+}
+
+.info-input-title {
+  margin-left: 20px;
+} 
+
+.close {
+  cursor: pointer;
+  font-size: 24px;
+}
+
+.title-address {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 600;
 }
