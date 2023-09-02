@@ -1,5 +1,8 @@
 import { updateProfileData } from '../api/updateProfileData';
 import { getUserId } from '../state/getUserId';
+// import { formValidation, realTimeValidation } from '../utils/formValidator';
+
+
 
 export interface UserData {
   version: number;
@@ -9,6 +12,7 @@ export interface UserData {
   addresses: Address[];
   defaultBillingAddressId: string;
   defaultShippingAddressId: string;
+  email: string;
 }
 
 interface Address {
@@ -31,7 +35,11 @@ function getUserDataFromLocalStorage(userId: string): UserData | null {
 export class ProfileForm {
   private form = document.createElement('form');
 
+  private isEmailValid = true;
+
   private editButton: HTMLButtonElement;
+
+  private editPassButton: HTMLButtonElement;
 
   private modal: HTMLDivElement;
 
@@ -113,6 +121,12 @@ export class ProfileForm {
 
   private postalInputTitle: HTMLDivElement;
 
+  private successMessage: HTMLDivElement;
+
+  private emailInputTitle: HTMLDivElement;
+
+  private emailInput: HTMLInputElement;
+
   constructor() {
     this.form.className = 'form';
     this.userTitle = document.createElement('div');
@@ -121,6 +135,10 @@ export class ProfileForm {
     this.addressTitle = document.createElement('div');
     this.addressTitle.className = 'title-info';
     this.addressTitle.textContent = 'User addresses';
+
+    this.editPassButton = document.createElement('button');
+    this.editPassButton.textContent = 'Change password';
+    this.editPassButton.className = 'edit-pass-button';
 
     this.editButton = document.createElement('button');
     this.editButton.textContent = 'Edit';
@@ -146,8 +164,23 @@ export class ProfileForm {
     this.editForm.id = 'edit-form';
     this.editForm.addEventListener('submit', (e) => this.saveUserData(e));
 
+    this.successMessage = document.createElement('div');
+    this.successMessage.className = 'success-message';
+    this.successMessage.textContent = 'Changes have been saved successfully!';
+    this.successMessage.style.display = 'none';
+    this.form.appendChild(this.successMessage);
+
+    this.emailInputTitle = document.createElement('div');
+    this.emailInputTitle.textContent = 'Email';
+    this.emailInputTitle.className = 'info-input-title';
+    this.emailInput = document.createElement('input');
+    this.emailInput.className = 'info-input';
+    this.emailInput.type = 'text';
+    this.editForm.appendChild(this.emailInputTitle);
+    this.editForm.appendChild(this.emailInput);
+
     this.firstNameInputTitle = document.createElement('div');
-    this.firstNameInputTitle.textContent = 'First Name'
+    this.firstNameInputTitle.textContent = 'First Name';
     this.firstNameInputTitle.className = 'info-input-title';
     this.firstNameInput = document.createElement('input');
     this.firstNameInput.className = 'info-input';
@@ -156,7 +189,7 @@ export class ProfileForm {
     this.editForm.appendChild(this.firstNameInput);
 
     this.lastNameInputTitle = document.createElement('div');
-    this.lastNameInputTitle.textContent = 'Last Name'
+    this.lastNameInputTitle.textContent = 'Last Name';
     this.lastNameInputTitle.className = 'info-input-title';
     this.lastNameInput = document.createElement('input');
     this.lastNameInput.className = 'info-input';
@@ -165,7 +198,7 @@ export class ProfileForm {
     this.editForm.appendChild(this.lastNameInput);
 
     this.dateOfBirthInputTitle = document.createElement('div');
-    this.dateOfBirthInputTitle.textContent = 'Date of birth'
+    this.dateOfBirthInputTitle.textContent = 'Date of birth';
     this.dateOfBirthInputTitle.className = 'info-input-title';
     this.dateOfBirthInput = document.createElement('input');
     this.dateOfBirthInput.className = 'info-input';
@@ -174,10 +207,10 @@ export class ProfileForm {
     this.editForm.appendChild(this.dateOfBirthInput);
 
     this.shippingInputTitle = document.createElement('div');
-    this.shippingInputTitle.textContent = 'Shipping address'
-    this.shippingInputTitle.className = 'title-address'
+    this.shippingInputTitle.textContent = 'Shipping address';
+    this.shippingInputTitle.className = 'title-address';
     this.countryInputTitle = document.createElement('div');
-    this.countryInputTitle.textContent = 'Country'
+    this.countryInputTitle.textContent = 'Country';
     this.countryInputTitle.className = 'info-input-title';
     this.countryInput = document.createElement('input');
     this.countryInput.className = 'info-input';
@@ -186,7 +219,7 @@ export class ProfileForm {
     this.editForm.appendChild(this.countryInputTitle);
     this.editForm.appendChild(this.countryInput);
 
-     this.cityInputTitle = document.createElement('div');
+    this.cityInputTitle = document.createElement('div');
     this.cityInputTitle.textContent = 'City';
     this.cityInputTitle.className = 'info-input-title';
     this.cityInput = document.createElement('input');
@@ -195,8 +228,8 @@ export class ProfileForm {
     this.editForm.appendChild(this.cityInputTitle);
     this.editForm.appendChild(this.cityInput);
 
-     this.streetInputTitle = document.createElement('div');
-    this.streetInputTitle.textContent = 'Street'
+    this.streetInputTitle = document.createElement('div');
+    this.streetInputTitle.textContent = 'Street';
     this.streetInputTitle.className = 'info-input-title';
     this.streetInput = document.createElement('input');
     this.streetInput.className = 'info-input';
@@ -205,7 +238,7 @@ export class ProfileForm {
     this.editForm.appendChild(this.streetInput);
 
     this.postalInputTitle = document.createElement('div');
-    this.postalInputTitle.textContent = 'Postal code'
+    this.postalInputTitle.textContent = 'Postal code';
     this.postalInputTitle.className = 'info-input-title';
     this.postalInput = document.createElement('input');
     this.postalInput.className = 'info-input';
@@ -214,10 +247,10 @@ export class ProfileForm {
     this.editForm.appendChild(this.postalInput);
 
     this.billingInputTitle = document.createElement('div');
-    this.billingInputTitle.textContent = 'Billing address'
-    this.billingInputTitle.className = 'title-address'
+    this.billingInputTitle.textContent = 'Billing address';
+    this.billingInputTitle.className = 'title-address';
     this.countryInputTitle = document.createElement('div');
-    this.countryInputTitle.textContent = 'Country'
+    this.countryInputTitle.textContent = 'Country';
     this.countryInputTitle.className = 'info-input-title';
     this.countryInputB = document.createElement('input');
     this.countryInputB.className = 'info-input';
@@ -227,7 +260,7 @@ export class ProfileForm {
     this.editForm.appendChild(this.countryInputB);
 
     this.cityInputTitle = document.createElement('div');
-    this.cityInputTitle.textContent = 'City'
+    this.cityInputTitle.textContent = 'City';
     this.cityInputTitle.className = 'info-input-title';
     this.cityInputB = document.createElement('input');
     this.cityInputB.className = 'info-input';
@@ -236,7 +269,7 @@ export class ProfileForm {
     this.editForm.appendChild(this.cityInputB);
 
     this.streetInputTitle = document.createElement('div');
-    this.streetInputTitle.textContent = 'Street'
+    this.streetInputTitle.textContent = 'Street';
     this.streetInputTitle.className = 'info-input-title';
     this.streetInputB = document.createElement('input');
     this.streetInputB.className = 'info-input';
@@ -245,7 +278,7 @@ export class ProfileForm {
     this.editForm.appendChild(this.streetInputB);
 
     this.postalInputTitle = document.createElement('div');
-    this.postalInputTitle.textContent = 'Postal code'
+    this.postalInputTitle.textContent = 'Postal code';
     this.postalInputTitle.className = 'info-input-title';
     this.postalInputB = document.createElement('input');
     this.postalInputB.className = 'info-input';
@@ -327,10 +360,17 @@ export class ProfileForm {
     this.billingForm.appendChild(this.postalDisplayB);
 
     this.form.appendChild(this.editButton);
+    this.form.appendChild(this.editPassButton);
 
     this.modal.appendChild(this.closeModalButton);
     this.modal.appendChild(this.editForm);
+
+    // this.emailInput.addEventListener('input', (e) => {
+    //   realTimeValidation(e);
+    // });
   }
+
+  
 
   createForm(): HTMLFormElement {
     this.form.appendChild(this.modal);
@@ -348,6 +388,7 @@ export class ProfileForm {
         this.firstNameInput.value = userData.firstName;
         this.lastNameInput.value = userData.lastName;
         this.dateOfBirthInput.value = userData.dateOfBirth;
+        this.emailInput.value = userData.email;
         this.countryInput.value = userData.addresses[0].country;
         this.cityInput.value = userData.addresses[0].city;
         this.streetInput.value = userData.addresses[0].streetName;
@@ -373,6 +414,7 @@ export class ProfileForm {
         userData.firstName = this.firstNameInput.value;
         userData.lastName = this.lastNameInput.value;
         userData.dateOfBirth = this.dateOfBirthInput.value;
+        userData.email = this.emailInput.value;
         userData.addresses[0].country = this.countryInput.value;
         userData.addresses[0].city = this.cityInput.value;
         userData.addresses[0].streetName = this.streetInput.value;
@@ -383,10 +425,21 @@ export class ProfileForm {
         userData.addresses[1].postalCode = this.postalInputB.value;
         await updateProfileData(userData);
         this.populateUserData();
-      }
+      this.showSuccessMessage();
+      setTimeout(() => this.hideSuccessMessage(), 3000);
+      
     }
-    this.closeModal();
   }
+  this.closeModal();
+}
+
+private showSuccessMessage(): void {
+  this.successMessage.style.display = 'block';
+}
+
+private hideSuccessMessage(): void {
+  this.successMessage.style.display = 'none';
+}
 
   private updateFirstNameDisplay(firstName: string): void {
     this.firstNameDisplay.textContent = `First Name: ${firstName}`;

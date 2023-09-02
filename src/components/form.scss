@@ -126,6 +126,10 @@
   height: 20px;
 }
 
+.form {
+  display: inherit;
+}
+
 .form-frame {
   margin-bottom: 10px;
 }
@@ -151,6 +155,11 @@
   width: 60px;
 }
 
+.edit-pass-button {
+  margin-top: 20px;
+  width: 150px;
+}
+
 .title-info {
   display: flex;
   justify-content: center;
@@ -162,6 +171,7 @@
   position: absolute;
   width: 400px;
   background-color: darkgrey;
+  top: 50px;
 }
 
 .info-input {
@@ -174,7 +184,7 @@
 
 .info-input-title {
   margin-left: 20px;
-} 
+}
 
 .close {
   cursor: pointer;
@@ -186,4 +196,15 @@
   justify-content: center;
   align-items: center;
   font-weight: 600;
+}
+
+.success-message {
+  position: absolute;
+  top: 20%;
+  left: 42%;
+  background-color: rgb(226, 241, 168);
+  opacity: 80%;
+  font-size: 36px;
+  width: 300px;
+  text-align: center;
 }
