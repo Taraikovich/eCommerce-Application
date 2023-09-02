@@ -50,6 +50,7 @@ export class View {
       burgerMenu.classList.toggle('header__burger-menu_open');
       const nav = document.querySelector('.header__nav');
       nav?.classList.toggle('open');
+      document.body.classList.toggle('open');
     });
 
     this.header.append(burgerMenu);

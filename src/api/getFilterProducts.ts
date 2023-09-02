@@ -2,13 +2,25 @@ import { createApiBuilderFromCtpClient } from '@commercetools/platform-sdk';
 import { client } from './BuildClient';
 import { projectKey } from '../constants/constants';
 
-export async function getProducts() {
+export async function getFilterProducts(
+  filterStr: string[] = [],
+  sortStr = 'name.en-US asc'
+) {
   try {
     const apiRoot = createApiBuilderFromCtpClient(client).withProjectKey({
       projectKey,
     });
 
-    const { body } = await apiRoot.products().get().execute();
+    const { body } = await apiRoot
+      .productProjections()
+      .search()
+      .get({
+        queryArgs: {
+          filter: filterStr,
+          sort: sortStr,
+        },
+      })
+      .execute();
 
     const results = body.results;
 
@@ -21,31 +33,28 @@ export async function getProducts() {
         discountedPrice: number;
       };
     } = {};
-
     if (results) {
       results.forEach((item, index) => {
-        const name = item.masterData.current.name['en-US'];
+        const name = item.name['en-US'];
         let description = 'non';
-        if (item.masterData.current.description) {
-          description = item.masterData.current.description['en-US'];
+        if (item.description) {
+          description = item.description['en-US'];
         }
         let images = 'non';
-        if (item.masterData.current.masterVariant.images?.length) {
-          images = item.masterData.current.masterVariant.images[0].url;
+        if (item.masterVariant.images?.length) {
+          images = item.masterVariant.images[0].url;
         }
 
         let price = 0;
-        if (item.masterData.current.masterVariant.prices?.length) {
-          price =
-            item.masterData.current.masterVariant.prices[0].value.centAmount;
+        if (item.masterVariant.prices?.length) {
+          price = item.masterVariant.prices[0].value.centAmount;
         }
 
         let discountedPrice = 0;
-        if (item.masterData.current.masterVariant.prices?.length) {
-          if (item.masterData.current.masterVariant.prices[0].discounted) {
+        if (item.masterVariant.prices?.length) {
+          if (item.masterVariant.prices[0].discounted) {
             discountedPrice =
-              item.masterData.current.masterVariant.prices[0].discounted.value
-                .centAmount;
+              item.masterVariant.prices[0].discounted.value.centAmount;
           }
         }
 
@@ -57,10 +66,7 @@ export async function getProducts() {
           discountedPrice: discountedPrice,
         };
       });
-      // console.log(products);
       return products;
     }
-  } catch (error) {
-    // console.log(error);
-  }
+  } catch (error) {}
 }
