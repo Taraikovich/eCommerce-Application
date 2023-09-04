@@ -18,7 +18,7 @@ export const validationRules: ValidationRules = {
   password: [
     /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/,
     '✖ Minimum 8 characters, at least 1 uppercase letter, 1 lowercase letter, and 1 number',
-  ],  
+  ],
   'current-password': [
     /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/,
     '✖ Minimum 8 characters, at least 1 uppercase letter, 1 lowercase letter, and 1 number',
@@ -78,7 +78,6 @@ export function formValidation(event: SubmitEvent) {
     let isValid = true;
 
     for (const key of formData.keys()) {
-     
       if (key in validationRules) {
         if (!validationRules[key][0].test(formData.get(key) as string)) {
           const errorMessage = document.querySelector(
@@ -87,10 +86,10 @@ export function formValidation(event: SubmitEvent) {
           const input = document.querySelector(
             `.form__${key} input`
           ) as HTMLElement;
-          if(errorMessage) {
+          if (errorMessage) {
             errorMessage.textContent = validationRules[key][1];
           }
-          if(input) {
+          if (input) {
             input.style.border = '1px solid red';
           }
           isValid = false;

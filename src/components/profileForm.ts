@@ -369,7 +369,6 @@ export class ProfileForm {
     const userId = getUserId();
     if (userId) {
       const userData = getUserDataFromLocalStorage(userId);
-
     }
   }
 

@@ -5,7 +5,6 @@ import {
 import { client } from './BuildClient';
 import { projectKey } from '../constants/constants';
 
-
 export async function updatePassword(
   id: string,
   version: number,

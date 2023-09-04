@@ -3,7 +3,6 @@ import { ProfileForm, UserData } from '../components/profileForm';
 import { getUserId } from '../state/getUserId';
 import { getProfileData } from '../api/getProfileData';
 
-
 export class ProfilePageView extends View {
   private profileForm = new ProfileForm();
 
