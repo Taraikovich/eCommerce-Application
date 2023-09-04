@@ -14,6 +14,7 @@
       margin-top: 20px;
     }
   }
+
   // Стили для полей формы
   &__sort {
     position: absolute;
@@ -41,6 +42,10 @@
   &__shipping-street,
   &__shipping-building,
   &__shipping-post-code,
+  &__country,
+  &__city,
+  &__street,
+  &__post-code,
   &__addressesMatch,
   fieldset {
     margin-bottom: 15px;
@@ -166,12 +171,19 @@
 #shipping-form {
   border: 1px solid black;
   background-color: antiquewhite;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
 }
 
 #billing-form {
   border: 1px solid black;
-  margin-top: 20px;
   background-color: lightblue;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
 }
 
 .address-label {
@@ -197,20 +209,13 @@
   font-size: 18px;
 }
 .modal {
+  display: block;
   position: absolute;
-  width: 400px;
-  background-color: darkgrey;
-  top: 50px;
-  box-sizing: border-box;
-  padding: 10px;
-}
-
-.modal-pass {
-  position: absolute;
-  width: 400px;
-  background-color: darkgrey;
-  top: 50px;
-  padding: 10px;
+  left: 35%;
+  background-color: rgb(219, 216, 209);
+  border-radius: 5px;
+  width: 30%;
+  padding: 20px;
 }
 
 .info-input {
@@ -241,4 +246,36 @@
   font-size: 36px;
   width: 300px;
   text-align: center;
+}
+
+.form-profile {
+  display: flex;
+  flex-direction: row;
+}
+.wrapper-profile {
+  display: flex;
+  flex-direction: column;
+  margin: 20px;
+}
+.wrapper-info {
+  border: solid 1px black;
+  padding: 10px;
+}
+
+.edit-address-button {
+  margin-top: 10px;
+}
+
+.wrapper-address {
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  border: solid 1px black;
+  margin: 10px;
+}
+
+.wrapper-ship-bill {
+  display: flex;
+  flex-direction: row;
+  margin: 20px;
 }

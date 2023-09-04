@@ -36,6 +36,11 @@ export const validationRules: ValidationRules = {
     '✖ Must contain at least one character and no special characters or numbers',
   ],
   'billing-street': [/.+/, '✖ Must contain at least one character'],
+  'city': [
+    /^[A-Za-z]+$/,
+    '✖ Must contain at least one character and no special characters or numbers',
+  ],
+  'street': [/.+/, '✖ Must contain at least one character'],
   'shipping-city': [
     /^[A-Za-z]+$/,
     '✖ Must contain at least one character and no special characters or numbers',
@@ -108,7 +113,7 @@ export function formValidation(event: SubmitEvent) {
           isValid = false;
         }
       }
-      if (key === 'billing-post-code' || key === 'shipping-post-code') {
+      if (key === 'billing-post-code' || key === 'shipping-post-code' || key === 'post-code') {
         if (key === 'billing-post-code') {
           if (
             !isValidPostalCode(

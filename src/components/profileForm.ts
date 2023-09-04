@@ -1,7 +1,11 @@
+import { Address, Customer } from '@commercetools/platform-sdk';
+import { deleteAddress } from '../api/deleteAddress';
+import { addAddress } from '../api/addAddress';
 import { updatePassword } from '../api/updatePassword';
 import { updateProfileData } from '../api/updateProfileData';
 import { getUserId } from '../state/getUserId';
 import { formValidation, realTimeValidation } from '../utils/formValidator';
+import { editAddress } from '../api/editAddress';
 
 export interface UserData {
   id: string;
@@ -9,19 +13,19 @@ export interface UserData {
   firstName: string;
   lastName: string;
   dateOfBirth: string;
-  addresses: Address[];
+  addresses: UserDataAddress[];
   defaultBillingAddressId: string;
   defaultShippingAddressId: string;
   email: string;
   password: string;
 }
 
-interface Address {
+export interface UserDataAddress {
   country: string;
   city: string;
   postalCode: string;
   streetName: string;
-  id: string;
+  id?: string;
 }
 
 function getUserDataFromLocalStorage(userId: string): UserData | null {
@@ -34,15 +38,31 @@ function getUserDataFromLocalStorage(userId: string): UserData | null {
 }
 
 export class ProfileForm {
-  private form = document.createElement('form');
+  private form: HTMLDivElement;
 
-  // private isEmailValid = true;
+  private wrapperUserForm: HTMLDivElement;
+
+  private wrapperInfoForm: HTMLDivElement;
+
+  private wrapperAddressForm: HTMLDivElement;
+
+  private wrapperShipForm: HTMLDivElement;
+
+  private wrapperBilForm: HTMLDivElement;
+
+  private wrapperShipBilForm: HTMLDivElement;
+
+  private wrapperEditButton: HTMLDivElement;
 
   private editButton: HTMLButtonElement;
+
+  private editAddressButton: HTMLButtonElement;
 
   private editPassButton: HTMLButtonElement;
 
   private modalPass: HTMLDivElement;
+
+  private modalAddress: HTMLDivElement;
 
   private modal: HTMLDivElement;
 
@@ -50,9 +70,13 @@ export class ProfileForm {
 
   private closeModalButtonPass: HTMLSpanElement;
 
+  private closeModalButtonAddress: HTMLSpanElement;
+
   private editForm: HTMLFormElement;
 
   private editFormPass: HTMLFormElement;
+
+  private editFormAddress: HTMLFormElement;
 
   private firstNameDisplay: HTMLDivElement;
 
@@ -60,21 +84,7 @@ export class ProfileForm {
 
   private dateOfBirthDisplay: HTMLDivElement;
 
-  private countryDisplay: HTMLDivElement;
-
-  private countryDisplayB: HTMLDivElement;
-
-  private cityDisplay: HTMLDivElement;
-
-  private cityDisplayB: HTMLDivElement;
-
-  private streetDisplay: HTMLDivElement;
-
-  private streetDisplayB: HTMLDivElement;
-
-  private postalDisplay: HTMLDivElement;
-
-  private postalDisplayB: HTMLDivElement;
+  private emailDisplay: HTMLDivElement;
 
   private shippingForm: HTMLDivElement;
 
@@ -94,8 +104,25 @@ export class ProfileForm {
 
   private successMessage: HTMLDivElement;
 
+  private isBillingAddressType = false;
+
   constructor() {
-    this.form.className = 'form';
+    this.form = document.createElement('div');
+    this.wrapperUserForm = document.createElement('div');
+    this.wrapperUserForm.className = 'wrapper-profile';
+    this.wrapperInfoForm = document.createElement('div');
+    this.wrapperInfoForm.className = 'wrapper-info';
+    this.wrapperAddressForm = document.createElement('div');
+    this.wrapperAddressForm.className = 'wrapper-address';
+    this.wrapperShipBilForm = document.createElement('div');
+    this.wrapperShipBilForm.className = 'wrapper-ship-bill';
+    this.wrapperShipForm = document.createElement('div');
+    this.wrapperShipForm.className = 'wrapper-profile';
+    this.wrapperBilForm = document.createElement('div');
+    this.wrapperBilForm.className = 'wrapper-profile';
+    this.wrapperEditButton = document.createElement('div');
+    this.wrapperEditButton.className = 'wrapper-edit-button';
+    this.form.className = 'form-profile';
     this.userTitle = document.createElement('div');
     this.userTitle.className = 'title-info';
     this.userTitle.textContent = 'User information';
@@ -112,6 +139,22 @@ export class ProfileForm {
       this.modalPass.style.display = 'block';
     });
 
+    this.editAddressButton = document.createElement('button');
+    this.editAddressButton.textContent = 'Add new address';
+    this.editAddressButton.className = 'edit-address-button';
+    this.editAddressButton.addEventListener('click', (e) => {
+      this.isBillingAddressType = false;
+      this.openModalAddress();
+    });
+
+    const buttonBilling = document.createElement('button');
+    buttonBilling.textContent = 'Add new billing address';
+    buttonBilling.className = 'edit-address-button';
+    buttonBilling.addEventListener('click', (e) => {
+      this.isBillingAddressType = true;
+      this.openModalAddress();
+    });
+
     this.editButton = document.createElement('button');
     this.editButton.textContent = 'Edit';
     this.editButton.className = 'edit-button';
@@ -126,9 +169,14 @@ export class ProfileForm {
     this.modal.className = 'modal';
     this.modal.style.display = 'none';
 
+    this.modalAddress = document.createElement('div');
+    this.modalAddress.id = 'modal-address';
+    this.modalAddress.className = 'modal';
+    this.modalAddress.style.display = 'none';
+
     this.modalPass = document.createElement('div');
     this.modalPass.id = 'modal-pass';
-    this.modalPass.className = 'modal-pass';
+    this.modalPass.className = 'modal';
     this.modalPass.style.display = 'none';
 
     this.closeModalButton = document.createElement('span');
@@ -145,6 +193,14 @@ export class ProfileForm {
       this.closeModalPass()
     );
 
+    this.closeModalButtonAddress = document.createElement('span');
+    this.closeModalButtonAddress.id = 'close-modal-address';
+    this.closeModalButtonAddress.className = 'close';
+    this.closeModalButtonAddress.textContent = '×';
+    this.closeModalButtonAddress.addEventListener('click', () =>
+      this.closeModalAddress()
+    );
+
     this.editForm = document.createElement('form');
     this.editForm.id = 'edit-form';
     this.editForm.addEventListener('submit', (e) => this.saveUserData(e));
@@ -155,6 +211,9 @@ export class ProfileForm {
       this.updateUserPassword(e)
     );
 
+    this.editFormAddress = document.createElement('form');
+    this.editFormAddress.id = 'edit-form-address';
+
     this.successMessage = document.createElement('div');
     this.successMessage.className = 'success-message';
     this.successMessage.textContent = 'Changes have been saved successfully!';
@@ -164,14 +223,11 @@ export class ProfileForm {
     this.appendInput('First Name', 'firstName', this.editForm);
     this.appendInput('Last Name', 'lastName', this.editForm);
     this.appendInput('Date of birth', 'birth', this.editForm);
-    this.appendInput('Country', 'shipping-country', this.editForm);
-    this.appendInput('City', 'shipping-city', this.editForm);
-    this.appendInput('Street', 'shipping-street', this.editForm);
-    this.appendInput('Postal code', 'shipping-post-code', this.editForm);
-    this.appendInput('Country', 'billing-country', this.editForm);
-    this.appendInput('City', 'billing-city', this.editForm);
-    this.appendInput('Street', 'billing-street', this.editForm);
-    this.appendInput('Postal code', 'billing-post-code', this.editForm);
+
+    this.appendInput('Country', 'country', this.editFormAddress);
+    this.appendInput('City', 'city', this.editFormAddress);
+    this.appendInput('Street', 'street', this.editFormAddress);
+    this.appendInput('Postal code', 'post-code', this.editFormAddress);
 
     this.shippingInputTitle = document.createElement('div');
     this.shippingInputTitle.textContent = 'Shipping address';
@@ -197,36 +253,16 @@ export class ProfileForm {
     this.dateOfBirthDisplay.id = 'date-of-birth-display';
     this.dateOfBirthDisplay.className = 'form-frame';
 
+    this.emailDisplay = document.createElement('div');
+    this.emailDisplay.id = 'email-display';
+    this.emailDisplay.className = 'form-frame';
+
     this.shippingForm = document.createElement('div');
     this.shippingForm.id = 'shipping-form';
 
     this.shippingAdressLabel = document.createElement('div');
     this.shippingAdressLabel.className = 'address-label';
     this.shippingAdressLabel.textContent = 'Shipping address';
-
-    this.countryDisplay = document.createElement('div');
-    this.countryDisplay.id = 'country-display';
-
-    this.countryDisplayB = document.createElement('div');
-    this.countryDisplayB.id = 'country-display-b';
-
-    this.cityDisplay = document.createElement('div');
-    this.cityDisplay.id = 'city-display';
-
-    this.cityDisplayB = document.createElement('div');
-    this.cityDisplayB.id = 'city-display-b';
-
-    this.streetDisplay = document.createElement('div');
-    this.streetDisplay.id = 'street-display';
-
-    this.streetDisplayB = document.createElement('div');
-    this.streetDisplayB.id = 'street-display-b';
-
-    this.postalDisplay = document.createElement('div');
-    this.postalDisplay.id = 'postal-display';
-
-    this.postalDisplayB = document.createElement('div');
-    this.postalDisplayB.id = 'postal-display-b';
 
     this.billingForm = document.createElement('div');
     this.billingForm.id = 'billing-form';
@@ -235,27 +271,32 @@ export class ProfileForm {
     this.billingAdressLabel.className = 'address-label';
     this.billingAdressLabel.textContent = 'Billing address';
 
-    this.form.appendChild(this.userTitle);
-    this.form.appendChild(this.firstNameDisplay);
-    this.form.appendChild(this.lastNameDisplay);
-    this.form.appendChild(this.dateOfBirthDisplay);
-    this.form.appendChild(this.addressTitle);
+    this.wrapperUserForm.appendChild(this.userTitle);
+    this.wrapperInfoForm.appendChild(this.firstNameDisplay);
+    this.wrapperInfoForm.appendChild(this.lastNameDisplay);
+    this.wrapperInfoForm.appendChild(this.dateOfBirthDisplay);
+    this.wrapperInfoForm.appendChild(this.emailDisplay);
+    this.wrapperUserForm.appendChild(this.wrapperInfoForm);
+    this.wrapperEditButton.appendChild(this.editButton);
+    this.wrapperEditButton.appendChild(this.editPassButton);
+    this.wrapperUserForm.appendChild(this.wrapperEditButton);
 
-    this.form.appendChild(this.shippingForm);
+    this.wrapperAddressForm.appendChild(this.addressTitle);
+    this.wrapperShipForm.appendChild(this.shippingInputTitle);
+    this.wrapperShipForm.appendChild(this.shippingForm);
     this.shippingForm.appendChild(this.shippingAdressLabel);
-    this.shippingForm.appendChild(this.countryDisplay);
-    this.shippingForm.appendChild(this.cityDisplay);
-    this.shippingForm.appendChild(this.streetDisplay);
-    this.shippingForm.appendChild(this.postalDisplay);
-    this.form.appendChild(this.billingForm);
-    this.billingForm.appendChild(this.billingAdressLabel);
-    this.billingForm.appendChild(this.countryDisplayB);
-    this.billingForm.appendChild(this.cityDisplayB);
-    this.billingForm.appendChild(this.streetDisplayB);
-    this.billingForm.appendChild(this.postalDisplayB);
+    this.wrapperShipForm.appendChild(this.editAddressButton);
 
-    this.form.appendChild(this.editButton);
-    this.form.appendChild(this.editPassButton);
+    this.wrapperShipBilForm.appendChild(this.wrapperShipForm);
+    this.wrapperShipBilForm.appendChild(this.wrapperBilForm);
+
+    this.wrapperBilForm.appendChild(this.billingInputTitle);
+    this.wrapperBilForm.appendChild(this.billingForm);
+    this.billingForm.appendChild(this.billingAdressLabel);
+    this.wrapperBilForm.appendChild(buttonBilling);
+    this.wrapperAddressForm.appendChild(this.wrapperShipBilForm);
+    this.form.appendChild(this.wrapperUserForm);
+    this.form.appendChild(this.wrapperAddressForm);
 
     this.modal.appendChild(this.closeModalButton);
     this.modal.appendChild(this.editForm);
@@ -272,14 +313,17 @@ export class ProfileForm {
       this.editFormPass,
       'password'
     );
+
     const saveButtonPass = document.createElement('input');
     saveButtonPass.value = 'Save';
     saveButtonPass.type = 'submit';
+    saveButtonPass.className = 'button';
     this.editFormPass.appendChild(saveButtonPass);
 
     const cancelButtonPass = document.createElement('input');
     cancelButtonPass.type = 'button';
     cancelButtonPass.value = 'Cancel';
+    cancelButtonPass.className = 'button';
     cancelButtonPass.textContent = 'Cancel';
     this.editFormPass.appendChild(cancelButtonPass);
 
@@ -288,9 +332,25 @@ export class ProfileForm {
     this.modalPass.appendChild(this.closeModalButtonPass);
     this.modalPass.appendChild(this.editFormPass);
 
-    // this.emailInput.addEventListener('input', (e) => {
-    //   realTimeValidation(e);
-    // });
+    const saveButtonAddress = document.createElement('input');
+    saveButtonAddress.value = 'Save';
+    saveButtonAddress.type = 'submit';
+    saveButtonAddress.className = 'button';
+    this.editFormAddress.appendChild(saveButtonAddress);
+
+    const cancelButtonAddress = document.createElement('input');
+    cancelButtonAddress.type = 'button';
+    cancelButtonAddress.value = 'Cancel';
+    cancelButtonAddress.className = 'button';
+    cancelButtonAddress.textContent = 'Cancel';
+    this.editFormAddress.appendChild(cancelButtonAddress);
+
+    cancelButtonAddress.addEventListener('click', () =>
+      this.closeModalAddress()
+    );
+
+    this.modalAddress.appendChild(this.closeModalButtonAddress);
+    this.modalAddress.appendChild(this.editFormAddress);
   }
 
   appendInput(
@@ -321,9 +381,10 @@ export class ProfileForm {
     form.appendChild(wrapper);
   }
 
-  createForm(): HTMLFormElement {
+  createForm(): HTMLDivElement {
     this.form.appendChild(this.modal);
     this.form.appendChild(this.modalPass);
+    this.form.appendChild(this.modalAddress);
     return this.form;
   }
 
@@ -338,37 +399,37 @@ export class ProfileForm {
         (this.editForm.elements as any).lastName.value = userData.lastName;
         (this.editForm.elements as any).birth.value = userData.dateOfBirth;
         (this.editForm.elements as any).email.value = userData.email;
-        const shippingAddress = userData?.addresses.find(
-          (adress) => adress.id === userData.defaultShippingAddressId
-        );
-        const billingAddress = userData?.addresses.find(
-          (adress) => adress.id === userData.defaultBillingAddressId
-        );
-        (this.editForm.elements as any)['shipping-country'].value =
-          shippingAddress?.country;
-        (this.editForm.elements as any)['shipping-city'].value =
-          shippingAddress?.city;
-        (this.editForm.elements as any)['shipping-street'].value =
-          shippingAddress?.streetName;
-        (this.editForm.elements as any)['shipping-post-code'].value =
-          shippingAddress?.postalCode;
-
-        (this.editForm.elements as any)['billing-country'].value =
-          shippingAddress?.country;
-        (this.editForm.elements as any)['billing-city'].value =
-          shippingAddress?.city;
-        (this.editForm.elements as any)['billing-street'].value =
-          shippingAddress?.streetName;
-        (this.editForm.elements as any)['billing-post-code'].value =
-          shippingAddress?.postalCode;
       }
     }
   }
 
-  private openModalPass(): void {
-    const userId = getUserId();
-    if (userId) {
-      const userData = getUserDataFromLocalStorage(userId);
+  private openModalPass(): void {}
+
+  private openModalAddress(address?: Address): void {
+    this.modalAddress.style.display = 'block';
+    this.editFormAddress.removeEventListener('submit', (e) => {
+      this.editAddress(e, address?.id as string);
+    });
+    this.editFormAddress.removeEventListener('submit', (e) => {
+      this.addAddress(e, this.isBillingAddressType);
+    });
+    if (address) {
+      (this.editFormAddress.elements as any).country.value = address?.country;
+      (this.editFormAddress.elements as any).city.value = address?.city;
+      (this.editFormAddress.elements as any).street.value = address?.streetName;
+      (this.editFormAddress.elements as any)['post-code'].value =
+        address?.postalCode;
+      this.editFormAddress.addEventListener('submit', (e) => {
+        this.editAddress(e, address.id as string);
+      });
+    } else {
+      (this.editFormAddress.elements as any).country.value = '';
+      (this.editFormAddress.elements as any).city.value = '';
+      (this.editFormAddress.elements as any).street.value = '';
+      (this.editFormAddress.elements as any)['post-code'].value = '';
+      this.editFormAddress.addEventListener('submit', (e) => {
+        this.addAddress(e, this.isBillingAddressType);
+      });
     }
   }
 
@@ -378,6 +439,10 @@ export class ProfileForm {
 
   private closeModalPass(): void {
     this.modalPass.style.display = 'none';
+  }
+
+  private closeModalAddress(): void {
+    this.modalAddress.style.display = 'none';
   }
 
   private async updateUserPassword(e: SubmitEvent): Promise<void> {
@@ -392,17 +457,88 @@ export class ProfileForm {
 
         const formValid = formValidation(e as SubmitEvent);
         if (formValid) {
-          await updatePassword(
+          const result = await updatePassword(
             userData.id,
             userData.version,
             currentPassword,
             newPassword,
             e
           );
+          if (result) {
+            this.showSuccessMessage();
+            setTimeout(() => this.hideSuccessMessage(), 3000);
+            this.closeModalPass();
+          }
+        }
+      }
+    }
+  }
 
+  private async addAddress(e: SubmitEvent, isBilling: boolean): Promise<void> {
+    e.preventDefault();
+    const userId = getUserId();
+    if (userId) {
+      const userData = getUserDataFromLocalStorage(userId);
+      const formData = new FormData(e.target as HTMLFormElement);
+      if (userData) {
+        const data: UserDataAddress = {
+          country: formData.get('country') as string,
+          city: formData.get('city') as string,
+          postalCode: formData.get('post-code') as string,
+          streetName: formData.get('street') as string,
+        };
+        const formValid = formValidation(e as SubmitEvent);
+        if (formValid) {
+          const result = await addAddress(userData, data, isBilling, e);
+          if (result) {
+            this.populateUserData();
+            this.showSuccessMessage();
+            setTimeout(() => this.hideSuccessMessage(), 3000);
+            this.closeModalAddress();
+          }
+        }
+      }
+    }
+  }
+
+  private async editAddress(e: SubmitEvent, addressId: string): Promise<void> {
+    e.preventDefault();
+    const userId = getUserId();
+    if (userId) {
+      const userData = getUserDataFromLocalStorage(userId);
+      const formData = new FormData(e.target as HTMLFormElement);
+      if (userData) {
+        const data: UserDataAddress = {
+          country: formData.get('country') as string,
+          city: formData.get('city') as string,
+          postalCode: formData.get('post-code') as string,
+          streetName: formData.get('street') as string,
+        };
+        const formValid = formValidation(e as SubmitEvent);
+        if (formValid) {
+          const result = await editAddress(userData, addressId, data, e);
+          if (result) {
+            this.populateUserData();
+            this.showSuccessMessage();
+            setTimeout(() => this.hideSuccessMessage(), 3000);
+            this.closeModalAddress();
+          }
+        }
+      }
+    }
+  }
+
+  private async deleteUserAddress(address: Address): Promise<void> {
+    const userId = getUserId();
+    if (userId) {
+      const userData = getUserDataFromLocalStorage(userId);
+
+      if (userData) {
+        const result = await deleteAddress(userData, address.id as string);
+        if (result) {
+          this.populateUserData();
           this.showSuccessMessage();
           setTimeout(() => this.hideSuccessMessage(), 3000);
-          this.closeModalPass();
         }
       }
     }
@@ -422,7 +558,7 @@ export class ProfileForm {
         const shippingAddressIndex = userData?.addresses.findIndex(
           (adress) => adress.id === userData.defaultShippingAddressId
         );
-        const billingAddress = userData?.addresses.find(
+        const billingAddressIndex = userData?.addresses.findIndex(
           (adress) => adress.id === userData.defaultBillingAddressId
         );
         userData.addresses[shippingAddressIndex].country = formData.get(
@@ -438,26 +574,28 @@ export class ProfileForm {
           'shipping-post-code'
         ) as string;
 
-        userData.addresses[shippingAddressIndex].country = formData.get(
+        userData.addresses[billingAddressIndex].country = formData.get(
           'billing-country'
         ) as string;
-        userData.addresses[shippingAddressIndex].city = formData.get(
+        userData.addresses[billingAddressIndex].city = formData.get(
           'billing-city'
         ) as string;
-        userData.addresses[shippingAddressIndex].streetName = formData.get(
+        userData.addresses[billingAddressIndex].streetName = formData.get(
           'billing-street'
         ) as string;
-        userData.addresses[shippingAddressIndex].postalCode = formData.get(
+        userData.addresses[billingAddressIndex].postalCode = formData.get(
           'billing-post-code'
         ) as string;
 
         const formValid = formValidation(e as SubmitEvent);
         if (formValid) {
-          await updateProfileData(userData, e);
-          this.populateUserData();
-          this.showSuccessMessage();
-          setTimeout(() => this.hideSuccessMessage(), 3000);
-          this.closeModal();
+          const result = await updateProfileData(userData, e);
+          if (result) {
+            this.populateUserData();
+            this.showSuccessMessage();
+            setTimeout(() => this.hideSuccessMessage(), 3000);
+            this.closeModal();
+          }
         }
       }
     }
@@ -483,61 +621,87 @@ export class ProfileForm {
     this.dateOfBirthDisplay.textContent = `Date of Birth: ${dateOfBirth}`;
   }
 
-  private updateCountryDisplay(country: string): void {
-    this.countryDisplay.textContent = `Country: ${country}`;
-  }
-
-  private updateCityDisplay(city: string): void {
-    this.cityDisplay.textContent = `City: ${city}`;
-  }
-
-  private updatestreetDisplay(streetName: string): void {
-    this.streetDisplay.textContent = `Street: ${streetName}`;
-  }
-
-  private updatepostalDisplay(postalCode: string): void {
-    this.postalDisplay.textContent = `Postal code: ${postalCode}`;
-  }
-
-  private updateCountryDisplayB(country: string): void {
-    this.countryDisplayB.textContent = `Country: ${country}`;
-  }
-
-  private updateCityDisplayB(city: string): void {
-    this.cityDisplayB.textContent = `City: ${city}`;
-  }
-
-  private updatestreetDisplayB(streetName: string): void {
-    this.streetDisplayB.textContent = `Street: ${streetName}`;
-  }
-
-  private updatepostalDisplayB(postalCode: string): void {
-    this.postalDisplayB.textContent = `Postal code: ${postalCode}`;
+  private updateEmailDisplay(email: string): void {
+    this.emailDisplay.textContent = `Email: ${email}`;
   }
 
   public populateUserData(): void {
     const userId = getUserId();
     if (userId) {
       const userData = getUserDataFromLocalStorage(userId);
-      const shippingAddress = userData?.addresses.find(
-        (adress) => adress.id === userData.defaultShippingAddressId
-      );
-      const billingAddress = userData?.addresses.find(
-        (adress) => adress.id === userData.defaultBillingAddressId
-      );
       if (userData) {
         this.updateFirstNameDisplay(userData.firstName);
         this.updateLastNameDisplay(userData.lastName);
         this.updateDateOfBirthDisplay(userData.dateOfBirth);
-        this.updateCountryDisplay(shippingAddress?.country as string);
-        this.updateCityDisplay(shippingAddress?.city as string);
-        this.updatestreetDisplay(shippingAddress?.streetName as string);
-        this.updatepostalDisplay(shippingAddress?.postalCode as string);
-        this.updateCountryDisplayB(billingAddress?.country as string);
-        this.updateCityDisplayB(billingAddress?.city as string);
-        this.updatestreetDisplayB(billingAddress?.streetName as string);
-        this.updatepostalDisplayB(billingAddress?.postalCode as string);
+        this.updateEmailDisplay(userData.email);
+        this.populateAddresses(userData as Customer);
       }
     }
+  }
+  
+  private populateAddresses(userData: Customer) {
+    this.shippingForm.innerHTML = '';
+    this.billingForm.innerHTML = '';
+    const shippingAddresses: Address[] = [];
+    const billingAddresses: Address[] = [];
+    userData.addresses.forEach((address: Address) => {
+      if (userData.billingAddressIds?.includes(address.id as string)) {
+        billingAddresses.push(address);
+      } else {
+        shippingAddresses.push(address);
+      }
+    });
+    shippingAddresses.forEach((address: Address) => {
+      this.populateAddress(address, this.shippingForm, userData);
+    });
+    billingAddresses.forEach((address: Address) => {
+      this.populateAddress(address, this.billingForm, userData);
+    });
+    console.log(shippingAddresses, billingAddresses);
+  }
+
+  private populateAddress(
+    address: Address,
+    div: HTMLDivElement,
+    userData: Customer
+  ) {
+    const buttonWrapper = document.createElement('div');
+    buttonWrapper.className = 'button-wrapper'
+    const deleteButton = document.createElement('button');
+    deleteButton.textContent = 'Delete';
+    const editButton = document.createElement('button');
+    editButton.textContent = 'Edit';
+    deleteButton.addEventListener('click', () => {
+      this.deleteUserAddress(address);
+    });
+    editButton.addEventListener('click', () => {
+      this.openModalAddress(address);
+    });
+    const wrapper = document.createElement('div');
+    wrapper.className = 'wrapper-address';
+    const def = document.createElement('div');
+    def.textContent = `Default`;
+    const country = document.createElement('div');
+    country.textContent = `Country: ${address.country}`;
+    const city = document.createElement('div');
+    city.textContent = `City: ${address.city}`;
+    const street = document.createElement('div');
+    street.textContent = `Street: ${address.streetName}`;
+    const postCode = document.createElement('div');
+    postCode.textContent = `Postal code: ${address.postalCode}`;
+    if (
+      address.id === userData.defaultBillingAddressId ||
+      address.id === userData.defaultShippingAddressId
+    ) {
+      wrapper.appendChild(def);
+    }
+    wrapper.appendChild(country);
+    wrapper.appendChild(city);
+    wrapper.appendChild(street);
+    wrapper.appendChild(postCode);
+    buttonWrapper.appendChild(deleteButton);
+    buttonWrapper.appendChild(editButton);
+    wrapper.appendChild(buttonWrapper);
+    div.appendChild(wrapper);
   }
 }
