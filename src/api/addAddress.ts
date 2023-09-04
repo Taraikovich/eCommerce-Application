@@ -7,7 +7,12 @@ import { client } from './BuildClient';
 import { projectKey } from '../constants/constants';
 import { UserDataAddress, UserData } from '../components/profileForm';
 
-export async function addAddress(data: UserData, address: UserDataAddress, isBilling: boolean, event: SubmitEvent) {
+export async function addAddress(
+  data: UserData,
+  address: UserDataAddress,
+  isBilling: boolean,
+  event: SubmitEvent
+) {
   try {
     const apiRoot = createApiBuilderFromCtpClient(client).withProjectKey({
       projectKey,
@@ -15,21 +20,22 @@ export async function addAddress(data: UserData, address: UserDataAddress, isBil
 
     const request: MyCustomerUpdate = {
       version: data.version,
-      actions: [
-        { action: 'addAddress', address },
-
-      ],
+      actions: [{ action: 'addAddress', address }],
     };
     const { body } = await apiRoot.me().post({ body: request }).execute();
 
     const requestSecond: MyCustomerUpdate = {
       version: body.version,
       actions: [
-        { action: isBilling ? 'addBillingAddressId' : 'addShippingAddressId', addressId: body.addresses[body.addresses.length - 1].id },
-
+        {
+          action: isBilling ? 'addBillingAddressId' : 'addShippingAddressId',
+          addressId: body.addresses[body.addresses.length - 1].id,
+        },
       ],
     };
-    const bodySecond = await (await apiRoot.me().post({ body: requestSecond }).execute()).body;
+    const bodySecond = await (
+      await apiRoot.me().post({ body: requestSecond }).execute()
+    ).body;
     localStorage.setItem('userData', JSON.stringify(bodySecond));
     return bodySecond;
   } catch (error) {

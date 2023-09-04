@@ -6,6 +6,7 @@ import { updateProfileData } from '../api/updateProfileData';
 import { getUserId } from '../state/getUserId';
 import { formValidation, realTimeValidation } from '../utils/formValidator';
 import { editAddress } from '../api/editAddress';
+import { changeDefaultAddress } from '../api/changeDefaultAddress';
 
 export interface UserData {
   id: string;
@@ -407,29 +408,27 @@ export class ProfileForm {
 
   private openModalAddress(address?: Address): void {
     this.modalAddress.style.display = 'block';
-    this.editFormAddress.removeEventListener('submit', (e) => {
+    const editCallback = (e: SubmitEvent) => {
       this.editAddress(e, address?.id as string);
-    });
-    this.editFormAddress.removeEventListener('submit', (e) => {
+    }
+    const addCallback = (e: SubmitEvent) => {
       this.addAddress(e, this.isBillingAddressType);
-    });
+    }
+    this.editFormAddress.removeEventListener('submit', editCallback);
+    this.editFormAddress.removeEventListener('submit', addCallback);
     if (address) {
       (this.editFormAddress.elements as any).country.value = address?.country;
       (this.editFormAddress.elements as any).city.value = address?.city;
       (this.editFormAddress.elements as any).street.value = address?.streetName;
       (this.editFormAddress.elements as any)['post-code'].value =
         address?.postalCode;
-      this.editFormAddress.addEventListener('submit', (e) => {
-        this.editAddress(e, address.id as string);
-      });
+      this.editFormAddress.addEventListener('submit', editCallback);
     } else {
       (this.editFormAddress.elements as any).country.value = '';
       (this.editFormAddress.elements as any).city.value = '';
       (this.editFormAddress.elements as any).street.value = '';
       (this.editFormAddress.elements as any)['post-code'].value = '';
-      this.editFormAddress.addEventListener('submit', (e) => {
-        this.addAddress(e, this.isBillingAddressType);
-      });
+      this.editFormAddress.addEventListener('submit', addCallback);
     }
   }
 
@@ -544,6 +543,22 @@ export class ProfileForm {
     }
   }
 
+  private async markAsDefaultAddress(address: Address, isBilling: boolean): Promise<void> {
+    const userId = getUserId();
+    if (userId) {
+      const userData = getUserDataFromLocalStorage(userId);
+
+      if (userData) {
+        const result = await changeDefaultAddress(userData, address.id as string, isBilling);
+        if (result) {
+          this.populateUserData();
+          this.showSuccessMessage();
+          setTimeout(() => this.hideSuccessMessage(), 3000);
+        }
+      }
+    }
+  }
+
   private async saveUserData(e: SubmitEvent): Promise<void> {
     e.preventDefault();
     const userId = getUserId();
@@ -555,37 +570,37 @@ export class ProfileForm {
         userData.lastName = formData.get('lastName') as string;
         userData.dateOfBirth = formData.get('birth') as string;
         userData.email = formData.get('email') as string;
-        const shippingAddressIndex = userData?.addresses.findIndex(
-          (adress) => adress.id === userData.defaultShippingAddressId
-        );
-        const billingAddressIndex = userData?.addresses.findIndex(
-          (adress) => adress.id === userData.defaultBillingAddressId
-        );
-        userData.addresses[shippingAddressIndex].country = formData.get(
-          'shipping-country'
-        ) as string;
-        userData.addresses[shippingAddressIndex].city = formData.get(
-          'shipping-city'
-        ) as string;
-        userData.addresses[shippingAddressIndex].streetName = formData.get(
-          'shipping-street'
-        ) as string;
-        userData.addresses[shippingAddressIndex].postalCode = formData.get(
-          'shipping-post-code'
-        ) as string;
+        // const shippingAddressIndex = userData?.addresses.findIndex(
+        //   (adress) => adress.id === userData.defaultShippingAddressId
+        // );
+        // const billingAddressIndex = userData?.addresses.findIndex(
+        //   (adress) => adress.id === userData.defaultBillingAddressId
+        // );
+        // userData.addresses[shippingAddressIndex].country = formData.get(
+        //   'shipping-country'
+        // ) as string;
+        // userData.addresses[shippingAddressIndex].city = formData.get(
+        //   'shipping-city'
+        // ) as string;
+        // userData.addresses[shippingAddressIndex].streetName = formData.get(
+        //   'shipping-street'
+        // ) as string;
+        // userData.addresses[shippingAddressIndex].postalCode = formData.get(
+        //   'shipping-post-code'
+        // ) as string;
 
-        userData.addresses[billingAddressIndex].country = formData.get(
-          'billing-country'
-        ) as string;
-        userData.addresses[billingAddressIndex].city = formData.get(
-          'billing-city'
-        ) as string;
-        userData.addresses[billingAddressIndex].streetName = formData.get(
-          'billing-street'
-        ) as string;
-        userData.addresses[billingAddressIndex].postalCode = formData.get(
-          'billing-post-code'
-        ) as string;
+        // userData.addresses[billingAddressIndex].country = formData.get(
+        //   'billing-country'
+        // ) as string;
+        // userData.addresses[billingAddressIndex].city = formData.get(
+        //   'billing-city'
+        // ) as string;
+        // userData.addresses[billingAddressIndex].streetName = formData.get(
+        //   'billing-street'
+        // ) as string;
+        // userData.addresses[billingAddressIndex].postalCode = formData.get(
+        //   'billing-post-code'
+        // ) as string;
 
         const formValid = formValidation(e as SubmitEvent);
         if (formValid) {
@@ -638,7 +653,7 @@ export class ProfileForm {
       }
     }
   }
-  
+
   private populateAddresses(userData: Customer) {
     this.shippingForm.innerHTML = '';
     this.billingForm.innerHTML = '';
@@ -666,13 +681,22 @@ export class ProfileForm {
     userData: Customer
   ) {
     const buttonWrapper = document.createElement('div');
-    buttonWrapper.className = 'button-wrapper'
+    buttonWrapper.className = 'button-wrapper';
+    const markAsDefault = document.createElement('button');
+    markAsDefault.textContent = 'Mark as Default';
     const deleteButton = document.createElement('button');
     deleteButton.textContent = 'Delete';
+    if(address.id === userData.defaultBillingAddressId || address.id === userData.defaultShippingAddressId) {
+      deleteButton.disabled = true;
+      markAsDefault.disabled = true;
+    }
     const editButton = document.createElement('button');
     editButton.textContent = 'Edit';
     deleteButton.addEventListener('click', () => {
       this.deleteUserAddress(address);
+    });
+    markAsDefault.addEventListener('click', () => {
+      this.markAsDefaultAddress(address, userData.billingAddressIds?.includes(address?.id as string) as boolean);
     });
     editButton.addEventListener('click', () => {
       this.openModalAddress(address);
@@ -701,6 +725,7 @@ export class ProfileForm {
     wrapper.appendChild(postCode);
     buttonWrapper.appendChild(deleteButton);
     buttonWrapper.appendChild(editButton);
+    buttonWrapper.appendChild(markAsDefault);
     wrapper.appendChild(buttonWrapper);
     div.appendChild(wrapper);
   }

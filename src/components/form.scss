@@ -159,7 +159,6 @@
   overflow: hidden;
 }
 
-
 .form {
   display: inherit;
 }
@@ -278,4 +277,8 @@
   display: flex;
   flex-direction: row;
   margin: 20px;
+}
+
+button:disabled {
+  opacity: 0.5;
 }
