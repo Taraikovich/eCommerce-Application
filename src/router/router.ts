@@ -2,6 +2,7 @@ import { NotFoundPageView } from '../views/notFoundPageView';
 import { HomePageView } from '../views/homePageView';
 import { LoginPageView } from '../views/loginPageView';
 import { RegisterPageView } from '../views/registerPageView';
+import { ProfilePageView } from '../views/profilePageView';
 import { getUserId } from '../state/getUserId';
 import { ProductsView } from '../views/productsView';
 import { ProductView } from '../views/productView';
@@ -16,6 +17,8 @@ export class Router {
   registerPage = new RegisterPageView();
 
   notFoundPage = new NotFoundPageView();
+
+  profilePage = new ProfilePageView();
 
   constructor() {
     this.createView();
@@ -54,6 +57,13 @@ export class Router {
         this.catalogPage.createCards(filterStr, sortStr);
       } else {
         this.catalogPage.createCards();
+      }
+    } else if (rout === '/profile') {
+      if (!getUserId()) {
+        window.history.pushState({}, '', '/login');
+        this.loginPage.createView();
+      } else {
+        this.profilePage.createView();
       }
     } else {
       this.notFoundPage.createView();

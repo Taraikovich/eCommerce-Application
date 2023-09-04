@@ -27,7 +27,7 @@ export async function createCustomer(event: SubmitEvent) {
               {
                 country: formData.get('shipping-country') as string,
                 city: formData.get('shipping-city') as string,
-                postalCode: formData.get('shipping-postal-code') as string,
+                postalCode: formData.get('shipping-post-code') as string,
                 firstName: formData.get('firstName') as string,
                 lastName: formData.get('lastName') as string,
                 streetName: formData.get('shipping-street') as string,
@@ -35,7 +35,7 @@ export async function createCustomer(event: SubmitEvent) {
               {
                 country: formData.get('billing-country') as string,
                 city: formData.get('billing-city') as string,
-                postalCode: formData.get('billing-postal-code') as string,
+                postalCode: formData.get('billing-post-code') as string,
                 firstName: formData.get('firstName') as string,
                 lastName: formData.get('lastName') as string,
                 streetName: formData.get('billing-street') as string,

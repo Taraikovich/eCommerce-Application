@@ -19,6 +19,14 @@ export const validationRules: ValidationRules = {
     /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/,
     '✖ Minimum 8 characters, at least 1 uppercase letter, 1 lowercase letter, and 1 number',
   ],
+  'current-password': [
+    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/,
+    '✖ Minimum 8 characters, at least 1 uppercase letter, 1 lowercase letter, and 1 number',
+  ],
+  'confirm-password': [
+    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/,
+    '✖ Minimum 8 characters, at least 1 uppercase letter, 1 lowercase letter, and 1 number',
+  ],
   email: [
     /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
     '✖ A properly formatted email address (e.g., example@email.com)',
@@ -27,12 +35,17 @@ export const validationRules: ValidationRules = {
     /^[A-Za-z]+$/,
     '✖ Must contain at least one character and no special characters or numbers',
   ],
-  'billing-srteet': [/.+/, '✖ Must contain at least one character'],
+  'billing-street': [/.+/, '✖ Must contain at least one character'],
+  city: [
+    /^[A-Za-z]+$/,
+    '✖ Must contain at least one character and no special characters or numbers',
+  ],
+  street: [/.+/, '✖ Must contain at least one character'],
   'shipping-city': [
     /^[A-Za-z]+$/,
     '✖ Must contain at least one character and no special characters or numbers',
   ],
-  'shipping-srteet': [/.+/, '✖ Must contain at least one character'],
+  'shipping-street': [/.+/, '✖ Must contain at least one character'],
 };
 
 export function isValidDateOfBirth(dateOfBirth: string, minAge = 13): boolean {
@@ -64,7 +77,6 @@ export function isValidPostalCode(
 
 export function formValidation(event: SubmitEvent) {
   const form = event.target;
-
   if (form instanceof HTMLFormElement) {
     const formData = new FormData(form);
 
@@ -79,8 +91,12 @@ export function formValidation(event: SubmitEvent) {
           const input = document.querySelector(
             `.form__${key} input`
           ) as HTMLElement;
-          errorMessage.textContent = validationRules[key][1];
-          input.style.border = '1px solid red';
+          if (errorMessage) {
+            errorMessage.textContent = validationRules[key][1];
+          }
+          if (input) {
+            input.style.border = '1px solid red';
+          }
           isValid = false;
         }
       }
@@ -97,7 +113,11 @@ export function formValidation(event: SubmitEvent) {
           isValid = false;
         }
       }
-      if (key === 'billing-post-code' || key === 'shipping-post-code') {
+      if (
+        key === 'billing-post-code' ||
+        key === 'shipping-post-code' ||
+        key === 'post-code'
+      ) {
         if (key === 'billing-post-code') {
           if (
             !isValidPostalCode(

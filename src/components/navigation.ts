@@ -3,6 +3,7 @@ import { Router } from '../router/router';
 import { LoginButton } from './loginButton';
 import { RegisterButton } from './registerButton';
 import { LogoutButton } from './logoutButton';
+import { ProfileButton } from './profileButton';
 
 export class Navigation {
   list = document.createElement('ul');
@@ -46,7 +47,8 @@ export class Navigation {
     const buttons = document.createElement('div');
     if (getUserId()) {
       const logoutBtn = new LogoutButton();
-      buttons.append(logoutBtn.createButton());
+      const profileBtn = new ProfileButton();
+      buttons.append(profileBtn.createButton(), logoutBtn.createButton());
     } else {
       const loginBtn = new LoginButton();
       const registrBtn = new RegisterButton();

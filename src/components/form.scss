@@ -14,6 +14,7 @@
       margin-top: 20px;
     }
   }
+
   // Стили для полей формы
   &__sort {
     position: absolute;
@@ -28,18 +29,25 @@
   &__lastName,
   &__email,
   &__password,
+  &__current-password,
+  &__confirm-password,
   &__birth,
+  &__billing-country,
   &__billing-city,
-  &__billing-srteet,
+  &__billing-street,
   &__billing-building,
   &__billing-post-code,
+  &__shipping-country,
   &__shipping-city,
-  &__shipping-srteet,
+  &__shipping-street,
   &__shipping-building,
   &__shipping-post-code,
+  &__country,
+  &__city,
+  &__street,
+  &__post-code,
   &__addressesMatch,
-  fieldset,
-  select {
+  fieldset {
     margin-bottom: 15px;
     position: relative;
 
@@ -65,7 +73,8 @@
   }
 
   &__password {
-    div {
+    .show,
+    .show-pass {
       cursor: pointer;
       position: absolute;
       right: 10px;
@@ -82,7 +91,8 @@
     margin-right: 5px;
   }
 
-  input[type='submit'] {
+  input[type='submit'],
+  input[type='button'] {
     font-family: 'Tektur', cursive;
     padding: 10px 20px;
     margin-top: 20px;
@@ -91,6 +101,7 @@
     border: none;
     border-radius: 5px;
     font-size: 16px;
+    margin-right: 20px;
     cursor: pointer;
     transition: all 0.4s ease;
     border: 1px solid #072326;
@@ -134,7 +145,6 @@
   width: 40px;
   height: 20px;
 }
-
 .form_filter {
   margin: 0 auto;
   border: none;
@@ -147,4 +157,128 @@
   padding: 0;
   height: 0;
   overflow: hidden;
+}
+
+.form {
+  display: inherit;
+}
+
+.form-frame {
+  margin-bottom: 10px;
+}
+
+#shipping-form {
+  border: 1px solid black;
+  background-color: antiquewhite;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+}
+
+#billing-form {
+  border: 1px solid black;
+  background-color: lightblue;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+}
+
+.address-label {
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.edit-button {
+  margin-top: 20px;
+  width: 60px;
+}
+
+.edit-pass-button {
+  margin-top: 20px;
+  width: 150px;
+}
+
+.title-info {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 600;
+  font-size: 18px;
+}
+.modal {
+  display: block;
+  position: absolute;
+  left: 35%;
+  background-color: rgb(219, 216, 209);
+  border-radius: 5px;
+  width: 30%;
+  padding: 20px;
+}
+
+.info-input {
+  width: 200px;
+  border: solid 0.5px gray;
+  height: 25px;
+  margin-bottom: 10px;
+}
+
+.close {
+  cursor: pointer;
+  font-size: 24px;
+}
+
+.title-address {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 600;
+}
+
+.success-message {
+  position: absolute;
+  top: 20%;
+  left: 42%;
+  background-color: rgb(226, 241, 168);
+  opacity: 80%;
+  font-size: 36px;
+  width: 300px;
+  text-align: center;
+}
+
+.form-profile {
+  display: flex;
+  flex-direction: row;
+}
+.wrapper-profile {
+  display: flex;
+  flex-direction: column;
+  margin: 20px;
+}
+.wrapper-info {
+  border: solid 1px black;
+  padding: 10px;
+}
+
+.edit-address-button {
+  margin-top: 10px;
+}
+
+.wrapper-address {
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  border: solid 1px black;
+  margin: 10px;
+}
+
+.wrapper-ship-bill {
+  display: flex;
+  flex-direction: row;
+  margin: 20px;
+}
+
+button:disabled {
+  opacity: 0.5;
 }
