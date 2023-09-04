@@ -4,6 +4,7 @@ import { LoginPageView } from '../views/loginPageView';
 import { RegisterPageView } from '../views/registerPageView';
 import { getUserId } from '../state/getUserId';
 import { ProductsView } from '../views/productsView';
+import { ProductView } from '../views/productView';
 
 export class Router {
   homePage = new HomePageView();
@@ -41,7 +42,11 @@ export class Router {
     } else if (rout === '/products') {
       this.catalogPage.createView();
       const queryString = window.location.search;
-      if (queryString) {
+      if (queryString && queryString.includes('key')) {
+        document.body.innerHTML = '';
+        const query = queryString.slice(5);
+        new ProductView(query).createView();
+      } else if (queryString) {
         const filterStr = decodeURIComponent(
           queryString.slice(1).split('&')[0]
         ).split('+');
