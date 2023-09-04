@@ -43,21 +43,21 @@ export function buildClient() {
         clientSecret,
       },
       refreshToken,
-      // tokenCache,
+      tokenCache,
       fetch,
     };
     client = new ClientBuilder()
       .withProjectKey(projectKey)
       .withRefreshTokenFlow(options)
       .withHttpMiddleware(httpMiddlewareOptions)
-      .withLoggerMiddleware()
+      // .withLoggerMiddleware()
       .build();
   } else {
     client = new ClientBuilder()
       .withProjectKey(projectKey)
       .withClientCredentialsFlow(authMiddlewareOptions)
       .withHttpMiddleware(httpMiddlewareOptions)
-      .withLoggerMiddleware()
+      // .withLoggerMiddleware()
       .build();
   }
 }

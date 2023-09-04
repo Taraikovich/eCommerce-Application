@@ -6,7 +6,7 @@ import {
 export const tokenCache: TokenCache = {
   get: () => {
     try {
-      const token = localStorage.getItem('authToken'); // Пример, используйте свою логику
+      const token = localStorage.getItem('authToken');
       return token ? JSON.parse(token) : null;
     } catch (error) {
       console.error('Error while getting token from cache:', error);

@@ -15,6 +15,15 @@
     }
   }
   // Стили для полей формы
+  &__sort {
+    position: absolute;
+    right: 5%;
+  }
+  &__btn {
+    position: absolute;
+    left: 5%;
+    top: 60px;
+  }
   &__firstName,
   &__lastName,
   &__email,
@@ -131,6 +140,20 @@
   width: 40px;
   height: 20px;
 }
+.form_filter {
+  margin: 0 auto;
+  border: none;
+}
+
+.form_filter-hide {
+  border: none;
+  width: 200px;
+  margin: 20px 0 20px 5%;
+  padding: 0;
+  height: 0;
+  overflow: hidden;
+}
+
 
 .form {
   display: inherit;

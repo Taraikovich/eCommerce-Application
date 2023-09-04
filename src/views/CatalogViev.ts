@@ -21,7 +21,13 @@ export class CatalogView extends View {
       for (const product of products) {
         const card = new PronuctCart();
         sectionProducts.append(
-          card.createCard(product.img, product.name, product.description)
+          card.createCard(
+            product.img,
+            product.name,
+            product.description,
+            product.price,
+            product.discountedPrice
+          )
         );
       }
     }

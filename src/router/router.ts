@@ -4,12 +4,12 @@ import { LoginPageView } from '../views/loginPageView';
 import { RegisterPageView } from '../views/registerPageView';
 import { ProfilePageView } from '../views/profilePageView';
 import { getUserId } from '../state/getUserId';
-import { CatalogView } from '../views/CatalogViev';
+import { ProductsView } from '../views/productsView';
 
 export class Router {
   homePage = new HomePageView();
 
-  catalogPage = new CatalogView();
+  catalogPage = new ProductsView();
 
   loginPage = new LoginPageView();
 
@@ -41,8 +41,18 @@ export class Router {
       } else {
         this.registerPage.createView();
       }
-    } else if (rout === '/catalog') {
+    } else if (rout === '/products') {
       this.catalogPage.createView();
+      const queryString = window.location.search;
+      if (queryString) {
+        const filterStr = decodeURIComponent(
+          queryString.slice(1).split('&')[0]
+        ).split('+');
+        const sortStr = decodeURIComponent(queryString.slice(1).split('&')[1]);
+        this.catalogPage.createCards(filterStr, sortStr);
+      } else {
+        this.catalogPage.createCards();
+      }
     } else if (rout === '/profile') {
       if (!getUserId()) {
         window.history.pushState({}, '', '/login');
