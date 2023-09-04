@@ -1,10 +1,10 @@
+import { updatePassword } from '../api/updatePassword';
 import { updateProfileData } from '../api/updateProfileData';
 import { getUserId } from '../state/getUserId';
-// import { formValidation, realTimeValidation } from '../utils/formValidator';
-
-
+import { formValidation, realTimeValidation } from '../utils/formValidator';
 
 export interface UserData {
+  id: string;
   version: number;
   firstName: string;
   lastName: string;
@@ -13,6 +13,7 @@ export interface UserData {
   defaultBillingAddressId: string;
   defaultShippingAddressId: string;
   email: string;
+  password: string;
 }
 
 interface Address {
@@ -35,17 +36,23 @@ function getUserDataFromLocalStorage(userId: string): UserData | null {
 export class ProfileForm {
   private form = document.createElement('form');
 
-  private isEmailValid = true;
+  // private isEmailValid = true;
 
   private editButton: HTMLButtonElement;
 
   private editPassButton: HTMLButtonElement;
 
+  private modalPass: HTMLDivElement;
+
   private modal: HTMLDivElement;
 
   private closeModalButton: HTMLSpanElement;
 
+  private closeModalButtonPass: HTMLSpanElement;
+
   private editForm: HTMLFormElement;
+
+  private editFormPass: HTMLFormElement;
 
   private firstNameDisplay: HTMLDivElement;
 
@@ -69,28 +76,6 @@ export class ProfileForm {
 
   private postalDisplayB: HTMLDivElement;
 
-  private firstNameInput: HTMLInputElement;
-
-  private lastNameInput: HTMLInputElement;
-
-  private dateOfBirthInput: HTMLInputElement;
-
-  private countryInput: HTMLInputElement;
-
-  private countryInputB: HTMLInputElement;
-
-  private cityInput: HTMLInputElement;
-
-  private cityInputB: HTMLInputElement;
-
-  private streetInput: HTMLInputElement;
-
-  private streetInputB: HTMLInputElement;
-
-  private postalInput: HTMLInputElement;
-
-  private postalInputB: HTMLInputElement;
-
   private shippingForm: HTMLDivElement;
 
   private shippingAdressLabel: HTMLDivElement;
@@ -103,29 +88,11 @@ export class ProfileForm {
 
   private addressTitle: HTMLDivElement;
 
-  private firstNameInputTitle: HTMLDivElement;
-
-  private lastNameInputTitle: HTMLDivElement;
-
-  private dateOfBirthInputTitle: HTMLDivElement;
-
   private shippingInputTitle: HTMLDivElement;
 
   private billingInputTitle: HTMLDivElement;
 
-  private countryInputTitle: HTMLDivElement;
-
-  private cityInputTitle: HTMLDivElement;
-
-  private streetInputTitle: HTMLDivElement;
-
-  private postalInputTitle: HTMLDivElement;
-
   private successMessage: HTMLDivElement;
-
-  private emailInputTitle: HTMLDivElement;
-
-  private emailInput: HTMLInputElement;
 
   constructor() {
     this.form.className = 'form';
@@ -139,6 +106,11 @@ export class ProfileForm {
     this.editPassButton = document.createElement('button');
     this.editPassButton.textContent = 'Change password';
     this.editPassButton.className = 'edit-pass-button';
+    this.editPassButton.addEventListener('click', (e) => {
+      e.preventDefault();
+      this.openModalPass();
+      this.modalPass.style.display = 'block';
+    });
 
     this.editButton = document.createElement('button');
     this.editButton.textContent = 'Edit';
@@ -154,137 +126,60 @@ export class ProfileForm {
     this.modal.className = 'modal';
     this.modal.style.display = 'none';
 
+    this.modalPass = document.createElement('div');
+    this.modalPass.id = 'modal-pass';
+    this.modalPass.className = 'modal-pass';
+    this.modalPass.style.display = 'none';
+
     this.closeModalButton = document.createElement('span');
     this.closeModalButton.id = 'close-modal';
     this.closeModalButton.className = 'close';
     this.closeModalButton.textContent = '×';
     this.closeModalButton.addEventListener('click', () => this.closeModal());
 
+    this.closeModalButtonPass = document.createElement('span');
+    this.closeModalButtonPass.id = 'close-modal-pass';
+    this.closeModalButtonPass.className = 'close';
+    this.closeModalButtonPass.textContent = '×';
+    this.closeModalButtonPass.addEventListener('click', () =>
+      this.closeModalPass()
+    );
+
     this.editForm = document.createElement('form');
     this.editForm.id = 'edit-form';
     this.editForm.addEventListener('submit', (e) => this.saveUserData(e));
+
+    this.editFormPass = document.createElement('form');
+    this.editFormPass.id = 'edit-form-pass';
+    this.editFormPass.addEventListener('submit', (e) =>
+      this.updateUserPassword(e)
+    );
 
     this.successMessage = document.createElement('div');
     this.successMessage.className = 'success-message';
     this.successMessage.textContent = 'Changes have been saved successfully!';
     this.successMessage.style.display = 'none';
     this.form.appendChild(this.successMessage);
-
-    this.emailInputTitle = document.createElement('div');
-    this.emailInputTitle.textContent = 'Email';
-    this.emailInputTitle.className = 'info-input-title';
-    this.emailInput = document.createElement('input');
-    this.emailInput.className = 'info-input';
-    this.emailInput.type = 'text';
-    this.editForm.appendChild(this.emailInputTitle);
-    this.editForm.appendChild(this.emailInput);
-
-    this.firstNameInputTitle = document.createElement('div');
-    this.firstNameInputTitle.textContent = 'First Name';
-    this.firstNameInputTitle.className = 'info-input-title';
-    this.firstNameInput = document.createElement('input');
-    this.firstNameInput.className = 'info-input';
-    this.firstNameInput.type = 'text';
-    this.editForm.appendChild(this.firstNameInputTitle);
-    this.editForm.appendChild(this.firstNameInput);
-
-    this.lastNameInputTitle = document.createElement('div');
-    this.lastNameInputTitle.textContent = 'Last Name';
-    this.lastNameInputTitle.className = 'info-input-title';
-    this.lastNameInput = document.createElement('input');
-    this.lastNameInput.className = 'info-input';
-    this.lastNameInput.type = 'text';
-    this.editForm.appendChild(this.lastNameInputTitle);
-    this.editForm.appendChild(this.lastNameInput);
-
-    this.dateOfBirthInputTitle = document.createElement('div');
-    this.dateOfBirthInputTitle.textContent = 'Date of birth';
-    this.dateOfBirthInputTitle.className = 'info-input-title';
-    this.dateOfBirthInput = document.createElement('input');
-    this.dateOfBirthInput.className = 'info-input';
-    this.dateOfBirthInput.type = 'text';
-    this.editForm.appendChild(this.dateOfBirthInputTitle);
-    this.editForm.appendChild(this.dateOfBirthInput);
+    this.appendInput('Email', 'email', this.editForm, 'email');
+    this.appendInput('First Name', 'firstName', this.editForm);
+    this.appendInput('Last Name', 'lastName', this.editForm);
+    this.appendInput('Date of birth', 'birth', this.editForm);
+    this.appendInput('Country', 'shipping-country', this.editForm);
+    this.appendInput('City', 'shipping-city', this.editForm);
+    this.appendInput('Street', 'shipping-street', this.editForm);
+    this.appendInput('Postal code', 'shipping-post-code', this.editForm);
+    this.appendInput('Country', 'billing-country', this.editForm);
+    this.appendInput('City', 'billing-city', this.editForm);
+    this.appendInput('Street', 'billing-street', this.editForm);
+    this.appendInput('Postal code', 'billing-post-code', this.editForm);
 
     this.shippingInputTitle = document.createElement('div');
     this.shippingInputTitle.textContent = 'Shipping address';
     this.shippingInputTitle.className = 'title-address';
-    this.countryInputTitle = document.createElement('div');
-    this.countryInputTitle.textContent = 'Country';
-    this.countryInputTitle.className = 'info-input-title';
-    this.countryInput = document.createElement('input');
-    this.countryInput.className = 'info-input';
-    this.countryInput.type = 'text';
-    this.editForm.appendChild(this.shippingInputTitle);
-    this.editForm.appendChild(this.countryInputTitle);
-    this.editForm.appendChild(this.countryInput);
-
-    this.cityInputTitle = document.createElement('div');
-    this.cityInputTitle.textContent = 'City';
-    this.cityInputTitle.className = 'info-input-title';
-    this.cityInput = document.createElement('input');
-    this.cityInput.className = 'info-input';
-    this.countryInput.type = 'text';
-    this.editForm.appendChild(this.cityInputTitle);
-    this.editForm.appendChild(this.cityInput);
-
-    this.streetInputTitle = document.createElement('div');
-    this.streetInputTitle.textContent = 'Street';
-    this.streetInputTitle.className = 'info-input-title';
-    this.streetInput = document.createElement('input');
-    this.streetInput.className = 'info-input';
-    this.streetInput.type = 'text';
-    this.editForm.appendChild(this.streetInputTitle);
-    this.editForm.appendChild(this.streetInput);
-
-    this.postalInputTitle = document.createElement('div');
-    this.postalInputTitle.textContent = 'Postal code';
-    this.postalInputTitle.className = 'info-input-title';
-    this.postalInput = document.createElement('input');
-    this.postalInput.className = 'info-input';
-    this.postalInput.type = 'text';
-    this.editForm.appendChild(this.postalInputTitle);
-    this.editForm.appendChild(this.postalInput);
 
     this.billingInputTitle = document.createElement('div');
     this.billingInputTitle.textContent = 'Billing address';
     this.billingInputTitle.className = 'title-address';
-    this.countryInputTitle = document.createElement('div');
-    this.countryInputTitle.textContent = 'Country';
-    this.countryInputTitle.className = 'info-input-title';
-    this.countryInputB = document.createElement('input');
-    this.countryInputB.className = 'info-input';
-    this.countryInputB.type = 'text';
-    this.editForm.appendChild(this.billingInputTitle);
-    this.editForm.appendChild(this.countryInputTitle);
-    this.editForm.appendChild(this.countryInputB);
-
-    this.cityInputTitle = document.createElement('div');
-    this.cityInputTitle.textContent = 'City';
-    this.cityInputTitle.className = 'info-input-title';
-    this.cityInputB = document.createElement('input');
-    this.cityInputB.className = 'info-input';
-    this.countryInputB.type = 'text';
-    this.editForm.appendChild(this.cityInputTitle);
-    this.editForm.appendChild(this.cityInputB);
-
-    this.streetInputTitle = document.createElement('div');
-    this.streetInputTitle.textContent = 'Street';
-    this.streetInputTitle.className = 'info-input-title';
-    this.streetInputB = document.createElement('input');
-    this.streetInputB.className = 'info-input';
-    this.streetInputB.type = 'text';
-    this.editForm.appendChild(this.streetInputTitle);
-    this.editForm.appendChild(this.streetInputB);
-
-    this.postalInputTitle = document.createElement('div');
-    this.postalInputTitle.textContent = 'Postal code';
-    this.postalInputTitle.className = 'info-input-title';
-    this.postalInputB = document.createElement('input');
-    this.postalInputB.className = 'info-input';
-    this.postalInputB.type = 'text';
-    this.editForm.appendChild(this.postalInputTitle);
-    this.editForm.appendChild(this.postalInputB);
 
     const saveButton = document.createElement('button');
     saveButton.textContent = 'Save';
@@ -364,16 +259,71 @@ export class ProfileForm {
 
     this.modal.appendChild(this.closeModalButton);
     this.modal.appendChild(this.editForm);
+    this.appendInput(
+      'Current password',
+      'current-password',
+      this.editFormPass,
+      'password'
+    );
+    this.appendInput('New password', 'password', this.editFormPass, 'password');
+    this.appendInput(
+      'Confirm new password',
+      'confirm-password',
+      this.editFormPass,
+      'password'
+    );
+    const saveButtonPass = document.createElement('input');
+    saveButtonPass.value = 'Save';
+    saveButtonPass.type = 'submit';
+    this.editFormPass.appendChild(saveButtonPass);
+
+    const cancelButtonPass = document.createElement('input');
+    cancelButtonPass.type = 'button';
+    cancelButtonPass.value = 'Cancel';
+    cancelButtonPass.textContent = 'Cancel';
+    this.editFormPass.appendChild(cancelButtonPass);
+
+    cancelButtonPass.addEventListener('click', () => this.closeModalPass());
+
+    this.modalPass.appendChild(this.closeModalButtonPass);
+    this.modalPass.appendChild(this.editFormPass);
 
     // this.emailInput.addEventListener('input', (e) => {
     //   realTimeValidation(e);
     // });
   }
 
-  
+  appendInput(
+    textContent: string,
+    name: string,
+    form: HTMLFormElement,
+    type?: string
+  ): void {
+    const wrapper = document.createElement('div');
+    wrapper.className = `form__${name}`;
+    const inputTitle = document.createElement('div');
+    inputTitle.textContent = textContent;
+    inputTitle.className = 'info-input-title';
+    const input = document.createElement('input');
+    input.name = name;
+    input.className = 'info-input';
+    input.type = type ? type : 'text';
+    const error = document.createElement('div');
+    error.className = 'form__error';
+    input.addEventListener('input', () => {
+      error.textContent = '';
+      input.style.border = '1px solid #ccc';
+    });
+
+    wrapper.appendChild(inputTitle);
+    wrapper.appendChild(input);
+    wrapper.appendChild(error);
+    form.appendChild(wrapper);
+  }
 
   createForm(): HTMLFormElement {
     this.form.appendChild(this.modal);
+    this.form.appendChild(this.modalPass);
     return this.form;
   }
 
@@ -383,21 +333,43 @@ export class ProfileForm {
     const userId = getUserId();
     if (userId) {
       const userData = getUserDataFromLocalStorage(userId);
-      console.log(userData);
       if (userData) {
-        this.firstNameInput.value = userData.firstName;
-        this.lastNameInput.value = userData.lastName;
-        this.dateOfBirthInput.value = userData.dateOfBirth;
-        this.emailInput.value = userData.email;
-        this.countryInput.value = userData.addresses[0].country;
-        this.cityInput.value = userData.addresses[0].city;
-        this.streetInput.value = userData.addresses[0].streetName;
-        this.postalInput.value = userData.addresses[0].postalCode;
-        this.countryInputB.value = userData.addresses[1].country;
-        this.cityInputB.value = userData.addresses[1].city;
-        this.streetInputB.value = userData.addresses[1].streetName;
-        this.postalInputB.value = userData.addresses[1].postalCode;
+        (this.editForm.elements as any).firstName.value = userData.firstName;
+        (this.editForm.elements as any).lastName.value = userData.lastName;
+        (this.editForm.elements as any).birth.value = userData.dateOfBirth;
+        (this.editForm.elements as any).email.value = userData.email;
+        const shippingAddress = userData?.addresses.find(
+          (adress) => adress.id === userData.defaultShippingAddressId
+        );
+        const billingAddress = userData?.addresses.find(
+          (adress) => adress.id === userData.defaultBillingAddressId
+        );
+        (this.editForm.elements as any)['shipping-country'].value =
+          shippingAddress?.country;
+        (this.editForm.elements as any)['shipping-city'].value =
+          shippingAddress?.city;
+        (this.editForm.elements as any)['shipping-street'].value =
+          shippingAddress?.streetName;
+        (this.editForm.elements as any)['shipping-post-code'].value =
+          shippingAddress?.postalCode;
+
+        (this.editForm.elements as any)['billing-country'].value =
+          shippingAddress?.country;
+        (this.editForm.elements as any)['billing-city'].value =
+          shippingAddress?.city;
+        (this.editForm.elements as any)['billing-street'].value =
+          shippingAddress?.streetName;
+        (this.editForm.elements as any)['billing-post-code'].value =
+          shippingAddress?.postalCode;
       }
+    }
+  }
+
+  private openModalPass(): void {
+    const userId = getUserId();
+    if (userId) {
+      const userData = getUserDataFromLocalStorage(userId);
+
     }
   }
 
@@ -405,41 +377,100 @@ export class ProfileForm {
     this.modal.style.display = 'none';
   }
 
-  private async saveUserData(e: Event): Promise<void> {
+  private closeModalPass(): void {
+    this.modalPass.style.display = 'none';
+  }
+
+  private async updateUserPassword(e: SubmitEvent): Promise<void> {
     e.preventDefault();
     const userId = getUserId();
     if (userId) {
       const userData = getUserDataFromLocalStorage(userId);
+      const formData = new FormData(e.target as HTMLFormElement);
       if (userData) {
-        userData.firstName = this.firstNameInput.value;
-        userData.lastName = this.lastNameInput.value;
-        userData.dateOfBirth = this.dateOfBirthInput.value;
-        userData.email = this.emailInput.value;
-        userData.addresses[0].country = this.countryInput.value;
-        userData.addresses[0].city = this.cityInput.value;
-        userData.addresses[0].streetName = this.streetInput.value;
-        userData.addresses[0].postalCode = this.postalInput.value;
-        userData.addresses[1].country = this.countryInputB.value;
-        userData.addresses[1].city = this.cityInputB.value;
-        userData.addresses[1].streetName = this.streetInputB.value;
-        userData.addresses[1].postalCode = this.postalInputB.value;
-        await updateProfileData(userData);
-        this.populateUserData();
-      this.showSuccessMessage();
-      setTimeout(() => this.hideSuccessMessage(), 3000);
-      
+        const currentPassword = formData.get('current-password') as string;
+        const newPassword = formData.get('password') as string;
+
+        const formValid = formValidation(e as SubmitEvent);
+        if (formValid) {
+          await updatePassword(
+            userData.id,
+            userData.version,
+            currentPassword,
+            newPassword,
+            e
+          );
+
+          this.showSuccessMessage();
+          setTimeout(() => this.hideSuccessMessage(), 3000);
+          this.closeModalPass();
+        }
+      }
     }
   }
-  this.closeModal();
-}
 
-private showSuccessMessage(): void {
-  this.successMessage.style.display = 'block';
-}
+  private async saveUserData(e: SubmitEvent): Promise<void> {
+    e.preventDefault();
+    const userId = getUserId();
+    if (userId) {
+      const userData = getUserDataFromLocalStorage(userId);
+      const formData = new FormData(e.target as HTMLFormElement);
+      if (userData) {
+        userData.firstName = formData.get('firstName') as string;
+        userData.lastName = formData.get('lastName') as string;
+        userData.dateOfBirth = formData.get('birth') as string;
+        userData.email = formData.get('email') as string;
+        const shippingAddressIndex = userData?.addresses.findIndex(
+          (adress) => adress.id === userData.defaultShippingAddressId
+        );
+        const billingAddress = userData?.addresses.find(
+          (adress) => adress.id === userData.defaultBillingAddressId
+        );
+        userData.addresses[shippingAddressIndex].country = formData.get(
+          'shipping-country'
+        ) as string;
+        userData.addresses[shippingAddressIndex].city = formData.get(
+          'shipping-city'
+        ) as string;
+        userData.addresses[shippingAddressIndex].streetName = formData.get(
+          'shipping-street'
+        ) as string;
+        userData.addresses[shippingAddressIndex].postalCode = formData.get(
+          'shipping-post-code'
+        ) as string;
 
-private hideSuccessMessage(): void {
-  this.successMessage.style.display = 'none';
-}
+        userData.addresses[shippingAddressIndex].country = formData.get(
+          'billing-country'
+        ) as string;
+        userData.addresses[shippingAddressIndex].city = formData.get(
+          'billing-city'
+        ) as string;
+        userData.addresses[shippingAddressIndex].streetName = formData.get(
+          'billing-street'
+        ) as string;
+        userData.addresses[shippingAddressIndex].postalCode = formData.get(
+          'billing-post-code'
+        ) as string;
+
+        const formValid = formValidation(e as SubmitEvent);
+        if (formValid) {
+          await updateProfileData(userData, e);
+          this.populateUserData();
+          this.showSuccessMessage();
+          setTimeout(() => this.hideSuccessMessage(), 3000);
+          this.closeModal();
+        }
+      }
+    }
+  }
+
+  private showSuccessMessage(): void {
+    this.successMessage.style.display = 'block';
+  }
+
+  private hideSuccessMessage(): void {
+    this.successMessage.style.display = 'none';
+  }
 
   private updateFirstNameDisplay(firstName: string): void {
     this.firstNameDisplay.textContent = `First Name: ${firstName}`;

@@ -44,7 +44,12 @@ export class Router {
     } else if (rout === '/catalog') {
       this.catalogPage.createView();
     } else if (rout === '/profile') {
-      this.profilePage.createView();
+      if (!getUserId()) {
+        window.history.pushState({}, '', '/login');
+        this.loginPage.createView();
+      } else {
+        this.profilePage.createView();
+      }
     } else {
       this.notFoundPage.createView();
     }

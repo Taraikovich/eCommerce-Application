@@ -7,7 +7,7 @@ import { client } from './BuildClient';
 import { projectKey } from '../constants/constants';
 import { UserData } from '../components/profileForm';
 
-export async function updateProfileData(data: UserData) {
+export async function updateProfileData(data: UserData, event: SubmitEvent) {
   try {
     const apiRoot = createApiBuilderFromCtpClient(client).withProjectKey({
       projectKey,
@@ -27,6 +27,7 @@ export async function updateProfileData(data: UserData) {
         { action: 'setFirstName', firstName: data.firstName },
         { action: 'setLastName', lastName: data.lastName },
         { action: 'setDateOfBirth', dateOfBirth: data.dateOfBirth },
+        { action: 'changeEmail', email: data.email },
         ...addressActions,
       ],
     };
@@ -34,6 +35,13 @@ export async function updateProfileData(data: UserData) {
     localStorage.setItem('userData', JSON.stringify(body));
     return body;
   } catch (error) {
-    console.log(error);
+    if (event.target instanceof HTMLFormElement) {
+      const errorMessage = document.createElement('p');
+      errorMessage.className = 'error-message';
+      if (error instanceof Error) {
+        errorMessage.textContent = error.message;
+        event.target.append(errorMessage);
+      }
+    }
   }
 }

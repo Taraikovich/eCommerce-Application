@@ -68,6 +68,7 @@ export class RegistratinForm {
     if (inputType === 'password') {
       const showPass = document.createElement('div');
       showPass.textContent = 'show';
+      showPass.className = 'show';
       showPass.addEventListener('mousedown', () => {
         input.type = 'text';
       });

@@ -18,6 +18,14 @@ export const validationRules: ValidationRules = {
   password: [
     /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/,
     '✖ Minimum 8 characters, at least 1 uppercase letter, 1 lowercase letter, and 1 number',
+  ],  
+  'current-password': [
+    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/,
+    '✖ Minimum 8 characters, at least 1 uppercase letter, 1 lowercase letter, and 1 number',
+  ],
+  'confirm-password': [
+    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/,
+    '✖ Minimum 8 characters, at least 1 uppercase letter, 1 lowercase letter, and 1 number',
   ],
   email: [
     /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
@@ -27,12 +35,12 @@ export const validationRules: ValidationRules = {
     /^[A-Za-z]+$/,
     '✖ Must contain at least one character and no special characters or numbers',
   ],
-  'billing-srteet': [/.+/, '✖ Must contain at least one character'],
+  'billing-street': [/.+/, '✖ Must contain at least one character'],
   'shipping-city': [
     /^[A-Za-z]+$/,
     '✖ Must contain at least one character and no special characters or numbers',
   ],
-  'shipping-srteet': [/.+/, '✖ Must contain at least one character'],
+  'shipping-street': [/.+/, '✖ Must contain at least one character'],
 };
 
 export function isValidDateOfBirth(dateOfBirth: string, minAge = 13): boolean {
@@ -64,13 +72,13 @@ export function isValidPostalCode(
 
 export function formValidation(event: SubmitEvent) {
   const form = event.target;
-
   if (form instanceof HTMLFormElement) {
     const formData = new FormData(form);
 
     let isValid = true;
 
     for (const key of formData.keys()) {
+     
       if (key in validationRules) {
         if (!validationRules[key][0].test(formData.get(key) as string)) {
           const errorMessage = document.querySelector(
@@ -79,8 +87,12 @@ export function formValidation(event: SubmitEvent) {
           const input = document.querySelector(
             `.form__${key} input`
           ) as HTMLElement;
-          errorMessage.textContent = validationRules[key][1];
-          input.style.border = '1px solid red';
+          if(errorMessage) {
+            errorMessage.textContent = validationRules[key][1];
+          }
+          if(input) {
+            input.style.border = '1px solid red';
+          }
           isValid = false;
         }
       }

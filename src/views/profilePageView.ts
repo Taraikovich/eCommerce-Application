@@ -3,6 +3,7 @@ import { ProfileForm, UserData } from '../components/profileForm';
 import { getUserId } from '../state/getUserId';
 import { getProfileData } from '../api/getProfileData';
 
+
 export class ProfilePageView extends View {
   private profileForm = new ProfileForm();
 
@@ -31,11 +32,6 @@ export class ProfilePageView extends View {
       } catch (error) {
         console.error('Error while fetching user data:', error);
       }
-    } else {
-      const notLoggedInMessage = document.createElement('p');
-      notLoggedInMessage.textContent =
-        'Please log in or register to access the profile.';
-      userProfileSection.appendChild(notLoggedInMessage);
     }
 
     this.main.append(userProfileSection, this.profileForm.createForm());
