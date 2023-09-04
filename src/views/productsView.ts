@@ -1,4 +1,4 @@
-import { PronuctCart } from '../components/productCart';
+import { PronuctCart } from '../components/productCard';
 import { View } from './view';
 import { getFilterProducts } from '../api/getFilterProducts';
 import { FilterForm } from '../components/filterForm';
@@ -31,6 +31,7 @@ export class ProductsView extends View {
         const card = new PronuctCart();
         this.productsSection.append(
           card.createCard(
+            product.key,
             product.img,
             product.name,
             product.description,
