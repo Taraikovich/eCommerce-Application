@@ -1,22 +1,28 @@
+import { Router } from '../router/router';
+
 export class PronuctCart {
+  private card = document.createElement('div');
+
   createCard(
+    key: string,
     imgUrl: string,
     productName: string,
     productDiscription: string,
     price: number,
     discountedPrice: number
   ) {
-    const card = document.createElement('div');
-    card.className = 'products__card';
+    this.card.className = 'products__card';
 
-    card.append(
+    this.card.append(
       this.addImage(imgUrl),
       this.addName(productName),
       this.addDiscription(productDiscription),
       this.addPrice(price, discountedPrice)
     );
 
-    return card;
+    this.openProduct(key);
+
+    return this.card;
   }
 
   private addImage(imgUrl: string) {
@@ -50,5 +56,13 @@ export class PronuctCart {
       price.textContent = `${productPrice / 100} $`;
     }
     return price;
+  }
+
+  private openProduct(key: string) {
+    this.card.addEventListener('click', () => {
+      const newURL = `./products?key=${key}`;
+      window.history.pushState({}, '', newURL);
+      new Router();
+    });
   }
 }

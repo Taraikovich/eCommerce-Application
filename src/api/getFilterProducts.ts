@@ -26,6 +26,7 @@ export async function getFilterProducts(
 
     const products: {
       [key: string]: {
+        key: string;
         name: string;
         description: string;
         img: string;
@@ -36,6 +37,12 @@ export async function getFilterProducts(
     if (results) {
       results.forEach((item, index) => {
         const name = item.name['en-US'];
+
+        let key = 'non';
+        if (item.key) {
+          key = item.key;
+        }
+
         let description = 'non';
         if (item.description) {
           description = item.description['en-US'];
@@ -59,6 +66,7 @@ export async function getFilterProducts(
         }
 
         products[index] = {
+          key: key,
           name: name,
           description: description,
           img: images,
