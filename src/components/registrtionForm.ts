@@ -28,7 +28,7 @@ export class RegistratinForm {
     this.shippingAddress.append(
       this.addCountrySelector('billing-country', 'Country: '),
       this.addInput('text', 'billing-city', 'City'),
-      this.addInput('text', 'billing-srteet', 'Street'),
+      this.addInput('text', 'billing-street', 'Street'),
       this.addInput('text', 'billing-building', 'Building'),
       this.addInput('text', 'billing-post-code', 'Post code')
     );
@@ -36,7 +36,7 @@ export class RegistratinForm {
     this.billingAddress.append(
       this.addCountrySelector('shipping-country', 'Country: '),
       this.addInput('text', 'shipping-city', 'City'),
-      this.addInput('text', 'shipping-srteet', 'Street'),
+      this.addInput('text', 'shipping-street', 'Street'),
       this.addInput('text', 'shipping-building', 'Building'),
       this.addInput('text', 'shipping-post-code', 'Post code')
     );
@@ -68,6 +68,7 @@ export class RegistratinForm {
     if (inputType === 'password') {
       const showPass = document.createElement('div');
       showPass.textContent = 'show';
+      showPass.className = 'show';
       showPass.addEventListener('mousedown', () => {
         input.type = 'text';
       });
