@@ -1,15 +1,18 @@
 import { Router } from '../router/router';
+import { AddToCartButton } from './addToCartBtn';
 
-export class PronuctCart {
+export class ProductCard {
   private card = document.createElement('div');
 
   createCard(
+    id: string,
     key: string,
     imgUrl: string,
     productName: string,
     productDiscription: string,
     price: number,
-    discountedPrice: number
+    discountedPrice: number,
+    productsInCart: string[]
   ) {
     this.card.className = 'products__card';
 
@@ -17,7 +20,8 @@ export class PronuctCart {
       this.addImage(imgUrl),
       this.addName(productName),
       this.addDiscription(productDiscription),
-      this.addPrice(price, discountedPrice)
+      this.addPrice(price, discountedPrice),
+      this.addToCartBtn(id, key, productsInCart)
     );
 
     this.openProduct(key);
@@ -64,5 +68,14 @@ export class PronuctCart {
       window.history.pushState({}, '', newURL);
       new Router();
     });
+  }
+
+  private addToCartBtn(
+    id: string,
+    key: string,
+    productsInCart: string[]
+  ): HTMLButtonElement {
+    const button = new AddToCartButton(id, key, productsInCart).createButton();
+    return button;
   }
 }

@@ -14,6 +14,7 @@ import { setUserId } from '../state/setUserId';
 import { Router } from '../router/router';
 import { tokenCache } from './tokenCache';
 import { buildClient } from './BuildClient';
+import { getCartId } from '../state/getCart';
 
 export async function login(event: SubmitEvent) {
   if (event.target instanceof HTMLFormElement) {
@@ -52,12 +53,16 @@ export async function login(event: SubmitEvent) {
 
     try {
       const { body } = await apiRoot
-        .me()
+        // .me()
         .login()
         .post({
           body: {
             email: formData.get('email') as string,
             password: formData.get('password') as string,
+            anonymousCart: {
+              id: getCartId(),
+              typeId: 'cart',
+            },
           },
         })
         .execute();

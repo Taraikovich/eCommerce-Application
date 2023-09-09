@@ -1,12 +1,15 @@
-import { PronuctCart } from '../components/productCard';
+import { ProductCard } from '../components/productCard';
 import { View } from './view';
 import { getFilterProducts } from '../api/getFilterProducts';
 import { FilterForm } from '../components/filterForm';
+import { getProductsInCart } from '../api/getProductsInCart';
 
 export class ProductsView extends View {
   fiilterForm = new FilterForm().create();
 
   productsSection = document.createElement('section');
+
+  loader = document.createElement('div');
 
   constructor() {
     super();
@@ -22,27 +25,35 @@ export class ProductsView extends View {
     filterStr: string[] = [],
     sortStr = 'name.en-US asc'
   ): Promise<void> {
+    this.showLoader();
+
     this.productsSection.innerHTML = '';
     this.productsSection.className = 'products';
+    const productsInCart = await getProductsInCart();
     const productsObj = await getFilterProducts(filterStr, sortStr);
     if (productsObj) {
       const products = Object.values(productsObj);
       for (const product of products) {
-        const card = new PronuctCart();
+        const card = new ProductCard();
+
         this.productsSection.append(
           card.createCard(
+            product.id,
             product.key,
             product.img,
             product.name,
             product.description,
             product.price,
-            product.discountedPrice
+            product.discountedPrice,
+            productsInCart
           )
         );
       }
     }
 
     this.main.append(this.productsSection);
+
+    this.hideLoader();
   }
 
   private filter(): void {
@@ -80,5 +91,17 @@ export class ProductsView extends View {
 
       this.createCards(filterStr, sortStr);
     });
+  }
+
+  private showLoader(): void {
+    this.loader.className = 'preloader';
+    const loaderImg = new Image();
+    loaderImg.src = require('../images/loader.gif');
+    this.loader.append(loaderImg);
+    this.main.appendChild(this.loader);
+  }
+
+  private hideLoader(): void {
+    this.loader.remove();
   }
 }

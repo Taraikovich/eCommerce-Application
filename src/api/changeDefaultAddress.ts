@@ -18,11 +18,17 @@ export async function changeDefaultAddress(
 
     const request: MyCustomerUpdate = {
       version: data.version,
-      actions: [{ action: isBilling ? 'setDefaultBillingAddress' : 'setDefaultShippingAddress', addressId }],
+      actions: [
+        {
+          action: isBilling
+            ? 'setDefaultBillingAddress'
+            : 'setDefaultShippingAddress',
+          addressId,
+        },
+      ],
     };
     const { body } = await apiRoot.me().post({ body: request }).execute();
     localStorage.setItem('userData', JSON.stringify(body));
     return body;
-  } catch (error) {
-  }
+  } catch (error) {}
 }

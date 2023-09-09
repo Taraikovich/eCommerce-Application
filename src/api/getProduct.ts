@@ -17,12 +17,14 @@ export async function getProduct(key: string) {
     const results = body.masterData.current;
 
     const product: {
+      id: string;
       name: string;
       description: string;
       img: string;
       price: number;
       discountedPrice: number;
     } = {
+      id: '',
       name: '',
       description: '',
       img: '',
@@ -31,6 +33,8 @@ export async function getProduct(key: string) {
     };
 
     if (results) {
+      product.id = body.id;
+
       product.name = results.name['en-US'];
       if (results.description) {
         product.description = results.description['en-US'];
