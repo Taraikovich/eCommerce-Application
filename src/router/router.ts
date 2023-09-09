@@ -3,6 +3,7 @@ import { HomePageView } from '../views/homePageView';
 import { LoginPageView } from '../views/loginPageView';
 import { RegisterPageView } from '../views/registerPageView';
 import { ProfilePageView } from '../views/profilePageView';
+import { BasketPageView } from '../views/basketPageView';
 import { getUserId } from '../state/getUserId';
 import { ProductsView } from '../views/productsView';
 import { ProductView } from '../views/productView';
@@ -20,6 +21,8 @@ export class Router {
 
   profilePage = new ProfilePageView();
 
+  basketPage = new BasketPageView();
+
   constructor() {
     this.createView();
   }
@@ -28,6 +31,8 @@ export class Router {
     const rout = this.getUrl();
     if (rout === '/') {
       this.homePage.createView();
+    } else if (rout === '/basket') {
+      this.basketPage.createView();
     } else if (rout === '/login') {
       if (getUserId()) {
         window.history.pushState({}, '', '/');

@@ -4,6 +4,7 @@ import { LoginButton } from './loginButton';
 import { RegisterButton } from './registerButton';
 import { LogoutButton } from './logoutButton';
 import { ProfileButton } from './profileButton';
+import { BasketButton } from './basketButton';
 
 export class Navigation {
   list = document.createElement('ul');
@@ -48,11 +49,13 @@ export class Navigation {
     if (getUserId()) {
       const logoutBtn = new LogoutButton();
       const profileBtn = new ProfileButton();
-      buttons.append(profileBtn.createButton(), logoutBtn.createButton());
+      const basketBtn = new BasketButton();
+      buttons.append(basketBtn.createButton(), profileBtn.createButton(), logoutBtn.createButton());
     } else {
       const loginBtn = new LoginButton();
       const registrBtn = new RegisterButton();
-      buttons.append(loginBtn.createButton(), registrBtn.createButton());
+      const basketBtn = new BasketButton();
+      buttons.append(basketBtn.createButton(), loginBtn.createButton(), registrBtn.createButton());
     }
     return buttons;
   }
