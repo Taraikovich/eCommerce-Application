@@ -50,14 +50,14 @@ export function buildClient() {
       .withProjectKey(projectKey)
       .withRefreshTokenFlow(options)
       .withHttpMiddleware(httpMiddlewareOptions)
-      // .withLoggerMiddleware()
+      .withLoggerMiddleware()
       .build();
   } else {
     client = new ClientBuilder()
       .withProjectKey(projectKey)
       .withClientCredentialsFlow(authMiddlewareOptions)
       .withHttpMiddleware(httpMiddlewareOptions)
-      // .withLoggerMiddleware()
+      .withLoggerMiddleware()
       .build();
   }
 }

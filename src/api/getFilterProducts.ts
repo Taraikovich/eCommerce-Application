@@ -18,6 +18,8 @@ export async function getFilterProducts(
         queryArgs: {
           filter: filterStr,
           sort: sortStr,
+          // limit: 10,
+          // offset: 10
         },
       })
       .execute();
@@ -26,6 +28,7 @@ export async function getFilterProducts(
 
     const products: {
       [key: string]: {
+        id: string;
         key: string;
         name: string;
         description: string;
@@ -37,6 +40,11 @@ export async function getFilterProducts(
     if (results) {
       results.forEach((item, index) => {
         const name = item.name['en-US'];
+
+        let id = 'non';
+        if (item.id) {
+          id = item.id;
+        }
 
         let key = 'non';
         if (item.key) {
@@ -66,6 +74,7 @@ export async function getFilterProducts(
         }
 
         products[index] = {
+          id: id,
           key: key,
           name: name,
           description: description,
