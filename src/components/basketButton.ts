@@ -2,21 +2,18 @@ import { Router } from '../router/router';
 import { Button } from './button';
 
 export class BasketButton {
-
-    public buttonBasket: HTMLDivElement;
+  public buttonBasket: HTMLDivElement;
 
   constructor() {
-this.buttonBasket = document.createElement('div');
- const busketImg = new Image();
-     busketImg.className = 'basket-button';
+    this.buttonBasket = document.createElement('div');
+    const busketImg = new Image();
+    busketImg.className = 'basket-button';
     busketImg.src = require('../images/shopping-cart.png');
     this.buttonBasket.append(busketImg);
     this.changePage();
   }
 
   createButton(): HTMLDivElement {
-
-   
     return this.buttonBasket;
   }
 
