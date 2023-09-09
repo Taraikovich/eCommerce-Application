@@ -410,10 +410,10 @@ export class ProfileForm {
     this.modalAddress.style.display = 'block';
     const editCallback = (e: SubmitEvent) => {
       this.editAddress(e, address?.id as string);
-    }
+    };
     const addCallback = (e: SubmitEvent) => {
       this.addAddress(e, this.isBillingAddressType);
-    }
+    };
     this.editFormAddress.removeEventListener('submit', editCallback);
     this.editFormAddress.removeEventListener('submit', addCallback);
     if (address) {
@@ -543,13 +543,20 @@ export class ProfileForm {
     }
   }
 
-  private async markAsDefaultAddress(address: Address, isBilling: boolean): Promise<void> {
+  private async markAsDefaultAddress(
+    address: Address,
+    isBilling: boolean
+  ): Promise<void> {
     const userId = getUserId();
     if (userId) {
       const userData = getUserDataFromLocalStorage(userId);
 
       if (userData) {
-        const result = await changeDefaultAddress(userData, address.id as string, isBilling);
+        const result = await changeDefaultAddress(
+          userData,
+          address.id as string,
+          isBilling
+        );
         if (result) {
           this.populateUserData();
           this.showSuccessMessage();
@@ -686,7 +693,10 @@ export class ProfileForm {
     markAsDefault.textContent = 'Mark as Default';
     const deleteButton = document.createElement('button');
     deleteButton.textContent = 'Delete';
-    if(address.id === userData.defaultBillingAddressId || address.id === userData.defaultShippingAddressId) {
+    if (
+      address.id === userData.defaultBillingAddressId ||
+      address.id === userData.defaultShippingAddressId
+    ) {
       deleteButton.disabled = true;
       markAsDefault.disabled = true;
     }
@@ -696,7 +706,10 @@ export class ProfileForm {
       this.deleteUserAddress(address);
     });
     markAsDefault.addEventListener('click', () => {
-      this.markAsDefaultAddress(address, userData.billingAddressIds?.includes(address?.id as string) as boolean);
+      this.markAsDefaultAddress(
+        address,
+        userData.billingAddressIds?.includes(address?.id as string) as boolean
+      );
     });
     editButton.addEventListener('click', () => {
       this.openModalAddress(address);

@@ -46,16 +46,25 @@ export class Navigation {
 
   private addButtons() {
     const buttons = document.createElement('div');
+    buttons.className = 'buttons-wrapper';
     if (getUserId()) {
       const logoutBtn = new LogoutButton();
       const profileBtn = new ProfileButton();
       const basketBtn = new BasketButton();
-      buttons.append(basketBtn.createButton(), profileBtn.createButton(), logoutBtn.createButton());
+      buttons.append(
+        basketBtn.createButton(),
+        profileBtn.createButton(),
+        logoutBtn.createButton()
+      );
     } else {
       const loginBtn = new LoginButton();
       const registrBtn = new RegisterButton();
       const basketBtn = new BasketButton();
-      buttons.append(basketBtn.createButton(), loginBtn.createButton(), registrBtn.createButton());
+      buttons.append(
+        basketBtn.createButton(),
+        loginBtn.createButton(),
+        registrBtn.createButton()
+      );
     }
     return buttons;
   }

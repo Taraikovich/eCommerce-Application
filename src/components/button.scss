@@ -32,6 +32,16 @@ button:hover {
 }
 
 .basket-button {
-  background-image: url('./images/shopping-cart.png');
-  
+  width: 35px;
+  height: 35px;
+  cursor: pointer;
+  padding-right: 40px;
+}
+
+.basket-button:hover {
+  transform: scale(1.2);
+}
+
+.buttons-wrapper {
+  display: flex;
 }
