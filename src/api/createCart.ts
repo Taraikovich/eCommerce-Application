@@ -2,7 +2,7 @@ import { createApiBuilderFromCtpClient } from '@commercetools/platform-sdk';
 import { client } from './BuildClient';
 import { projectKey } from '../constants/constants';
 import { getCartId } from '../state/getCart';
-import { setCartId } from '../state/setCart';
+import { setCartId, setCartVersion } from '../state/setCart';
 
 export async function createCart() {
   try {
@@ -20,9 +20,8 @@ export async function createCart() {
         })
         .execute();
 
-      const cartId = result.body.id;
-
-      setCartId(cartId);
+      setCartId(result.body.id);
+      setCartVersion(result.body.version);
     }
   } catch (error) {}
 }

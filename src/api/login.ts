@@ -15,6 +15,7 @@ import { Router } from '../router/router';
 import { tokenCache } from './tokenCache';
 import { buildClient } from './BuildClient';
 import { getCartId } from '../state/getCart';
+import { gerCartById } from './getCartById';
 
 export async function login(event: SubmitEvent) {
   if (event.target instanceof HTMLFormElement) {
@@ -73,6 +74,7 @@ export async function login(event: SubmitEvent) {
       document.body.textContent = '';
       new Router();
       buildClient();
+      gerCartById();
     } catch (error) {
       const errorMessage = document.createElement('p');
       errorMessage.className = 'error-message';
