@@ -109,3 +109,20 @@ main {
   align-items: center;
   height: 80vh;
 }
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 50px;
+  &__page {
+    margin: 0 5px;
+    padding: 5px;
+    cursor: pointer;
+  }
+  &__page_current {
+    border: 1px solid #072326;
+    border-radius: 5px;
+  }
+}

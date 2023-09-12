@@ -44,17 +44,26 @@ export class Router {
       }
     } else if (rout === '/products') {
       this.catalogPage.createView();
-      const queryString = window.location.search;
+      const queryString = decodeURI(window.location.search);
       if (queryString && queryString.includes('key')) {
         document.body.innerHTML = '';
         const query = queryString.slice(5);
         new ProductView(query).createView();
       } else if (queryString) {
-        const filterStr = decodeURIComponent(
-          queryString.slice(1).split('&')[0]
-        ).split('+');
-        const sortStr = decodeURIComponent(queryString.slice(1).split('&')[1]);
-        this.catalogPage.createCards(filterStr, sortStr);
+        let filterStr: string[] = [];
+        let sortStr = 'name.en-US asc';
+        let page = 1;
+        if (queryString.includes('variants'))
+          filterStr = queryString
+            .slice(1)
+            .split('&')
+            .slice(0, 1)
+            .join('')
+            .split('+');
+        if (queryString.includes('name') || queryString.includes('price'))
+          sortStr = queryString.slice(1).split('&')[1];
+        if (queryString.includes('page')) page = Number(queryString.slice(-1));
+        this.catalogPage.createCards(filterStr, sortStr, page);
       } else {
         this.catalogPage.createCards();
       }
