@@ -15,8 +15,7 @@ export class BasketPageView extends View {
 
     this.main.append(
       this.addH1('Basket'),
-      sectionBasketForm,
-      this.basketForm.createForm()
+      sectionBasketForm
     );
   }
 }

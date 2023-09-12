@@ -1,8 +1,11 @@
 import { Router } from '../router/router';
 import { AddToCartButton } from './addToCartBtn';
+import { BasketForm } from './basketForm';
 
 export class ProductCard {
   private card = document.createElement('div');
+
+  constructor(private basketForm: BasketForm) {}
 
   createCard(
     id: string,
@@ -21,7 +24,7 @@ export class ProductCard {
       this.addName(productName),
       this.addDiscription(productDiscription),
       this.addPrice(price, discountedPrice),
-      this.addToCartBtn(id, key, productsInCart)
+      this.addToCartBtn(id, key, productsInCart, productName)
     );
 
     this.openProduct(key);
@@ -73,9 +76,17 @@ export class ProductCard {
   private addToCartBtn(
     id: string,
     key: string,
-    productsInCart: string[]
+    productsInCart: string[],
+    productName: string
   ): HTMLButtonElement {
     const button = new AddToCartButton(id, key, productsInCart).createButton();
+    button.addEventListener('click', () => {
+      this.basketForm.addItemToBasket({
+        id,
+        key,
+        name: productName,
+      });
+    });
     return button;
   }
 }
