@@ -8,10 +8,9 @@ export class View {
 
   footer = document.createElement('footer');
 
-  navigation: Navigation | null = null
+  navigation: Navigation | null = null;
 
   constructor() {
-
     this.burgerMenu();
   }
 

@@ -24,6 +24,7 @@ export class BasketForm {
     image: string;
     quantity: number;
     price: number;
+    totalPrice: number;
   }[] = [];
 
   constructor() {
@@ -50,11 +51,19 @@ export class BasketForm {
           image: (item.variant?.images as Image[])[0]?.url,
           quantity: item.quantity,
           price: item.price.value.centAmount,
+          totalPrice: item.totalPrice.centAmount,
         });
       });
       this.updateBasket();
       const clearCartButton = document.createElement('button');
       clearCartButton.textContent = 'Clear shoping cart';
+      let totalCost = 0;
+      for (const product of this.productsInCart) {
+        totalCost += (product.price * product.quantity) / 100;
+      }
+      const totalCostElement = document.createElement('div');
+      totalCostElement.className = 'total-cost';
+      totalCostElement.textContent = `Total cost: ${totalCost.toFixed(2)} $ `;
       clearCartButton.addEventListener('click', async () => {
         await clearCart();
         await createCart();
@@ -64,11 +73,19 @@ export class BasketForm {
         }
       });
       this.itemsContainer.appendChild(clearCartButton);
+      this.itemsContainer.appendChild(totalCostElement);
     } else {
       const emptyCart = document.createElement('div');
+      const emptyCartWrapper = document.createElement('div');
+      emptyCartWrapper.className = 'empty-wrapper';
+      emptyCart.className = 'empty-text';
       emptyCart.textContent = 'Your cart is empty!';
-
-      this.itemsContainer.appendChild(emptyCart);
+      const catalogLink = document.createElement('a');
+      catalogLink.textContent = 'Go to Catalog';
+      catalogLink.href = '/products';
+      emptyCartWrapper.appendChild(emptyCart);
+      emptyCartWrapper.appendChild(catalogLink);
+      this.itemsContainer.appendChild(emptyCartWrapper);
     }
 
     return this.form;
@@ -81,12 +98,12 @@ export class BasketForm {
     image: string;
     quantity: number;
     price: number;
+    totalPrice: number;
   }) {
     this.productsInCart.push(product);
   }
 
   private updateBasket() {
-    console.log(this.productsInCart);
     for (const product of this.productsInCart) {
       const leftButton = document.createElement('button');
       leftButton.textContent = '-';
@@ -118,19 +135,30 @@ export class BasketForm {
         }
       });
       const item = document.createElement('div');
+      item.className = 'item-cart';
+      const itemWrapper = document.createElement('div');
+      itemWrapper.className = 'item-cart-wrapper';
+      const itemWrapperRight = document.createElement('div');
+      itemWrapperRight.className = 'item-wrapper-right';
+      const quantityWrapper = document.createElement('div');
+      quantityWrapper.className = 'quantity-wrapper';
       item.textContent = product.name['en-US'];
       const image = new Image();
       image.src = product.image;
       image.width = 150;
       const price = document.createElement('div');
-      price.textContent = `${product.price / 100} $`;
+      price.textContent = `${(product.price * product.quantity) / 100} $`;
       item.appendChild(image);
       item.appendChild(price);
-      item.appendChild(removeButton);
-      item.appendChild(leftButton);
-      item.appendChild(quantityInCart);
-      item.appendChild(rightButton);
-      this.itemsContainer.appendChild(item);
+      itemWrapper.appendChild(item);
+      quantityWrapper.appendChild(leftButton);
+      quantityWrapper.appendChild(quantityInCart);
+      quantityWrapper.appendChild(rightButton);
+      itemWrapperRight.appendChild(quantityWrapper);
+      itemWrapperRight.appendChild(removeButton);
+      itemWrapper.appendChild(itemWrapperRight);
+      this.itemsContainer.appendChild(itemWrapper);
+  
     }
   }
 }

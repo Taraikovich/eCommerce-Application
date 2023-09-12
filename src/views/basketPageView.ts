@@ -18,6 +18,6 @@ export class BasketPageView extends View {
       })
     );
 
-    this.main.append(this.addH1('Basket'), sectionBasketForm);
+    this.main.append(sectionBasketForm);
   }
 }

@@ -4,7 +4,10 @@ import { projectKey } from '../constants/constants';
 import { getCartId, getCartVersion } from '../state/getCart';
 import { setCartVersion } from '../state/setCart';
 
-export async function changeLineItemQuantity(lineItemId: string, quantity: number) {
+export async function changeLineItemQuantity(
+  lineItemId: string,
+  quantity: number
+) {
   try {
     const apiRoot = createApiBuilderFromCtpClient(client).withProjectKey({
       projectKey,
@@ -28,7 +31,5 @@ export async function changeLineItemQuantity(lineItemId: string, quantity: numbe
         },
       })
       .execute();
-
-
   } catch (error) {}
 }

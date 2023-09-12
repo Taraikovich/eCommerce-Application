@@ -33,7 +33,7 @@ export class AddToCartButton extends Button {
       event.stopPropagation();
       this.button.textContent = '🛒 ✔';
       this.button.disabled = true;
-      await addToCart(productId, productKey)
+      await addToCart(productId, productKey);
     });
   }
 }

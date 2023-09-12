@@ -82,7 +82,7 @@ export class ProductCard {
   ): HTMLButtonElement {
     const button = new AddToCartButton(id, key, productsInCart).createButton();
     button.addEventListener('click', () => {
-      addToCart(id, key)
+      addToCart(id, key);
     });
     return button;
   }

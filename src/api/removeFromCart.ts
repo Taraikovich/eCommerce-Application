@@ -27,7 +27,5 @@ export async function removeFromCart(lineItemId: string) {
         },
       })
       .execute();
-
-
   } catch (error) {}
 }

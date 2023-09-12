@@ -20,7 +20,6 @@ export async function clearCart() {
         },
       })
       .execute();
-      localStorage.removeItem('cartId')
-
+    localStorage.removeItem('cartId');
   } catch (error) {}
 }

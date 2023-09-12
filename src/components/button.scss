@@ -43,9 +43,17 @@ button:hover {
   cursor: default;
 }
 
-.basket-button{
-padding-right: 60px;
- cursor: pointer;
+.basket-button {
+  padding-right: 60px;
+  cursor: pointer;
+}
+
+.basket-button-quantity {
+  font-weight: 600;
+  position: absolute;
+  font-size: 18px;
+
+  top: 0px;
 }
 
 .basket-button-img {

@@ -4,7 +4,6 @@ import { projectKey } from '../constants/constants';
 import { getCartId, getCartVersion } from '../state/getCart';
 import { setCartVersion } from '../state/setCart';
 
-
 export async function addToCart(productId: string, productKey: string) {
   try {
     const apiRoot = createApiBuilderFromCtpClient(client).withProjectKey({

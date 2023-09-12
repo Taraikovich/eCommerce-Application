@@ -5,13 +5,14 @@ import { Button } from './button';
 
 export class BasketButton {
   public buttonBasket: HTMLDivElement;
-  
+
   public quantityBasket: HTMLSpanElement;
 
   constructor() {
     this.buttonBasket = document.createElement('div');
     this.buttonBasket.className = 'basket-button';
     this.quantityBasket = document.createElement('span');
+    this.quantityBasket.className = 'basket-button-quantity';
 
     const busketImg = new Image();
     busketImg.className = 'basket-button-img';
@@ -28,12 +29,11 @@ export class BasketButton {
 
   public async updateBasket(): Promise<void> {
     const cart: Cart = (await getCart()) as Cart;
-    this.quantityBasket.textContent = `${cart?.lineItems?.reduce(
-      (prev, current) => {
+    this.quantityBasket.textContent = `${
+      cart?.lineItems?.reduce((prev, current) => {
         return prev + current.quantity;
-      },
-      0
-    ) || 0}`;
+      }, 0) || 0
+    }`;
   }
 
   private async changePage(): Promise<void> {
