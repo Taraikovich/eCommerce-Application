@@ -9,13 +9,15 @@ export class BasketPageView extends View {
     this.createContent();
   }
 
-  private createContent(): void {
+  private async createContent(): Promise<void> {
     const sectionBasketForm = this.createSection('basket-form');
-    sectionBasketForm.append(this.basketForm.createForm());
 
-    this.main.append(
-      this.addH1('Basket'),
-      sectionBasketForm
+    sectionBasketForm.append(
+      await this.basketForm.createForm(() => {
+        this.updateNavigation();
+      })
     );
+
+    this.main.append(this.addH1('Basket'), sectionBasketForm);
   }
 }

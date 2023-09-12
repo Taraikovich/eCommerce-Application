@@ -11,8 +11,15 @@ export class Navigation {
 
   nav = document.createElement('nav');
 
+  basketBtn: BasketButton;
+
   constructor(node: HTMLElement) {
+    this.basketBtn = new BasketButton();
     this.addMenu(node);
+  }
+
+  updateNavigation(): void {
+    this.basketBtn.updateBasket();
   }
 
   private addMenu(node: HTMLElement): void {
@@ -22,6 +29,7 @@ export class Navigation {
     const catalogLink = this.addMenuItem('Catalog', './products');
     this.list.append(homeLink, catalogLink);
     this.nav.append(this.list, this.addButtons());
+
     node.append(this.nav);
   }
 
@@ -47,21 +55,22 @@ export class Navigation {
   private addButtons() {
     const buttons = document.createElement('div');
     buttons.className = 'buttons-wrapper';
+
     if (getUserId()) {
       const logoutBtn = new LogoutButton();
       const profileBtn = new ProfileButton();
-      const basketBtn = new BasketButton();
+
       buttons.append(
-        basketBtn.createButton(),
+        this.basketBtn.createButton(),
         profileBtn.createButton(),
         logoutBtn.createButton()
       );
     } else {
       const loginBtn = new LoginButton();
       const registrBtn = new RegisterButton();
-      const basketBtn = new BasketButton();
+
       buttons.append(
-        basketBtn.createButton(),
+        this.basketBtn.createButton(),
         loginBtn.createButton(),
         registrBtn.createButton()
       );

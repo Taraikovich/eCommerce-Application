@@ -1,3 +1,4 @@
+import { addToCart } from '../api/addToCart';
 import { Router } from '../router/router';
 import { AddToCartButton } from './addToCartBtn';
 import { BasketForm } from './basketForm';
@@ -81,11 +82,7 @@ export class ProductCard {
   ): HTMLButtonElement {
     const button = new AddToCartButton(id, key, productsInCart).createButton();
     button.addEventListener('click', () => {
-      this.basketForm.addItemToBasket({
-        id,
-        key,
-        name: productName,
-      });
+      addToCart(id, key)
     });
     return button;
   }

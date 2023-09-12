@@ -8,7 +8,10 @@ export class View {
 
   footer = document.createElement('footer');
 
+  navigation: Navigation | null = null
+
   constructor() {
+
     this.burgerMenu();
   }
 
@@ -27,7 +30,11 @@ export class View {
   }
 
   private addMenu(): void {
-    new Navigation(this.header);
+    this.navigation = new Navigation(this.header);
+  }
+
+  updateNavigation(): void {
+    (this.navigation as Navigation).updateNavigation();
   }
 
   addH1(text: string) {
