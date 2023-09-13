@@ -54,6 +54,10 @@ export class ProductsView extends View {
       this.productsSection.append(this.pagination(productsObj[0].total));
     }
 
+    this.addItemToBasket();
+    this.main.append(this.productsSection);
+
+
     this.hideLoader();
   }
 
@@ -151,5 +155,15 @@ export class ProductsView extends View {
 
   private hideLoader(): void {
     this.loader.remove();
+  }
+
+  private addItemToBasket() {
+    const addToCartButtons = document.querySelectorAll('.button__add-to-cart');
+
+    addToCartButtons.forEach((button) => {
+      button.addEventListener('click', () => {
+        this.navigation?.addItemToBasket();
+      });
+    });
   }
 }

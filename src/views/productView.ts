@@ -79,6 +79,9 @@ export class ProductView extends View {
     productsInCart: string[]
   ): HTMLButtonElement {
     const button = new AddToCartButton(id, key, productsInCart).createButton();
+    button.addEventListener('click', () => {
+      this.navigation?.addItemToBasket();
+    });
     return button;
   }
 

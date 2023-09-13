@@ -8,8 +8,10 @@
   padding: 20px;
   border: 1px solid #ccc;
   border-radius: 5px;
+
   fieldset {
     border-radius: 5px;
+
     &:first-of-type {
       margin-top: 20px;
     }
@@ -21,11 +23,13 @@
     right: 5%;
     top: 60px;
   }
+
   &__btn {
     position: absolute;
     left: 5%;
     top: 60px;
   }
+
   &__firstName,
   &__lastName,
   &__email,
@@ -63,11 +67,13 @@
       border-radius: 5px;
       font-size: 14px;
     }
+
     .form__error {
       color: red;
       font-size: 12px;
       margin-top: 5px;
     }
+
     select {
       width: 100%;
     }
@@ -118,6 +124,7 @@
     margin-bottom: 10px;
   }
 }
+
 .error-message {
   color: red;
   background-color: rgb(255, 199, 199);
@@ -146,6 +153,7 @@
   width: 40px;
   height: 20px;
 }
+
 .form_filter {
   margin: 0 auto;
   border: none;
@@ -208,6 +216,7 @@
   font-weight: 600;
   font-size: 18px;
 }
+
 .modal {
   display: block;
   position: absolute;
@@ -252,11 +261,13 @@
   display: flex;
   flex-direction: row;
 }
+
 .wrapper-profile {
   display: flex;
   flex-direction: column;
   margin: 20px;
 }
+
 .wrapper-info {
   border: solid 1px black;
   padding: 10px;
@@ -282,4 +293,61 @@
 
 button:disabled {
   opacity: 0.5;
+}
+
+.basket-items {
+  display: flex;
+  flex-direction: column;
+  align-items: baseline;
+  justify-content: center;
+  margin-top: 10px;
+}
+.item-cart-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: solid 2px;
+  margin-bottom: 10px;
+  width: 400px;
+  padding: 5px;
+}
+.item-cart {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.item-wrapper-right {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.quantity-wrapper {
+  margin-bottom: 115px;
+}
+
+.quantity-wrapper span {
+  margin-left: 10px;
+}
+
+.quantity-wrapper button {
+  width: 30px;
+  font-weight: 600;
+  font-size: 18px;
+}
+.empty-text {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 600;
+  font-size: 24px;
+}
+.empty-wrapper {
+  margin-left: 20px;
+}
+.total-cost {
+  font-size: 30px;
+  font-weight: 600;
 }
