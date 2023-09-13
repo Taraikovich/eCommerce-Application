@@ -2,6 +2,7 @@ import { AddToCartButton } from '../components/addToCartBtn';
 import { getProduct } from '../api/getProduct';
 import { View } from './view';
 import { getProductsInCart } from '../api/getProductsInCart';
+import { RemoveFromCartButton } from '../components/removeFromCartBtn';
 
 export class ProductView extends View {
   sectionProduct = document.createElement('section');
@@ -25,7 +26,7 @@ export class ProductView extends View {
         this.addImg(product.img),
         this.addDiscription(product.description),
         this.addPrice(product.price, product.discountedPrice),
-        this.addToCartBtn(product.id, key, productsInCart)
+        this.addToCart(product.id, key, productsInCart)
       );
 
       this.main.append(this.addH1(product.name), this.sectionProduct);
@@ -73,13 +74,33 @@ export class ProductView extends View {
     return wrapper;
   }
 
-  private addToCartBtn(
+  private addToCart(
     id: string,
     key: string,
     productsInCart: string[]
-  ): HTMLButtonElement {
-    const button = new AddToCartButton(id, key, productsInCart).createButton();
-    return button;
+  ): HTMLElement {
+    const wrapper = document.createElement('div');
+    wrapper.className = 'add-buttons';
+    const addToCartbtn = new AddToCartButton(
+      id,
+      key,
+      productsInCart
+    ).createButton();
+    wrapper.append(addToCartbtn);
+    if (productsInCart.includes(id)) {
+      const removeBtn = new RemoveFromCartButton(
+        id,
+        key,
+        productsInCart
+      ).createButton();
+      wrapper.append(removeBtn);
+      removeBtn.addEventListener('click', () => {
+        addToCartbtn.textContent = '🛒 +';
+        addToCartbtn.disabled = false;
+        removeBtn.remove();
+      });
+    }
+    return wrapper;
   }
 
   private showLoader(): void {

@@ -31,6 +31,11 @@ button:hover {
   color: #072326;
 }
 
+.add-buttons {
+  display: flex;
+  transition: all 0.5s ease;
+}
+
 .button__add-to-cart {
   font-size: 20px;
   font-weight: bold;
@@ -41,4 +46,15 @@ button:hover {
   background-color: #c9f696;
   color: #072326;
   cursor: default;
+}
+
+.button__remove-from-cart {
+  border: none;
+  background-color: white;
+  color: red;
+  text-decoration: underline;
+}
+
+.button__remove-from-cart:hover {
+  background-color: white;
 }
