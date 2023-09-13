@@ -3,7 +3,6 @@ import { View } from './view';
 import { getFilterProducts } from '../api/getFilterProducts';
 import { FilterForm } from '../components/filterForm';
 import { getProductsInCart } from '../api/getProductsInCart';
-import { BasketForm } from '../components/basketForm';
 
 export class ProductsView extends View {
   fiilterForm = new FilterForm().create();
@@ -35,8 +34,7 @@ export class ProductsView extends View {
     if (productsObj) {
       const products = Object.values(productsObj);
       for (const product of products) {
-        const basketForm = new BasketForm();
-        const card = new ProductCard(basketForm);
+        const card = new ProductCard();
 
         this.productsSection.append(
           card.createCard(
@@ -52,7 +50,7 @@ export class ProductsView extends View {
         );
       }
     }
-
+    this.addItemToBasket();
     this.main.append(this.productsSection);
 
     this.hideLoader();
@@ -105,5 +103,15 @@ export class ProductsView extends View {
 
   private hideLoader(): void {
     this.loader.remove();
+  }
+
+  private addItemToBasket() {
+    const addToCartButtons = document.querySelectorAll('.button__add-to-cart');
+
+    addToCartButtons.forEach((button) => {
+      button.addEventListener('click', () => {
+        this.navigation?.addItemToBasket();
+      });
+    });
   }
 }

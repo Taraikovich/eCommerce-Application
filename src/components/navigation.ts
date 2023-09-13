@@ -18,6 +18,10 @@ export class Navigation {
     this.addMenu(node);
   }
 
+  addItemToBasket() {
+    this.basketBtn.addItem();
+  }
+
   updateNavigation(): void {
     this.basketBtn.updateBasket();
   }

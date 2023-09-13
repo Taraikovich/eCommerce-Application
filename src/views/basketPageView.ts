@@ -4,12 +4,12 @@ import { BasketForm } from '../components/basketForm';
 export class BasketPageView extends View {
   private basketForm = new BasketForm();
 
-  constructor() {
-    super();
+  createView(): void {
+    super.createView();
     this.createContent();
   }
 
-  private async createContent(): Promise<void> {
+  async createContent(): Promise<void> {
     const sectionBasketForm = this.createSection('basket-form');
 
     sectionBasketForm.append(

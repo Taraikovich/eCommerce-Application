@@ -158,7 +158,6 @@ export class BasketForm {
       itemWrapperRight.appendChild(removeButton);
       itemWrapper.appendChild(itemWrapperRight);
       this.itemsContainer.appendChild(itemWrapper);
-  
     }
   }
 }

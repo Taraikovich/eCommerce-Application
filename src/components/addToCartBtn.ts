@@ -1,9 +1,4 @@
-import { createApiBuilderFromCtpClient } from '@commercetools/platform-sdk';
 import { Button } from './button';
-import { client } from '../api/BuildClient';
-import { projectKey } from '../constants/constants';
-import { getCartId, getCartVersion } from '../state/getCart';
-import { setCartVersion } from '../state/setCart';
 import { addToCart } from '../api/addToCart';
 
 export class AddToCartButton extends Button {

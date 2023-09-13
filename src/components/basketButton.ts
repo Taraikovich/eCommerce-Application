@@ -1,7 +1,6 @@
 import { Cart } from '@commercetools/platform-sdk';
 import { getCart } from '../api/getCart';
 import { Router } from '../router/router';
-import { Button } from './button';
 
 export class BasketButton {
   public buttonBasket: HTMLDivElement;
@@ -25,6 +24,12 @@ export class BasketButton {
 
   createButton(): HTMLDivElement {
     return this.buttonBasket;
+  }
+
+  addItem() {
+    this.quantityBasket.textContent = String(
+      Number(this.quantityBasket.textContent) + 1
+    );
   }
 
   public async updateBasket(): Promise<void> {
