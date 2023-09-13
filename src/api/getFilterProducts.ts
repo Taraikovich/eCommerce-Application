@@ -4,9 +4,14 @@ import { projectKey } from '../constants/constants';
 
 export async function getFilterProducts(
   filterStr: string[] = [],
-  sortStr = 'name.en-US asc'
+  sortStr = 'name.en-US asc',
+  page = 1
 ) {
   try {
+    const limit = 10;
+
+    const offset = limit * (page - 1);
+
     const apiRoot = createApiBuilderFromCtpClient(client).withProjectKey({
       projectKey,
     });
@@ -18,8 +23,8 @@ export async function getFilterProducts(
         queryArgs: {
           filter: filterStr,
           sort: sortStr,
-          // limit: 10,
-          // offset: 10
+          limit,
+          offset,
         },
       })
       .execute();
@@ -35,6 +40,7 @@ export async function getFilterProducts(
         img: string;
         price: number;
         discountedPrice: number;
+        total: number;
       };
     } = {};
     if (results) {
@@ -73,6 +79,9 @@ export async function getFilterProducts(
           }
         }
 
+        let total = 0;
+        if (body.total) total = body.total;
+
         products[index] = {
           id: id,
           key: key,
@@ -81,6 +90,7 @@ export async function getFilterProducts(
           img: images,
           price: price,
           discountedPrice: discountedPrice,
+          total: total,
         };
       });
       return products;
