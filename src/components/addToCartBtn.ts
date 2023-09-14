@@ -1,9 +1,5 @@
-import { createApiBuilderFromCtpClient } from '@commercetools/platform-sdk';
 import { Button } from './button';
-import { client } from '../api/BuildClient';
-import { projectKey } from '../constants/constants';
-import { getCartId, getCartVersion } from '../state/getCart';
-import { setCartVersion } from '../state/setCart';
+import { addToCart } from '../api/addToCart';
 import { RemoveFromCartButton } from './removeFromCartBtn';
 
 export class AddToCartButton extends Button {
@@ -44,32 +40,7 @@ export class AddToCartButton extends Button {
       event.stopPropagation();
       this.button.textContent = '🛒 ✔';
       this.button.disabled = true;
-      this.button.after(removeBtn);
-
-      const apiRoot = createApiBuilderFromCtpClient(client).withProjectKey({
-        projectKey,
-      });
-
-      const response = await apiRoot
-        .carts()
-        .withId({
-          ID: getCartId(),
-        })
-        .post({
-          body: {
-            version: getCartVersion(),
-            actions: [
-              {
-                action: 'addLineItem',
-                productId: productId,
-                key: productKey,
-              },
-            ],
-          },
-        })
-        .execute();
-
-      setCartVersion(response.body.version);
+      await addToCart(productId, productKey);
     });
   }
 }

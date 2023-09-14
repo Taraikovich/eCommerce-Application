@@ -78,6 +78,9 @@ export class ProductCard {
     productsInCart: string[]
   ): HTMLButtonElement {
     const button = new AddToCartButton(id, key, productsInCart).createButton();
+    // button.addEventListener('click', () => {
+
+    // })
     return button;
   }
 
@@ -94,6 +97,20 @@ export class ProductCard {
       productsInCart
     ).createButton();
     wrapper.append(addToCartbtn);
+    addToCartbtn.addEventListener('click', () => {
+      const removeBtn = new RemoveFromCartButton(
+        id,
+        key,
+        productsInCart
+      ).createButton();
+      wrapper.append(removeBtn);
+      removeBtn.addEventListener('click', () => {
+        addToCartbtn.textContent = '🛒 +';
+        addToCartbtn.disabled = false;
+        removeBtn.remove();
+      });
+      wrapper.append(removeBtn);
+    });
     if (productsInCart.includes(id)) {
       const removeBtn = new RemoveFromCartButton(
         id,

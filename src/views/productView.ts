@@ -86,6 +86,21 @@ export class ProductView extends View {
       key,
       productsInCart
     ).createButton();
+    addToCartbtn.addEventListener('click', () => {
+      this.navigation?.addItemToBasket();
+      const removeBtn = new RemoveFromCartButton(
+        id,
+        key,
+        productsInCart
+      ).createButton();
+      wrapper.append(removeBtn);
+      removeBtn.addEventListener('click', () => {
+        addToCartbtn.textContent = '🛒 +';
+        addToCartbtn.disabled = false;
+        this.navigation?.removeItemToBasket();
+        removeBtn.remove();
+      });
+    });
     wrapper.append(addToCartbtn);
     if (productsInCart.includes(id)) {
       const removeBtn = new RemoveFromCartButton(
@@ -97,6 +112,7 @@ export class ProductView extends View {
       removeBtn.addEventListener('click', () => {
         addToCartbtn.textContent = '🛒 +';
         addToCartbtn.disabled = false;
+        this.navigation?.removeItemToBasket();
         removeBtn.remove();
       });
     }
