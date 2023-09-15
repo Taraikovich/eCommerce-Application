@@ -57,7 +57,6 @@ export class ProductsView extends View {
     this.addItemToBasket();
     this.main.append(this.productsSection);
 
-
     this.hideLoader();
   }
 
@@ -159,10 +158,22 @@ export class ProductsView extends View {
 
   private addItemToBasket() {
     const addToCartButtons = document.querySelectorAll('.button__add-to-cart');
+    let removeBtn = document.querySelectorAll('.button__remove-from-cart');
+    removeBtn.forEach((item) => {
+      item.addEventListener('click', () => {
+        this.navigation?.removeItemToBasket();
+      });
+    });
 
     addToCartButtons.forEach((button) => {
       button.addEventListener('click', () => {
         this.navigation?.addItemToBasket();
+        removeBtn = document.querySelectorAll('.button__remove-from-cart');
+        removeBtn.forEach((item) => {
+          item.addEventListener('click', () => {
+            this.navigation?.removeItemToBasket();
+          });
+        });
       });
     });
   }

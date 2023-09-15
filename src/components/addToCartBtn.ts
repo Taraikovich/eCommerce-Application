@@ -1,11 +1,12 @@
 import { Button } from './button';
 import { addToCart } from '../api/addToCart';
+import { RemoveFromCartButton } from './removeFromCartBtn';
 
 export class AddToCartButton extends Button {
   constructor(id: string, key: string, productsInCart: string[]) {
     super();
     this.button.textContent = '🛒 +';
-    this.chengePage(id, key, productsInCart);
+    this.buttonEvent(id, key, productsInCart);
   }
 
   createButton(): HTMLButtonElement {
@@ -14,7 +15,7 @@ export class AddToCartButton extends Button {
     return this.button;
   }
 
-  private chengePage(
+  private buttonEvent(
     productId: string,
     productKey: string,
     productsInCart: string[]
@@ -23,6 +24,17 @@ export class AddToCartButton extends Button {
       this.button.textContent = '🛒 ✔';
       this.button.disabled = true;
     }
+
+    const removeBtn = new RemoveFromCartButton(
+      productId,
+      productKey,
+      productsInCart
+    ).createButton();
+    removeBtn.addEventListener('click', () => {
+      this.button.textContent = '🛒 +';
+      this.button.disabled = false;
+      removeBtn.remove();
+    });
 
     this.button.addEventListener('click', async (event) => {
       event.stopPropagation();

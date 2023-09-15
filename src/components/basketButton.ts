@@ -32,6 +32,12 @@ export class BasketButton {
     );
   }
 
+  removeItem() {
+    this.quantityBasket.textContent = String(
+      Number(this.quantityBasket.textContent) - 1
+    );
+  }
+
   public async updateBasket(): Promise<void> {
     const cart: Cart = (await getCart()) as Cart;
     this.quantityBasket.textContent = `${

@@ -4,7 +4,7 @@ import { addAddress } from '../api/addAddress';
 import { updatePassword } from '../api/updatePassword';
 import { updateProfileData } from '../api/updateProfileData';
 import { getUserId } from '../state/getUserId';
-import { formValidation, realTimeValidation } from '../utils/formValidator';
+import { formValidation } from '../utils/formValidator';
 import { editAddress } from '../api/editAddress';
 import { changeDefaultAddress } from '../api/changeDefaultAddress';
 
@@ -29,7 +29,7 @@ export interface UserDataAddress {
   id?: string;
 }
 
-function getUserDataFromLocalStorage(userId: string): UserData | null {
+function getUserDataFromLocalStorage(): UserData | null {
   const userDataStr = localStorage.getItem('userData');
 
   if (userDataStr) {
@@ -143,7 +143,7 @@ export class ProfileForm {
     this.editAddressButton = document.createElement('button');
     this.editAddressButton.textContent = 'Add new address';
     this.editAddressButton.className = 'edit-address-button';
-    this.editAddressButton.addEventListener('click', (e) => {
+    this.editAddressButton.addEventListener('click', () => {
       this.isBillingAddressType = false;
       this.openModalAddress();
     });
@@ -151,7 +151,7 @@ export class ProfileForm {
     const buttonBilling = document.createElement('button');
     buttonBilling.textContent = 'Add new billing address';
     buttonBilling.className = 'edit-address-button';
-    buttonBilling.addEventListener('click', (e) => {
+    buttonBilling.addEventListener('click', () => {
       this.isBillingAddressType = true;
       this.openModalAddress();
     });
@@ -394,12 +394,35 @@ export class ProfileForm {
 
     const userId = getUserId();
     if (userId) {
-      const userData = getUserDataFromLocalStorage(userId);
+      const userData = getUserDataFromLocalStorage();
       if (userData) {
-        (this.editForm.elements as any).firstName.value = userData.firstName;
-        (this.editForm.elements as any).lastName.value = userData.lastName;
-        (this.editForm.elements as any).birth.value = userData.dateOfBirth;
-        (this.editForm.elements as any).email.value = userData.email;
+        const formElement = this.editForm as HTMLFormElement;
+
+        const firstNameInput = formElement.elements.namedItem(
+          'firstName'
+        ) as HTMLInputElement;
+        const lastNameInput = formElement.elements.namedItem(
+          'lastName'
+        ) as HTMLInputElement;
+        const birthInput = formElement.elements.namedItem(
+          'birth'
+        ) as HTMLInputElement;
+        const emailInput = formElement.elements.namedItem(
+          'email'
+        ) as HTMLInputElement;
+
+        if (firstNameInput) {
+          firstNameInput.value = userData.firstName;
+        }
+        if (lastNameInput) {
+          lastNameInput.value = userData.lastName;
+        }
+        if (birthInput) {
+          birthInput.value = userData.dateOfBirth;
+        }
+        if (emailInput) {
+          emailInput.value = userData.email;
+        }
       }
     }
   }
@@ -417,18 +440,62 @@ export class ProfileForm {
     this.editFormAddress.removeEventListener('submit', editCallback);
     this.editFormAddress.removeEventListener('submit', addCallback);
     if (address) {
-      (this.editFormAddress.elements as any).country.value = address?.country;
-      (this.editFormAddress.elements as any).city.value = address?.city;
-      (this.editFormAddress.elements as any).street.value = address?.streetName;
-      (this.editFormAddress.elements as any)['post-code'].value =
-        address?.postalCode;
-      this.editFormAddress.addEventListener('submit', editCallback);
+      const {
+        country,
+        city,
+        streetName: street,
+        postalCode: postCode,
+      } = address;
+
+      const form = this.editFormAddress as HTMLFormElement;
+      const countryInput = form.elements.namedItem(
+        'country'
+      ) as HTMLInputElement;
+      const cityInput = form.elements.namedItem('city') as HTMLInputElement;
+      const streetInput = form.elements.namedItem('street') as HTMLInputElement;
+      const postCodeInput = form.elements.namedItem(
+        'post-code'
+      ) as HTMLInputElement;
+
+      if (countryInput) {
+        countryInput.value = country || '';
+      }
+      if (cityInput) {
+        cityInput.value = city || '';
+      }
+      if (streetInput) {
+        streetInput.value = street || '';
+      }
+      if (postCodeInput) {
+        postCodeInput.value = postCode || '';
+      }
+
+      form.addEventListener('submit', editCallback);
     } else {
-      (this.editFormAddress.elements as any).country.value = '';
-      (this.editFormAddress.elements as any).city.value = '';
-      (this.editFormAddress.elements as any).street.value = '';
-      (this.editFormAddress.elements as any)['post-code'].value = '';
-      this.editFormAddress.addEventListener('submit', addCallback);
+      const form = this.editFormAddress as HTMLFormElement;
+      const countryInput = form.elements.namedItem(
+        'country'
+      ) as HTMLInputElement;
+      const cityInput = form.elements.namedItem('city') as HTMLInputElement;
+      const streetInput = form.elements.namedItem('street') as HTMLInputElement;
+      const postCodeInput = form.elements.namedItem(
+        'post-code'
+      ) as HTMLInputElement;
+
+      if (countryInput) {
+        countryInput.value = '';
+      }
+      if (cityInput) {
+        cityInput.value = '';
+      }
+      if (streetInput) {
+        streetInput.value = '';
+      }
+      if (postCodeInput) {
+        postCodeInput.value = '';
+      }
+
+      form.addEventListener('submit', addCallback);
     }
   }
 
@@ -448,7 +515,7 @@ export class ProfileForm {
     e.preventDefault();
     const userId = getUserId();
     if (userId) {
-      const userData = getUserDataFromLocalStorage(userId);
+      const userData = getUserDataFromLocalStorage();
       const formData = new FormData(e.target as HTMLFormElement);
       if (userData) {
         const currentPassword = formData.get('current-password') as string;
@@ -477,7 +544,7 @@ export class ProfileForm {
     e.preventDefault();
     const userId = getUserId();
     if (userId) {
-      const userData = getUserDataFromLocalStorage(userId);
+      const userData = getUserDataFromLocalStorage();
       const formData = new FormData(e.target as HTMLFormElement);
       if (userData) {
         const data: UserDataAddress = {
@@ -504,7 +571,7 @@ export class ProfileForm {
     e.preventDefault();
     const userId = getUserId();
     if (userId) {
-      const userData = getUserDataFromLocalStorage(userId);
+      const userData = getUserDataFromLocalStorage();
       const formData = new FormData(e.target as HTMLFormElement);
       if (userData) {
         const data: UserDataAddress = {
@@ -530,7 +597,7 @@ export class ProfileForm {
   private async deleteUserAddress(address: Address): Promise<void> {
     const userId = getUserId();
     if (userId) {
-      const userData = getUserDataFromLocalStorage(userId);
+      const userData = getUserDataFromLocalStorage();
 
       if (userData) {
         const result = await deleteAddress(userData, address.id as string);
@@ -549,7 +616,7 @@ export class ProfileForm {
   ): Promise<void> {
     const userId = getUserId();
     if (userId) {
-      const userData = getUserDataFromLocalStorage(userId);
+      const userData = getUserDataFromLocalStorage();
 
       if (userData) {
         const result = await changeDefaultAddress(
@@ -570,44 +637,13 @@ export class ProfileForm {
     e.preventDefault();
     const userId = getUserId();
     if (userId) {
-      const userData = getUserDataFromLocalStorage(userId);
+      const userData = getUserDataFromLocalStorage();
       const formData = new FormData(e.target as HTMLFormElement);
       if (userData) {
         userData.firstName = formData.get('firstName') as string;
         userData.lastName = formData.get('lastName') as string;
         userData.dateOfBirth = formData.get('birth') as string;
         userData.email = formData.get('email') as string;
-        // const shippingAddressIndex = userData?.addresses.findIndex(
-        //   (adress) => adress.id === userData.defaultShippingAddressId
-        // );
-        // const billingAddressIndex = userData?.addresses.findIndex(
-        //   (adress) => adress.id === userData.defaultBillingAddressId
-        // );
-        // userData.addresses[shippingAddressIndex].country = formData.get(
-        //   'shipping-country'
-        // ) as string;
-        // userData.addresses[shippingAddressIndex].city = formData.get(
-        //   'shipping-city'
-        // ) as string;
-        // userData.addresses[shippingAddressIndex].streetName = formData.get(
-        //   'shipping-street'
-        // ) as string;
-        // userData.addresses[shippingAddressIndex].postalCode = formData.get(
-        //   'shipping-post-code'
-        // ) as string;
-
-        // userData.addresses[billingAddressIndex].country = formData.get(
-        //   'billing-country'
-        // ) as string;
-        // userData.addresses[billingAddressIndex].city = formData.get(
-        //   'billing-city'
-        // ) as string;
-        // userData.addresses[billingAddressIndex].streetName = formData.get(
-        //   'billing-street'
-        // ) as string;
-        // userData.addresses[billingAddressIndex].postalCode = formData.get(
-        //   'billing-post-code'
-        // ) as string;
 
         const formValid = formValidation(e as SubmitEvent);
         if (formValid) {
@@ -650,7 +686,7 @@ export class ProfileForm {
   public populateUserData(): void {
     const userId = getUserId();
     if (userId) {
-      const userData = getUserDataFromLocalStorage(userId);
+      const userData = getUserDataFromLocalStorage();
       if (userData) {
         this.updateFirstNameDisplay(userData.firstName);
         this.updateLastNameDisplay(userData.lastName);

@@ -1,5 +1,6 @@
 import { Router } from '../router/router';
 import { AddToCartButton } from './addToCartBtn';
+import { RemoveFromCartButton } from './removeFromCartBtn';
 
 export class ProductCard {
   private card = document.createElement('div');
@@ -21,7 +22,8 @@ export class ProductCard {
       this.addName(productName),
       this.addDiscription(productDiscription),
       this.addPrice(price, discountedPrice),
-      this.addToCartBtn(id, key, productsInCart)
+      this.addToCart(id, key, productsInCart)
+      // this.removeFromCartBtn(id, key, productsInCart)
     );
 
     this.openProduct(key);
@@ -76,6 +78,52 @@ export class ProductCard {
     productsInCart: string[]
   ): HTMLButtonElement {
     const button = new AddToCartButton(id, key, productsInCart).createButton();
+    // button.addEventListener('click', () => {
+
+    // })
     return button;
+  }
+
+  private addToCart(
+    id: string,
+    key: string,
+    productsInCart: string[]
+  ): HTMLElement {
+    const wrapper = document.createElement('div');
+    wrapper.className = 'add-buttons';
+    const addToCartbtn = new AddToCartButton(
+      id,
+      key,
+      productsInCart
+    ).createButton();
+    wrapper.append(addToCartbtn);
+    addToCartbtn.addEventListener('click', () => {
+      const removeBtn = new RemoveFromCartButton(
+        id,
+        key,
+        productsInCart
+      ).createButton();
+      wrapper.append(removeBtn);
+      removeBtn.addEventListener('click', () => {
+        addToCartbtn.textContent = '🛒 +';
+        addToCartbtn.disabled = false;
+        removeBtn.remove();
+      });
+      wrapper.append(removeBtn);
+    });
+    if (productsInCart.includes(id)) {
+      const removeBtn = new RemoveFromCartButton(
+        id,
+        key,
+        productsInCart
+      ).createButton();
+      wrapper.append(removeBtn);
+      removeBtn.addEventListener('click', () => {
+        addToCartbtn.textContent = '🛒 +';
+        addToCartbtn.disabled = false;
+        removeBtn.remove();
+      });
+    }
+    return wrapper;
   }
 }

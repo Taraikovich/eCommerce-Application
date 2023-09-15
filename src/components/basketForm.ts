@@ -9,6 +9,7 @@ import { changeLineItemQuantity } from '../api/changeLineItemQuantity';
 import { removeFromCart } from '../api/removeFromCart';
 import { createCart } from '../api/createCart';
 import { clearCart } from '../api/clearCart';
+import { Router } from '../router/router';
 
 export class BasketForm {
   private form: HTMLDivElement;
@@ -65,11 +66,15 @@ export class BasketForm {
       totalCostElement.className = 'total-cost';
       totalCostElement.textContent = `Total cost: ${totalCost.toFixed(2)} $ `;
       clearCartButton.addEventListener('click', async () => {
-        await clearCart();
-        await createCart();
-        await this.createForm();
-        if (this.callback) {
-          this.callback();
+        if (
+          confirm("Do you want to clean out your customer's shopping cart?")
+        ) {
+          await clearCart();
+          await createCart();
+          await this.createForm();
+          if (this.callback) {
+            this.callback();
+          }
         }
       });
       this.itemsContainer.appendChild(clearCartButton);
@@ -80,15 +85,25 @@ export class BasketForm {
       emptyCartWrapper.className = 'empty-wrapper';
       emptyCart.className = 'empty-text';
       emptyCart.textContent = 'Your cart is empty!';
-      const catalogLink = document.createElement('a');
-      catalogLink.textContent = 'Go to Catalog';
-      catalogLink.href = '/products';
+      const catalogLink = this.goToCatalog();
       emptyCartWrapper.appendChild(emptyCart);
       emptyCartWrapper.appendChild(catalogLink);
       this.itemsContainer.appendChild(emptyCartWrapper);
     }
 
     return this.form;
+  }
+
+  private goToCatalog(): HTMLButtonElement {
+    const button = document.createElement('button');
+    button.textContent = 'Go to Catalog';
+    button.addEventListener('click', () => {
+      const newURL = './products';
+      window.history.pushState({}, '', newURL);
+      document.body.textContent = '';
+      new Router();
+    });
+    return button;
   }
 
   addItemToBasket(product: {
@@ -145,7 +160,7 @@ export class BasketForm {
       item.textContent = product.name['en-US'];
       const image = new Image();
       image.src = product.image;
-      image.width = 150;
+      image.width = 100;
       const price = document.createElement('div');
       price.textContent = `${(product.price * product.quantity) / 100} $`;
       item.appendChild(image);

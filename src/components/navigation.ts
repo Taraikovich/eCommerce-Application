@@ -22,6 +22,10 @@ export class Navigation {
     this.basketBtn.addItem();
   }
 
+  removeItemToBasket() {
+    this.basketBtn.removeItem();
+  }
+
   updateNavigation(): void {
     this.basketBtn.updateBasket();
   }

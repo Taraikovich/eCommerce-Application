@@ -9,7 +9,7 @@ export async function clearCart() {
       projectKey,
     });
 
-    const response = await apiRoot
+    await apiRoot
       .carts()
       .withId({
         ID: getCartId(),
