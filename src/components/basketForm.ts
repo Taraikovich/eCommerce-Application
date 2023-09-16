@@ -43,7 +43,6 @@ export class BasketForm {
   async createForm(callback?: () => void): Promise<HTMLDivElement> {
     this.callback = callback ? callback : this.callback;
     const cart: Cart = (await getCart()) as Cart;
-    console.log(cart);
     this.productsInCart = [];
     this.itemsContainer.innerHTML = '';
     if (cart?.lineItems?.length) {
@@ -101,7 +100,6 @@ export class BasketForm {
         const code = item.discountCode.id;
         discounCodes.push(code);
       });
-      console.log(discounCodes);
 
       this.itemsContainer.append(
         await this.discountCode(discounCodes),
@@ -145,7 +143,6 @@ export class BasketForm {
     totalPrice: number;
   }) {
     this.productsInCart.push(product);
-    console.log(this.productsInCart);
   }
 
   private updateBasket() {
@@ -192,7 +189,6 @@ export class BasketForm {
       image.src = product.image;
       image.width = 100;
       const price = document.createElement('div');
-      console.log(product.totalPrice === product.price);
       if (product.totalPrice === product.price * product.quantity) {
         price.textContent = `${(product.price * product.quantity) / 100} $`;
       } else {
@@ -233,7 +229,6 @@ export class BasketForm {
       async function getCodesNames(arr: string[]) {
         const names: string[] = [];
         for (let code of arr) {
-          console.log(code);
           code = await getDiscountCode(code);
           names.push(code);
         }
