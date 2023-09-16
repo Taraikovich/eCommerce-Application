@@ -10,6 +10,8 @@ import { removeFromCart } from '../api/removeFromCart';
 import { createCart } from '../api/createCart';
 import { clearCart } from '../api/clearCart';
 import { Router } from '../router/router';
+import { addDiscountCode } from '../api/addiscountCode';
+import { getDiscountCode } from '../api/getDiscoutCode';
 
 export class BasketForm {
   private form: HTMLDivElement;
@@ -41,6 +43,7 @@ export class BasketForm {
   async createForm(callback?: () => void): Promise<HTMLDivElement> {
     this.callback = callback ? callback : this.callback;
     const cart: Cart = (await getCart()) as Cart;
+    console.log(cart);
     this.productsInCart = [];
     this.itemsContainer.innerHTML = '';
     if (cart?.lineItems?.length) {
@@ -62,9 +65,25 @@ export class BasketForm {
       for (const product of this.productsInCart) {
         totalCost += (product.price * product.quantity) / 100;
       }
+      let totalCostWithDiscont = 0;
+      for (const product of this.productsInCart) {
+        totalCostWithDiscont += product.totalPrice / 100;
+      }
       const totalCostElement = document.createElement('div');
       totalCostElement.className = 'total-cost';
-      totalCostElement.textContent = `Total cost: ${totalCost.toFixed(2)} $ `;
+      if (totalCost === totalCostWithDiscont) {
+        totalCostElement.innerHTML = `<p>Total cost: ${totalCost.toFixed(
+          2
+        )} $</p>`;
+      } else {
+        totalCostElement.innerHTML = `<p>Total cost: ${totalCost.toFixed(
+          2
+        )} $</p>
+                                      <p>With discont: ${totalCostWithDiscont.toFixed(
+                                        2
+                                      )} $</p>`;
+      }
+
       clearCartButton.addEventListener('click', async () => {
         if (
           confirm("Do you want to clean out your customer's shopping cart?")
@@ -77,7 +96,17 @@ export class BasketForm {
           }
         }
       });
-      this.itemsContainer.appendChild(clearCartButton);
+      const discounCodes: string[] = [];
+      cart.discountCodes.forEach((item) => {
+        const code = item.discountCode.id;
+        discounCodes.push(code);
+      });
+      console.log(discounCodes);
+
+      this.itemsContainer.append(
+        await this.discountCode(discounCodes),
+        clearCartButton
+      );
       this.itemsContainer.appendChild(totalCostElement);
     } else {
       const emptyCart = document.createElement('div');
@@ -116,6 +145,7 @@ export class BasketForm {
     totalPrice: number;
   }) {
     this.productsInCart.push(product);
+    console.log(this.productsInCart);
   }
 
   private updateBasket() {
@@ -162,7 +192,15 @@ export class BasketForm {
       image.src = product.image;
       image.width = 100;
       const price = document.createElement('div');
-      price.textContent = `${(product.price * product.quantity) / 100} $`;
+      console.log(product.totalPrice === product.price);
+      if (product.totalPrice === product.price * product.quantity) {
+        price.textContent = `${(product.price * product.quantity) / 100} $`;
+      } else {
+        price.innerHTML = `<span> ${
+          (product.price * product.quantity) / 100
+        } $</span> ${product.totalPrice / 100} $`;
+      }
+
       item.appendChild(image);
       item.appendChild(price);
       itemWrapper.appendChild(item);
@@ -174,5 +212,55 @@ export class BasketForm {
       itemWrapper.appendChild(itemWrapperRight);
       this.itemsContainer.appendChild(itemWrapper);
     }
+  }
+
+  private async discountCode(cods: string[]): Promise<HTMLElement> {
+    const wrapper = document.createElement('div');
+    wrapper.className = 'discount-code';
+
+    const input = document.createElement('input');
+    input.className = 'discount-code__input';
+    input.type = 'text';
+    input.id = 'discount-code';
+    input.placeholder = 'enter your code';
+
+    const label = document.createElement('label');
+    label.setAttribute('for', 'discount-code');
+    label.textContent = 'Discount code: ';
+
+    const message = document.createElement('p');
+    if (cods.length) {
+      async function getCodesNames(arr: string[]) {
+        const names: string[] = [];
+        for (let code of arr) {
+          console.log(code);
+          code = await getDiscountCode(code);
+          names.push(code);
+        }
+        return names;
+      }
+      const codesNames = await getCodesNames(cods);
+      message.textContent = `Promo codes applied: ${codesNames.join(', ')}`;
+    } else {
+      message.textContent = '';
+    }
+
+    const button = document.createElement('button');
+    button.textContent = 'apply';
+    button.className = 'discount-code__button';
+
+    button.addEventListener('click', async () => {
+      if (input.value) {
+        if (await addDiscountCode(input.value)) {
+          this.createForm();
+        } else {
+          message.textContent = `Discount code "${input.value}" not found`;
+        }
+      }
+    });
+
+    wrapper.append(label, input, button, message);
+
+    return wrapper;
   }
 }
