@@ -7,6 +7,7 @@ import { BasketPageView } from '../views/basketPageView';
 import { getUserId } from '../state/getUserId';
 import { ProductsView } from '../views/productsView';
 import { ProductView } from '../views/productView';
+import { AboutUsPageView } from '../views/aboutUsPageView';
 
 export class Router {
   homePage = new HomePageView();
@@ -23,6 +24,8 @@ export class Router {
 
   basketPage = new BasketPageView();
 
+  aboutUsPage = new AboutUsPageView();
+
   constructor() {
     this.createView();
   }
@@ -31,7 +34,10 @@ export class Router {
     const rout = this.getUrl();
     if (rout === '/') {
       this.homePage.createView();
-    } else if (rout === '/basket') {
+    } else if (rout === '/about') {
+      this.aboutUsPage.createView();
+    }
+    else if (rout === '/basket') {
       this.basketPage.createView();
     } else if (rout === '/login') {
       if (getUserId()) {
