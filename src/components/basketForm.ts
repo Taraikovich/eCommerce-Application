@@ -78,7 +78,7 @@ export class BasketForm {
         totalCostElement.innerHTML = `<p>Total cost: ${totalCost.toFixed(
           2
         )} $</p>
-                                      <p>With discont: ${totalCostWithDiscont.toFixed(
+                                      <p>With discount: ${totalCostWithDiscont.toFixed(
                                         2
                                       )} $</p>`;
       }
