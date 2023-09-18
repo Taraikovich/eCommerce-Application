@@ -1,0 +1,39 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`PersonalCard createCard should return an HTML element with the expected structure 1`] = `
+<div
+  class="personal-card"
+>
+  <div
+    class="personal-card__photo personal-card__photo_John Doe"
+  />
+  <h3>
+    John Doe
+  </h3>
+  <p>
+    Software Engineer
+  </p>
+  <p>
+    A software engineer passionate about coding.
+  </p>
+  <div>
+    <h3>
+      Contribution to this project:
+    </h3>
+    <ul>
+      <li>
+        Feature 1
+      </li>
+      <li>
+        Feature 2
+      </li>
+    </ul>
+  </div>
+  <a
+    href="https://github.com/johndoe"
+    target="_blank"
+  >
+    GitHub
+  </a>
+</div>
+`;

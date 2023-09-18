@@ -42,6 +42,12 @@ export class View {
     return h1;
   }
 
+  addH2(text: string) {
+    const h2 = document.createElement('h2');
+    h2.textContent = text;
+    return h2;
+  }
+
   createParagraph(text: string) {
     const p = document.createElement('p');
     p.textContent = text;
