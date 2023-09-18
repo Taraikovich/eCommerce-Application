@@ -36,8 +36,7 @@ export class Router {
       this.homePage.createView();
     } else if (rout === '/about') {
       this.aboutUsPage.createView();
-    }
-    else if (rout === '/basket') {
+    } else if (rout === '/basket') {
       this.basketPage.createView();
     } else if (rout === '/login') {
       if (getUserId()) {
