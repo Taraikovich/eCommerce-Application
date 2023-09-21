@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Tektur:wght@400;500;600;700;800;900&display=swap');
 
 @import './notFoundPageView.scss', './loginPageView.scss', './productView.scss',
-  './registerPageView.scss', './profilePageView.scss';
+  './registerPageView.scss', './profilePageView.scss', './aboutUsPage.scss';
 
 main {
   min-height: 90vh;
@@ -100,5 +100,47 @@ main {
     right: 0;
     overflow: hidden;
     display: flex;
+  }
+}
+
+.preloader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 80vh;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 50px;
+  &__page {
+    margin: 0 5px;
+    padding: 5px;
+    cursor: pointer;
+  }
+  &__page_current {
+    border: 1px solid #072326;
+    border-radius: 5px;
+  }
+}
+
+.home-page {
+  background-image: url('./images/umbrelbg.jpg');
+  background-size: cover;
+  h1 {
+    background-color: #f2f2f2d1;
+  }
+  &__sale {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    max-width: 500px;
+    background-color: #f2f2f2d1;
+    margin: 0 auto;
+    padding: 10px;
+    border-radius: 5px;
   }
 }

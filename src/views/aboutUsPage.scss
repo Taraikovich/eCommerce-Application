@@ -1,0 +1,55 @@
+.about-us {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 10px;
+}
+
+.personal-cards {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.personal-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 300px;
+  padding: 20px 5px;
+  margin: 5px;
+  border: 1px solid black;
+  border-radius: 5px;
+  background-color: white;
+  transition: all 0.4s ease;
+  transform: scale(1);
+  a {
+    color: #072326;
+  }
+  &:hover {
+    box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.23);
+    transform: scale(1.05);
+  }
+  &__photo {
+    background-size: cover;
+    width: 100px;
+    height: 120px;
+    border-radius: 5px;
+    box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.23);
+    &_Igor {
+      background-image: url('./images/igor.jpg');
+    }
+    &_Veronika {
+      background-image: url('./images/veronika.jpg');
+    }
+    &_Alexey {
+      background-image: url('./images/alex.png');
+    }
+  }
+}
+
+.rss-logo {
+  display: block;
+  width: 300px;
+  margin: 0 auto;
+  padding: 20px;
+}

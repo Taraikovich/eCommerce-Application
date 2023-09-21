@@ -8,9 +8,16 @@ body {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  background-image: url('./images/umbmrellabg.jpg');
 }
 
 h1 {
+  font-family: 'Tektur', cursive;
+  color: #072326;
+  text-align: center;
+}
+
+h2 {
   font-family: 'Tektur', cursive;
   color: #072326;
   text-align: center;

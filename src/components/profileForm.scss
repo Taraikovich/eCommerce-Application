@@ -1,107 +1,105 @@
-
 .form {
-    display: inherit;
-  }
-  
-  .form-frame {
-    margin-bottom: 10px;
-  }
-  
-  #shipping-form {
-    border: 1px solid black;
-    background-color: antiquewhite;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  
-  #billing-form {
-    border: 1px solid black;
-    margin-top: 20px;
-    background-color: lightblue;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  
-  .address-label {
-    font-size: 20px;
-    font-weight: 600;
-  }
-  
-  .edit-button {
-    margin-top: 20px;
-    width: 60px;
-  }
-  
-  .edit-pass-button {
-    margin-top: 20px;
-    width: 150px;
-  }
-  
-  .title-info {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-weight: 600;
-    font-size: 18px;
-  }
-  .modal {
-    position: absolute;
-    width: 400px;
-    background-color: darkgrey;
-    top: 50px;
-    box-sizing: border-box;
-    padding: 10px;
-  }
-  
-  .modal-pass {
-    position: absolute;
-    width: 400px;
-    background-color: darkgrey;
-    top: 50px;
-    padding: 10px;
-  }
-  
-  .info-input {
-    width: 200px;
-    border: solid 0.5px gray;
-    height: 25px;
-    margin-bottom: 10px;
-  }
-  
-  .close {
-    cursor: pointer;
-    font-size: 24px;
-  }
-  
-  .title-address {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-weight: 600;
-  }
-  
-  .success-message {
-    position: absolute;
-    top: 20%;
-    left: 42%;
-    background-color: rgb(226, 241, 168);
-    opacity: 80%;
-    font-size: 36px;
-    width: 300px;
-    text-align: center;
-  }
-  
-  .form-profile {
-    display: flex;
-    flex-direction: row;
-  }
-  .wrapper-profile {
-    width: 40%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-  }
-  
+  display: inherit;
+}
+
+.form-frame {
+  margin-bottom: 10px;
+}
+
+#shipping-form {
+  border: 1px solid black;
+  background-color: antiquewhite;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#billing-form {
+  border: 1px solid black;
+  margin-top: 20px;
+  background-color: lightblue;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.address-label {
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.edit-button {
+  margin-top: 20px;
+  width: 60px;
+}
+
+.edit-pass-button {
+  margin-top: 20px;
+  width: 150px;
+}
+
+.title-info {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 600;
+  font-size: 18px;
+}
+.modal {
+  position: absolute;
+  width: 400px;
+  background-color: darkgrey;
+  top: 50px;
+  box-sizing: border-box;
+  padding: 10px;
+}
+
+.modal-pass {
+  position: absolute;
+  width: 400px;
+  background-color: darkgrey;
+  top: 50px;
+  padding: 10px;
+}
+
+.info-input {
+  width: 200px;
+  border: solid 0.5px gray;
+  height: 25px;
+  margin-bottom: 10px;
+}
+
+.close {
+  cursor: pointer;
+  font-size: 24px;
+}
+
+.title-address {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 600;
+}
+
+.success-message {
+  position: absolute;
+  top: 20%;
+  left: 42%;
+  background-color: rgb(226, 241, 168);
+  opacity: 80%;
+  font-size: 36px;
+  width: 300px;
+  text-align: center;
+}
+
+.form-profile {
+  display: flex;
+  flex-direction: row;
+}
+.wrapper-profile {
+  width: 40%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}

@@ -27,9 +27,9 @@ describe('getUserId function', () => {
     localStorageMock.clear();
   });
 
-  test('should return null if userId is not in localStorage', () => {
+  test('should return an empty string if userId is not in localStorage', () => {
     const result = getUserId();
-    expect(result).toBeNull();
+    expect(result).toBe('');
   });
 
   test('should return the userId from localStorage', () => {

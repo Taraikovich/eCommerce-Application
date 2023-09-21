@@ -30,3 +30,57 @@ button:hover {
   background-color: #f2f2f2;
   color: #072326;
 }
+
+.add-buttons {
+  display: flex;
+  transition: all 0.5s ease;
+}
+
+.button__add-to-cart {
+  font-size: 20px;
+  font-weight: bold;
+  padding: 0 10px;
+}
+
+.button__add-to-cart:disabled {
+  background-color: #c9f696;
+  color: #072326;
+  cursor: default;
+}
+
+.basket-button {
+  padding-right: 60px;
+  cursor: pointer;
+}
+
+.basket-button-quantity {
+  font-weight: 600;
+  position: absolute;
+  font-size: 18px;
+
+  top: 0px;
+}
+
+.basket-button-img {
+  width: 35px;
+  height: 35px;
+}
+
+.basket-button:hover {
+  transform: scale(1.2);
+}
+
+.buttons-wrapper {
+  display: flex;
+}
+
+.button__remove-from-cart {
+  border: none;
+  background-color: white;
+  color: red;
+  text-decoration: underline;
+}
+
+.button__remove-from-cart:hover {
+  background-color: white;
+}

@@ -8,6 +8,8 @@ export class View {
 
   footer = document.createElement('footer');
 
+  navigation: Navigation | null = null;
+
   constructor() {
     this.burgerMenu();
   }
@@ -27,13 +29,23 @@ export class View {
   }
 
   private addMenu(): void {
-    new Navigation(this.header);
+    this.navigation = new Navigation(this.header);
+  }
+
+  updateNavigation(): void {
+    (this.navigation as Navigation).updateNavigation();
   }
 
   addH1(text: string) {
     const h1 = document.createElement('h1');
     h1.textContent = text;
     return h1;
+  }
+
+  addH2(text: string) {
+    const h2 = document.createElement('h2');
+    h2.textContent = text;
+    return h2;
   }
 
   createParagraph(text: string) {

@@ -4,14 +4,30 @@ import { LoginButton } from './loginButton';
 import { RegisterButton } from './registerButton';
 import { LogoutButton } from './logoutButton';
 import { ProfileButton } from './profileButton';
+import { BasketButton } from './basketButton';
 
 export class Navigation {
   list = document.createElement('ul');
 
   nav = document.createElement('nav');
 
+  basketBtn: BasketButton;
+
   constructor(node: HTMLElement) {
+    this.basketBtn = new BasketButton();
     this.addMenu(node);
+  }
+
+  addItemToBasket() {
+    this.basketBtn.addItem();
+  }
+
+  removeItemToBasket() {
+    this.basketBtn.removeItem();
+  }
+
+  updateNavigation(): void {
+    this.basketBtn.updateBasket();
   }
 
   private addMenu(node: HTMLElement): void {
@@ -19,8 +35,10 @@ export class Navigation {
     this.list.className = 'header__menu';
     const homeLink = this.addMenuItem('Home', './');
     const catalogLink = this.addMenuItem('Catalog', './products');
-    this.list.append(homeLink, catalogLink);
+    const aboutLink = this.addMenuItem('About us', './about');
+    this.list.append(homeLink, catalogLink, aboutLink);
     this.nav.append(this.list, this.addButtons());
+
     node.append(this.nav);
   }
 
@@ -45,14 +63,26 @@ export class Navigation {
 
   private addButtons() {
     const buttons = document.createElement('div');
+    buttons.className = 'buttons-wrapper';
+
     if (getUserId()) {
       const logoutBtn = new LogoutButton();
       const profileBtn = new ProfileButton();
-      buttons.append(profileBtn.createButton(), logoutBtn.createButton());
+
+      buttons.append(
+        this.basketBtn.createButton(),
+        profileBtn.createButton(),
+        logoutBtn.createButton()
+      );
     } else {
       const loginBtn = new LoginButton();
       const registrBtn = new RegisterButton();
-      buttons.append(loginBtn.createButton(), registrBtn.createButton());
+
+      buttons.append(
+        this.basketBtn.createButton(),
+        loginBtn.createButton(),
+        registrBtn.createButton()
+      );
     }
     return buttons;
   }

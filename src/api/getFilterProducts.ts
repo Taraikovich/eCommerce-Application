@@ -4,9 +4,14 @@ import { projectKey } from '../constants/constants';
 
 export async function getFilterProducts(
   filterStr: string[] = [],
-  sortStr = 'name.en-US asc'
+  sortStr = 'name.en-US asc',
+  page = 1
 ) {
   try {
+    const limit = 10;
+
+    const offset = limit * (page - 1);
+
     const apiRoot = createApiBuilderFromCtpClient(client).withProjectKey({
       projectKey,
     });
@@ -18,6 +23,8 @@ export async function getFilterProducts(
         queryArgs: {
           filter: filterStr,
           sort: sortStr,
+          limit,
+          offset,
         },
       })
       .execute();
@@ -26,17 +33,24 @@ export async function getFilterProducts(
 
     const products: {
       [key: string]: {
+        id: string;
         key: string;
         name: string;
         description: string;
         img: string;
         price: number;
         discountedPrice: number;
+        total: number;
       };
     } = {};
     if (results) {
       results.forEach((item, index) => {
         const name = item.name['en-US'];
+
+        let id = 'non';
+        if (item.id) {
+          id = item.id;
+        }
 
         let key = 'non';
         if (item.key) {
@@ -65,13 +79,18 @@ export async function getFilterProducts(
           }
         }
 
+        let total = 0;
+        if (body.total) total = body.total;
+
         products[index] = {
+          id: id,
           key: key,
           name: name,
           description: description,
           img: images,
           price: price,
           discountedPrice: discountedPrice,
+          total: total,
         };
       });
       return products;

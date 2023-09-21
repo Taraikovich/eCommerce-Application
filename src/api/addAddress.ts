@@ -1,7 +1,6 @@
 import {
   createApiBuilderFromCtpClient,
   MyCustomerUpdate,
-  MyCustomerUpdateAction,
 } from '@commercetools/platform-sdk';
 import { client } from './BuildClient';
 import { projectKey } from '../constants/constants';
